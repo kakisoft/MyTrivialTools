@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+      <meta charset="utf8">
+      <title>VariableNameStyleConverter</title>
+  </head>
+<body>
+  <p>
+    <input type="radio" name="functionKey" value="0" checked>SnakeToPascal
+    <input type="radio" name="functionKey" value="1">SnakeToCamel  
+    <input type="radio" name="functionKey" value="2">CamelToSnake  
+  </p>
+<p>
+  before
+  <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+</p>
+<p>
+  <button type="button" id="format-syntax">format-syntax</button>
+</p>
+<p>
+  after
+  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+</p>
+
+<script>
+
+var FUNCTION_KEY = {
+  SNAKE_TO_PASCAL : 0,
+  SNAKE_TO_CAMEL  : 1,
+  CAMEL_TO_SNAKE  : 2
+};
+
+document.getElementById("format-syntax").addEventListener("click", formatSyntax)
+function formatSyntax(){
+  SPACE_CHARACTER = " ";
+  NEW_LINE_CHARACTER = "\n";
+  EQUAL_CHARACTER = "=";
+  var targetSyntaxElement = document.getElementById("target-syntax");
+  var targetSyntaxContent = targetSyntaxElement.value;
+  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+  var resultSyntaxContentArray = [];
+
+  //-----＜ 行単位での編集 ＞-----
+  EditByLine(targetSyntaxContentArray, resultSyntaxContentArray);
+
+  //-----＜ 処理結果を出力 ＞-----
+  outputResult(resultSyntaxContentArray);
+}
+
+//======================================
+//           行単位での編集
+//======================================
+function EditByLine(targetSyntaxContentArray, resultSyntaxContentArray){
+  var edittingContextArray = [];
+  var maxSizeFirstSyntax = 0;
+  var maxSpaceCountLeftSideOfSyntax = 0;
+
+  for(var i=0; i < targetSyntaxContentArray.length; i++){
+    edittingContextArray[i] = ConvertVariableNameStyleFactory(targetSyntaxContentArray[i])
+  }
+  
+  for(var i=0; i < edittingContextArray.length; i++){
+    resultSyntaxContentArray[i] = edittingContextArray[i]
+  }
+
+}
+
+//======================================
+//  
+//======================================
+function ConvertVariableNameStyleFactory (value){
+  var editedValue = value
+  var SWITCH_KEY = getSelectedRadioButtonValue("functionKey")
+
+  switch (parseInt(SWITCH_KEY)){
+    case FUNCTION_KEY.SNAKE_TO_PASCAL:
+      editedValue = SnakeToPascal(value)
+      break
+    case FUNCTION_KEY.SNAKE_TO_CAMEL:
+      editedValue = SnakeToCamel(value)
+      break
+    case FUNCTION_KEY.CAMEL_TO_SNAKE:
+      editedValue = CamelToSnake(value)
+      break
+  }
+
+  return editedValue
+}
+
+//----------------
+//
+//----------------
+function SnakeToPascal (value){
+  return ToUpperCase(value, true)
+}
+
+//----------------
+//
+//----------------
+function SnakeToCamel (value){
+  return ToUpperCase(value, false)
+}
+
+//----------------
+//
+//----------------
+function ToUpperCase (value, isToUpperFirstCharacter){
+  var editedValue = value
+
+  //全て小文字に変換
+  editedValue = value.toLowerCase()
+
+  //先頭を大文字に変換
+  if (isToUpperFirstCharacter){
+    editedValue = editedValue.charAt(0).toUpperCase() + editedValue.slice(1)
+  }
+
+  //「_.」を「_ .(大文字)」に変換
+  editedValue = editedValue.replace(/_./g, function(matchedString)
+                                           {
+                                             return matchedString.charAt(1).toUpperCase()
+                                           }
+                                   );
+
+  return editedValue
+}
+
+//----------------
+//
+//----------------
+function CamelToSnake (value){
+  var firstCharacter = value.charAt(0).toLowerCase()  //先頭文字を待避（先頭は「_」を付ける/付けない の判定から外す）
+  var editedValue = value
+  
+  editedValue = editedValue.slice(1)
+  //「大文字+小文字」を「小文字 + _」に変換。（例： Tx → _tx ）
+  editedValue = editedValue.replace(/([A-Z]+[a-z])/g, function(matchedString)
+                                                      {
+                                                        return '_' + matchedString.toLowerCase()
+                                                      }
+                                   );
+  //待避させていた先頭文字と連結
+  editedValue = firstCharacter + editedValue
+
+  return editedValue
+}
+
+//======================================
+//  
+//======================================
+function getSelectedRadioButtonValue(name){
+  //ラジオボタンオブジェクトを取得する
+  var radioButtonGroup = document.getElementsByName(name);
+ 
+  //取得したラジオボタンオブジェクトから選択された値を探す
+  var checkedValue;
+  for(var i=0; i<radioButtonGroup.length; i++){
+    if (radioButtonGroup[i].checked) {
+      //選択されたラジオボタンのvalue値を取得する
+      checkedValue = radioButtonGroup[i].value;
+      break;
+    }
+  }
+ 
+  return checkedValue
+}
+
+//====================
+//  結果を出力する
+//====================
+function outputResult(resultSyntaxContentArray){
+  var resultSyntaxElement = document.getElementById("result-syntax");
+  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  resultSyntaxElement.textContent = resultSyntaxContent;
+}
+</script>
+</body>
+</html>

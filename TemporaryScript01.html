@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+      <meta charset="utf8">
+      <title>Seq</title>
+  </head>
+<body>
+
+<textarea id="target-syntax1" cols="30" rows="10" placeholder="Please input any code."></textarea>
+<textarea id="target-syntax2" cols="30" rows="10" placeholder="Please input any code."></textarea>
+<textarea id="target-syntax3" cols="30" rows="10" placeholder="Please input any code."></textarea>
+
+<p>
+  <button type="button" id="format-syntax">format-syntax</button>
+</p>
+<p>
+  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+</p>
+
+<script>
+document.getElementById("format-syntax").addEventListener("click", formatSyntax)
+
+function formatSyntax(){
+  NEW_LINE_CHARACTER = "\n";
+
+  var targetSyntaxElement1 = document.getElementById("target-syntax1");
+  var targetSyntaxElement2 = document.getElementById("target-syntax2");
+  var targetSyntaxElement3 = document.getElementById("target-syntax3");
+
+  var targetSyntaxContent1 = targetSyntaxElement1.value;
+  var targetSyntaxContent2 = targetSyntaxElement2.value;
+  var targetSyntaxContent3 = targetSyntaxElement3.value;
+
+  var targetSyntaxContentArray1 =  targetSyntaxContent1.split(/\r?\n/g);
+  var targetSyntaxContentArray2 =  targetSyntaxContent2.split(/\r?\n/g);
+  var targetSyntaxContentArray3 =  targetSyntaxContent3.split(/\r?\n/g);
+
+  var resultSyntaxContentArray = [];
+  var resultSyntaxContentArray1 = [];
+  var resultSyntaxContentArray2 = [];
+  var resultSyntaxContentArray3 = [];
+
+  //-----＜ 文字を連結 ＞-----
+  for(var i=0; i < targetSyntaxContentArray1.length; i++){
+    resultSyntaxContentArray[i] =  targetSyntaxContentArray1[i] + NEW_LINE_CHARACTER
+                                 + targetSyntaxContentArray2[i] + NEW_LINE_CHARACTER
+                                 + targetSyntaxContentArray3[i] + NEW_LINE_CHARACTER
+  }
+  
+  //-----＜ 処理結果を出力 ＞-----
+  outputResult(resultSyntaxContentArray);
+}
+
+//====================
+//  結果を出力する
+//====================
+function outputResult(resultSyntaxContentArray){
+  var resultSyntaxElement = document.getElementById("result-syntax");
+  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  resultSyntaxElement.textContent = resultSyntaxContent;
+}
+</script>
+</body>
+</html>
