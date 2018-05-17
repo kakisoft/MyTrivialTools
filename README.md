@@ -1,8 +1,9 @@
 ## MyTrivialTools
 仕事で使うちょっとしたツール      
       
-ブチ適当でも、とりあえず作って、後からブラッシュアップしていくスタイル。
-　        
+ブチ適当でも、とりあえず作って、後からブラッシュアップしていくスタイル。  
+もしくは、雑な状態のまま使い続けていくスタイル。  
+         
 　        
 # ソースコードの縦位置を合わせる
 https://kakisoft.github.io/MyTrivialTools/CodeSyntaxFormatter.html
