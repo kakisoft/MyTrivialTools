@@ -30,13 +30,13 @@ function ShapingVerticalPosition(baseCharacter, targetSyntaxContentArray, result
   headElements.reverse();
   tailElements.reverse();
 
-  // for(var i=0; i < ignoreHeadNumber; i++){
-  //   targetSyntaxContentArray.unshift(headElements.shift());
-  // }
+  for(var i=0; i < ignoreHeadNumber; i++){
+    targetSyntaxContentArray.unshift(headElements.shift());
+  }
 
-  // for(var i=0; i < ignoreHeadNumber; i++){
-  //   targetSyntaxContentArray.push(tailElements.shift());
-  // }
+  for(var i=0; i < ignoreHeadNumber; i++){
+    targetSyntaxContentArray.push(tailElements.shift());
+  }
   /////////////////////////////////
 
 }
