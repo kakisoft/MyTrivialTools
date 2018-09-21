@@ -62,11 +62,12 @@ function EditByLine(targetSyntaxContentArray, resultSyntaxContentArray){
   
   for(var i=0; i < edittingContextArray.length; i++){
     resultSyntaxContentArray[i] = edittingContextArray[i]
-
-    ///// PHPプロパティ /////
-    resultSyntaxContentArray[i] = "public $" + resultSyntaxContentArray[i] + ";";
-    ////////////////////////
     
+    ///// PHPプロパティ /////
+    if(resultSyntaxContentArray[i].trim().length > 0){
+      resultSyntaxContentArray[i] = "public $" + resultSyntaxContentArray[i] + ";";
+    }
+    ////////////////////////    
   }
 
 }
