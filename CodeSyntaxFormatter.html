@@ -66,9 +66,9 @@ function formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentA
 
     //行ごとのデータを保持する
     edittingContextArray[i] = [
-                                      targetSyntaxContentArray[i].slice(firstSyntaxStartPosition, firstSyntaxEndPosition)
-                                     ,targetSyntaxContentArray[i].slice(firstSyntaxEndPosition + 1)
-                                  ];
+                                 targetSyntaxContentArray[i].slice(firstSyntaxStartPosition, firstSyntaxEndPosition)
+                                ,targetSyntaxContentArray[i].slice(firstSyntaxEndPosition + 1)
+                              ];
 
     //最初のシンタックスの左側のスペース数を保持。
     if( maxSpaceCountLeftSideOfSyntax < firstSyntaxStartPosition ){
@@ -129,9 +129,9 @@ function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSynt
 
     //行ごとのデータを保持する
     edittingContextArray[i] = [
-                                      targetSyntaxContentArray[i].slice(0, equalCharacterPosition)
-                                     ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
-                                  ];
+                                 targetSyntaxContentArray[i].slice(0, equalCharacterPosition)
+                                ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
+                              ];
 
     //イコールの左側のシンタックスの、最大サイズを記録する。
     if( maxSizeLeftSideOfEqualCaracter <  edittingContextArray[i][0].length){
