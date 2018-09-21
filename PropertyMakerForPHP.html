@@ -19,8 +19,12 @@
   <button type="button" id="format-syntax">format-syntax</button>
 </p>
 <p>
-  after
-  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+   result-01
+  <textarea id="result-syntax-01" cols="100" rows="10"></textarea>
+</p>
+<p>
+   result-02
+  <textarea id="result-syntax-02" cols="100" rows="10"></textarea>
 </p>
 
 <script>
@@ -40,18 +44,84 @@ function formatSyntax(){
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
   var resultSyntaxContentArray = [];
+  var lowercasedTargetSyntaxContentArray = [];
 
-  //-----＜ 行単位での編集 ＞-----
-  EditByLine(targetSyntaxContentArray, resultSyntaxContentArray);
+  var userSelectedTypeSyntaxContentArray = [];
+  var propertySyntaxContentArray = [];
+  var propertySetContentsContentArray = [];
+  var FormattedPropertySetContentsContentArray = [];
+
+  //空白の要素を削除
+  targetSyntaxContentArray = targetSyntaxContentArray.filter( (element) => element.trim().length > 0 );
+
+  //-----＜ ユーザ入力内容を小文字に変換した配列を作成 ＞-----
+  MakeToLowerCaseArrayContents(targetSyntaxContentArray, lowercasedTargetSyntaxContentArray);
+
+  //-----＜ ユーザ選択のタイプに変換した配列を作成 ＞-----
+  MakeConvertToUserSelectedType(targetSyntaxContentArray, userSelectedTypeSyntaxContentArray);
+  
+  //-----＜ プロパティを作成 ＞-----
+  MakeProperties(userSelectedTypeSyntaxContentArray, propertySyntaxContentArray);
+
+  //-----＜ 「$this->id = $param['id'] 」のパートを作成 ＞-----
+  MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray);
+  ShapingPositionOfEqual(propertySetContentsContentArray, FormattedPropertySetContentsContentArray);
+
 
   //-----＜ 処理結果を出力 ＞-----
-  outputResult(resultSyntaxContentArray);
+  outputResult(propertySyntaxContentArray     , "result-syntax-01");
+  // outputResult(propertySetContentsContentArray, "result-syntax-02");
+  outputResult(FormattedPropertySetContentsContentArray, "result-syntax-02");
+}
+
+//==============================================
+//  「$this->id = $param['id'] 」のパートを作成
+//==============================================
+function MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray){
+  propertySetContentsContentArray[0] = "public function setDataFromArray($param) {"
+
+  for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
+
+    propertySetContentsContentArray.push(
+                                            "\t" 
+                                          + "$this->" + userSelectedTypeSyntaxContentArray[i] 
+                                          + " = MSM_Utils_Text::escHtml($param['" 
+                                          + lowercasedTargetSyntaxContentArray[i]
+                                          + "']);" 
+                                         );
+
+
+
+  }
+
+
+  propertySetContentsContentArray.push('}')
+
+}
+
+
+//=======================================
+//          プロパティを作成 
+//=======================================
+function MakeProperties(userSelectedTypeSyntaxContentArray, propertySyntaxContentArray){  
+  for(var i=0; i < userSelectedTypeSyntaxContentArray.length; i++){
+    propertySyntaxContentArray[i] = "public $" + userSelectedTypeSyntaxContentArray[i] + ";";
+  }
 }
 
 //======================================
-//           行単位での編集
+//       配列の要素を小文字化
 //======================================
-function EditByLine(targetSyntaxContentArray, resultSyntaxContentArray){
+function MakeToLowerCaseArrayContents(targetSyntaxContentArray, lowercasedTargetSyntaxContentArray){
+  for(var i=0; i < targetSyntaxContentArray.length; i++){
+    lowercasedTargetSyntaxContentArray[i] = targetSyntaxContentArray[i].toLowerCase();
+  }
+}
+
+//=======================================
+//  ユーザ選択のタイプに変換した配列を作成
+//=======================================
+function MakeConvertToUserSelectedType(targetSyntaxContentArray, resultSyntaxContentArray){
   var edittingContextArray = [];
   var maxSizeFirstSyntax = 0;
   var maxSpaceCountLeftSideOfSyntax = 0;
@@ -62,14 +132,7 @@ function EditByLine(targetSyntaxContentArray, resultSyntaxContentArray){
   
   for(var i=0; i < edittingContextArray.length; i++){
     resultSyntaxContentArray[i] = edittingContextArray[i]
-    
-    ///// PHPプロパティ /////
-    if(resultSyntaxContentArray[i].trim().length > 0){
-      resultSyntaxContentArray[i] = "public $" + resultSyntaxContentArray[i] + ";";
-    }
-    ////////////////////////    
   }
-
 }
 
 //======================================
@@ -175,11 +238,12 @@ function getSelectedRadioButtonValue(name){
 //====================
 //  結果を出力する
 //====================
-function outputResult(resultSyntaxContentArray){
-  var resultSyntaxElement = document.getElementById("result-syntax");
+function outputResult(resultSyntaxContentArray, elementId){
+  var resultSyntaxElement = document.getElementById(elementId);
   var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
 </script>
+<script src="./external/ShapingPositionOfEqual.js"></script>
 </body>
 </html>
