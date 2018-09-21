@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
       <meta charset="utf8">
-      <title>VariableNameStyleConverter</title>
+      <title>PHPのプロパティを作る的な何か</title>
   </head>
 <body>
   <h1>PHPのプロパティを作る的な何か</h1>
@@ -19,7 +19,7 @@
   <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
 </p>
 <p>
-  <button type="button" id="format-syntax">format-syntax</button>
+  <button type="button" id="make-util-parts">make-util-parts</button>
 </p>
 <h3>━━━ プロパティ ━━━</h3>
 <p>
@@ -54,8 +54,8 @@ var FUNCTION_KEY = {
   CAMEL_TO_SNAKE  : 2
 };
 
-document.getElementById("format-syntax").addEventListener("click", formatSyntax)
-function formatSyntax(){
+document.getElementById("make-util-parts").addEventListener("click", MakeUtilParts)
+function MakeUtilParts(){
   SPACE_CHARACTER = " ";
   NEW_LINE_CHARACTER = "\n";
   EQUAL_CHARACTER = "=";
