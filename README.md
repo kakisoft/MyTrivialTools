@@ -41,6 +41,8 @@ Readmeもソース内のコメントも日本語なのは、こんな事が要�
 加えて、「会社のPCではネットが使えない！」という、スレイブ・ソルジャーにも活用してもらえるようにと、htmlファイル１個で動くように配慮済み！
 　        
 　        
+今見ると、「何だこのイケてないアルゴリズムは！！」と発狂中！
+
 # CodeStyleConverter
 変数名を、スネーク or キャメル or パスカルに変換。      
 https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
