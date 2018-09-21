@@ -23,16 +23,28 @@
 </p>
 <h3>━━━ プロパティ ━━━</h3>
 <p>
-  <textarea id="result-syntax-01" cols="100" rows="10"></textarea>
+  <textarea id="result-syntax-01" cols="150" rows="10"></textarea>
 </p>
 <h3>━━━ プロパティに値をセット ━━━</h3>
 <p>
-  <textarea id="result-syntax-02" cols="100" rows="10"></textarea>
+  <textarea id="result-syntax-02" cols="150" rows="10"></textarea>
 </p>
 <h3>━━━ バインド ━━━</h3>
 <p>
-   <textarea id="result-syntax-03" cols="100" rows="10"></textarea>
- </p>
+   <textarea id="result-syntax-03" cols="150" rows="10"></textarea>
+</p>
+<h3>━━━ レコードから一意の値を取ってきた時 ━━━</h3>
+<p>
+   <textarea id="result-syntax-04" cols="150" rows="10"></textarea>
+</p>
+<h3>━━━ insert文 ━━━</h3>
+<p>
+   <textarea id="result-syntax-05" cols="150" rows="10"></textarea>
+</p>
+<h3>━━━ update文 ━━━</h3>
+<p>
+   <textarea id="result-syntax-06" cols="150" rows="10"></textarea>
+</p>
  
 <script>
 
@@ -67,6 +79,11 @@ function formatSyntax(){
   var formattedPropertySetContentsContentArray = [];
   var bindContentsContentArray = [];
   var formattedbindContentsContentArray = [];
+  var setuniqueRecordPartContents = [];
+  var formattedSetuniqueRecordPartContents = [];
+  var insertQueryContents = [];
+  var updateQueryContents = [];
+  var formattedupdateQueryContents = [];
 
   //空白の要素を削除
   targetSyntaxContentArray = targetSyntaxContentArray.filter( (element) => element.trim().length > 0 );
@@ -82,16 +99,87 @@ function formatSyntax(){
 
   //-----＜ 「$this->id = $param['id'] 」のパートを作成 ＞-----
   MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray);
-  ShapingVerticalPosition("=", true, propertySetContentsContentArray, formattedPropertySetContentsContentArray);
+  ShapingVerticalPosition("=", propertySetContentsContentArray, formattedPropertySetContentsContentArray, 1, 1);
 
   //-----＜ バインドのパートを作成 ＞-----
   MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, bindContentsContentArray);
-  ShapingVerticalPosition(",", false, bindContentsContentArray, formattedbindContentsContentArray);
+  ShapingVerticalPosition(",", bindContentsContentArray, formattedbindContentsContentArray);
+
+  //-----＜ レコードから一意の値を取ってきた時の処理を作成 ＞-----
+  MakeSetUniqueRecordPartContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, setuniqueRecordPartContents);
+  ShapingVerticalPosition("=", setuniqueRecordPartContents, formattedSetuniqueRecordPartContents);
+
+  //-----＜ insert文を作成 ＞-----
+  MakeInsertQueryContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, insertQueryContents);
+
+  //-----＜ update文を作成 ＞-----
+  MakeUpdateQueryContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, updateQueryContents);
+  ShapingVerticalPosition("=", updateQueryContents, formattedupdateQueryContents, 2, 1);
 
   //-----＜ 処理結果を出力 ＞-----
   outputResult(propertySyntaxContentArray              , "result-syntax-01");
   outputResult(formattedPropertySetContentsContentArray, "result-syntax-02");
   outputResult(formattedbindContentsContentArray       , "result-syntax-03");
+  outputResult(formattedSetuniqueRecordPartContents    , "result-syntax-04");
+  outputResult(insertQueryContents                     , "result-syntax-05");
+  outputResult(formattedupdateQueryContents            , "result-syntax-06");
+}
+
+//==============================================
+//             　update文を作成
+//==============================================
+function MakeUpdateQueryContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, updateQueryContents){
+  updateQueryContents.push("UPDATE __TABLENAME__  ");
+
+  updateQueryContents.push("   SET " + lowercasedTargetSyntaxContentArray[0] + " = :" + lowercasedTargetSyntaxContentArray[0]);
+  for(var i=1; i < lowercasedTargetSyntaxContentArray.length; i++){
+    updateQueryContents.push("      ," + lowercasedTargetSyntaxContentArray[i] + " = :" + lowercasedTargetSyntaxContentArray[i]);
+  }
+
+  updateQueryContents.push("WHERE true");
+}
+
+//==============================================
+//             　insert文を作成
+//==============================================
+function MakeInsertQueryContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, insertQueryContents){
+  insertQueryContents.push("INSERT INTO  ");
+  insertQueryContents.push("__TABLENAME__  ");
+  insertQueryContents.push("(  ");
+  
+  insertQueryContents.push("   " + lowercasedTargetSyntaxContentArray[0]);
+  for(var i=1; i < lowercasedTargetSyntaxContentArray.length; i++){
+    insertQueryContents.push("  ," + lowercasedTargetSyntaxContentArray[i]);
+  }
+
+  insertQueryContents.push(")  ");
+  insertQueryContents.push("values ");
+  insertQueryContents.push("(  ");
+
+  insertQueryContents.push("   :" + lowercasedTargetSyntaxContentArray[0]);
+  for(var i=1; i < lowercasedTargetSyntaxContentArray.length; i++){
+    insertQueryContents.push("  ,:" + lowercasedTargetSyntaxContentArray[i]);
+  }
+
+  insertQueryContents.push(")  ");
+
+}
+
+
+//==============================================
+//  レコードから一意の値を取ってきた時の処理を作成
+//==============================================
+function MakeSetUniqueRecordPartContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, setuniqueRecordPartContents){
+
+  for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
+
+    setuniqueRecordPartContents.push(
+                                        "$this->" + userSelectedTypeSyntaxContentArray[i] 
+                                      + " = "
+                                      + "$recordInstance[0]['" + lowercasedTargetSyntaxContentArray[i] + "'];"
+                                    );
+  }
+
 }
 
 //==============================================

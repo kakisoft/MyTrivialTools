@@ -1,12 +1,18 @@
-function ShapingVerticalPosition(baseCharacter, isEncloseBracket, targetSyntaxContentArray, resultSyntaxContentArray){
+function ShapingVerticalPosition(baseCharacter, targetSyntaxContentArray, resultSyntaxContentArray, ignoreHeadNumber=0, ignoreTailNumber=0){
   SPACE_CHARACTER = " ";
   NEW_LINE_CHARACTER = "\n";
   BASE_CHARACTER = baseCharacter;
 
-  //////////（一時対応用）//////////
-  if(isEncloseBracket){
-    firstElement = targetSyntaxContentArray.shift();
-    lastElement  = targetSyntaxContentArray.pop();
+  //////////（特殊制御）//////////
+  headElements = [];
+  tailElements = [];
+
+  for(var i=0; i < ignoreHeadNumber; i++){
+    headElements.push(targetSyntaxContentArray.shift());
+  }
+
+  for(var i=0; i < ignoreTailNumber; i++){
+    tailElements.push(targetSyntaxContentArray.pop());
   }
   /////////////////////////////////
 
@@ -20,10 +26,16 @@ function ShapingVerticalPosition(baseCharacter, isEncloseBracket, targetSyntaxCo
   formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSyntaxContentArray);
 
 
-  //////////（一時対応用）//////////
-  if(isEncloseBracket){
-    targetSyntaxContentArray.unshift(firstElement);
-    targetSyntaxContentArray.push(lastElement);
+  //////////（特殊制御）//////////
+  headElements.reverse();
+  tailElements.reverse();
+
+  for(var i=0; i < ignoreHeadNumber; i++){
+    targetSyntaxContentArray.unshift(headElements.shift());
+  }
+
+  for(var i=0; i < ignoreHeadNumber; i++){
+    targetSyntaxContentArray.push(tailElements.shift());
   }
   /////////////////////////////////
 
