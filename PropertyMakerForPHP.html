@@ -299,7 +299,7 @@ function ToUpperCase (value, isToUpperFirstCharacter){
   var editedValue = value
 
   //全て小文字に変換
-  editedValue = value.toLowerCase()
+  editedValue = editedValue.toLowerCase()
 
   //先頭を大文字に変換
   if (isToUpperFirstCharacter){
@@ -307,11 +307,7 @@ function ToUpperCase (value, isToUpperFirstCharacter){
   }
 
   //「_.」を「_ .(大文字)」に変換
-  editedValue = editedValue.replace(/_./g, function(matchedString)
-                                           {
-                                             return matchedString.charAt(1).toUpperCase()
-                                           }
-                                   );
+  editedValue = editedValue.replace(/_./g, (matchedString) => matchedString.charAt(1).toUpperCase() );
 
   return editedValue
 }
@@ -325,11 +321,8 @@ function CamelToSnake (value){
   
   editedValue = editedValue.slice(1)
   //「大文字+小文字」を「小文字 + _」に変換。（例： Tx → _tx ）
-  editedValue = editedValue.replace(/([A-Z]+[a-z])/g, function(matchedString)
-                                                      {
-                                                        return '_' + matchedString.toLowerCase()
-                                                      }
-                                   );
+  editedValue = editedValue.replace(/([A-Z]+[a-z])/g, (matchedString) => ('_' + matchedString.toLowerCase()) );
+
   //待避させていた先頭文字と連結
   editedValue = firstCharacter + editedValue
 
