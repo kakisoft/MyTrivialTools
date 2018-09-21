@@ -78,14 +78,14 @@ function formatSyntax(){
 //  「$this->id = $param['id'] 」のパートを作成
 //==============================================
 function MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray){
-  propertySetContentsContentArray[0] = "public function setDataFromArray($param) {"
+  propertySetContentsContentArray[0] = "public function setDataFromArray($params) {"
 
   for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
 
     propertySetContentsContentArray.push(
                                             "\t" 
                                           + "$this->" + userSelectedTypeSyntaxContentArray[i] 
-                                          + " = MSM_Utils_Text::escHtml($param['" 
+                                          + " = MSM_Utils_Text::escHtml($params['" 
                                           + lowercasedTargetSyntaxContentArray[i]
                                           + "']);" 
                                          );
