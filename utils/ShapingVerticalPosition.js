@@ -65,9 +65,9 @@ function formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentA
 
     //行ごとのデータを保持する
     edittingContextArray[i] = [
-                                      targetSyntaxContentArray[i].slice(firstSyntaxStartPosition, firstSyntaxEndPosition)
-                                     ,targetSyntaxContentArray[i].slice(firstSyntaxEndPosition + 1)
-                                  ];
+                                 targetSyntaxContentArray[i].slice(firstSyntaxStartPosition, firstSyntaxEndPosition)
+                                ,targetSyntaxContentArray[i].slice(firstSyntaxEndPosition + 1)
+                              ];
 
     //最初のシンタックスの左側のスペース数を保持。
     if( maxSpaceCountLeftSideOfSyntax < firstSyntaxStartPosition ){
