@@ -20,7 +20,7 @@ function ShapingVerticalPosition(baseCharacter, targetSyntaxContentArray, result
   //-----＜ シンタックスの右側のスペースを整形 ＞-----
   formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentArray);
 
-  //-----＜ イコール前後のスペースを整形 ＞-----
+  //-----＜ 基準となるキャラクタ前後のスペースを整形 ＞-----
   targetSyntaxContentArray = resultSyntaxContentArray; //前回の処理結果を、今回の処理ターゲットとして設定
   resultSyntaxContentArray = []; //前回の処理結果をクリア
   formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSyntaxContentArray);
@@ -108,9 +108,9 @@ function formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentA
 
 }
 
-//======================================
-//     イコール前後のスペースを整形
-//======================================
+//==========================================
+//  基準となるキャラクタの前後のスペースを整形
+//==========================================
 function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSyntaxContentArray){
   var edittingContextArray = [];
   var maxSizeLeftSideOfEqualCaracter = 0;
@@ -120,7 +120,7 @@ function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSynt
   //--------------------
   for(var i=0; i < targetSyntaxContentArray.length; i++){
 
-    //イコールの位置を検索。
+    //基準となるキャラクタの位置を検索。
     var equalCharacterPosition = targetSyntaxContentArray[i].search("["+ BASE_CHARACTER +"]");
     if(equalCharacterPosition <= -1){
       equalCharacterPosition = targetSyntaxContentArray[i].length; //検出できなかった場合、末尾までデータを切り出す。
@@ -132,7 +132,7 @@ function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSynt
                                  ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
                               ];
 
-    //イコールの左側のシンタックスの、最大サイズを記録する。
+    // 基準となるキャラクタの左側のシンタックスの、最大サイズを記録する。
     if( maxSizeLeftSideOfEqualCaracter <  edittingContextArray[i][0].length){
       maxSizeLeftSideOfEqualCaracter = edittingContextArray[i][0].length;
     }
@@ -146,10 +146,10 @@ function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSynt
   for(var i=0; i < edittingContextArray.length; i++){
     resultSyntaxContentArray[i] = "";
 
-    //イコールの左側のシンタックスをセット。
+    // 基準となるキャラクタの左側のシンタックスをセット。
     resultSyntaxContentArray[i] += edittingContextArray[i][0];
 
-    //イコールの左側のシンタックスの右側を、スペースで整形する。
+    // 基準となるキャラクタの左側のシンタックスの右側を、スペースで整形する。
     if( edittingContextArray[i][0].length <= maxSizeLeftSideOfEqualCaracter ){
       for(var k=edittingContextArray[i][0].length; k < maxSizeLeftSideOfEqualCaracter; k++){
         resultSyntaxContentArray[i] += SPACE_CHARACTER;
