@@ -1,11 +1,13 @@
-function ShapingPositionOfEqual(targetSyntaxContentArray, resultSyntaxContentArray){
+function ShapingVerticalPosition(baseCharacter, isEncloseBracket, targetSyntaxContentArray, resultSyntaxContentArray){
   SPACE_CHARACTER = " ";
   NEW_LINE_CHARACTER = "\n";
-  EQUAL_CHARACTER = "=";
+  BASE_CHARACTER = baseCharacter;
 
   //////////（一時対応用）//////////
-  firstElement = targetSyntaxContentArray.shift();
-  lastElement  = targetSyntaxContentArray.pop();
+  if(isEncloseBracket){
+    firstElement = targetSyntaxContentArray.shift();
+    lastElement  = targetSyntaxContentArray.pop();
+  }
   /////////////////////////////////
 
 
@@ -19,8 +21,10 @@ function ShapingPositionOfEqual(targetSyntaxContentArray, resultSyntaxContentArr
 
 
   //////////（一時対応用）//////////
-  targetSyntaxContentArray.unshift(firstElement);
-  targetSyntaxContentArray.push(lastElement);
+  if(isEncloseBracket){
+    targetSyntaxContentArray.unshift(firstElement);
+    targetSyntaxContentArray.push(lastElement);
+  }
   /////////////////////////////////
 
 }
@@ -105,16 +109,16 @@ function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSynt
   for(var i=0; i < targetSyntaxContentArray.length; i++){
 
     //イコールの位置を検索。
-    var equalCharacterPosition = targetSyntaxContentArray[i].search("["+ EQUAL_CHARACTER +"]");
+    var equalCharacterPosition = targetSyntaxContentArray[i].search("["+ BASE_CHARACTER +"]");
     if(equalCharacterPosition <= -1){
       equalCharacterPosition = targetSyntaxContentArray[i].length; //検出できなかった場合、末尾までデータを切り出す。
     }
 
     //行ごとのデータを保持する
     edittingContextArray[i] = [
-                                      targetSyntaxContentArray[i].slice(0, equalCharacterPosition)
-                                     ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
-                                  ];
+                                  targetSyntaxContentArray[i].slice(0, equalCharacterPosition)
+                                 ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
+                              ];
 
     //イコールの左側のシンタックスの、最大サイズを記録する。
     if( maxSizeLeftSideOfEqualCaracter <  edittingContextArray[i][0].length){

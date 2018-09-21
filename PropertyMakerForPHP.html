@@ -11,6 +11,9 @@
     <input type="radio" name="functionKey" value="1" checked>SnakeToCamel  
     <input type="radio" name="functionKey" value="2" >CamelToSnake  
   </p>
+  <p>
+      <input type="text" id="util-header" value="">
+  </p>
 <p>
   before
   <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
@@ -26,7 +29,11 @@
    result-02
   <textarea id="result-syntax-02" cols="100" rows="10"></textarea>
 </p>
-
+<p>
+    result-03
+   <textarea id="result-syntax-03" cols="100" rows="10"></textarea>
+ </p>
+ 
 <script>
 
 var FUNCTION_KEY = {
@@ -40,6 +47,14 @@ function formatSyntax(){
   SPACE_CHARACTER = " ";
   NEW_LINE_CHARACTER = "\n";
   EQUAL_CHARACTER = "=";
+
+  //-----( Set Util Header )-----
+  UTIL_HEADER = document.getElementById("util-header").value.trim();
+  if (UTIL_HEADER.length > 0){
+    UTIL_HEADER = UTIL_HEADER + "_";
+  }
+
+  //-----(  )-----
   var targetSyntaxElement = document.getElementById("target-syntax");
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
@@ -49,7 +64,9 @@ function formatSyntax(){
   var userSelectedTypeSyntaxContentArray = [];
   var propertySyntaxContentArray = [];
   var propertySetContentsContentArray = [];
-  var FormattedPropertySetContentsContentArray = [];
+  var formattedPropertySetContentsContentArray = [];
+  var bindContentsContentArray = [];
+  var formattedbindContentsContentArray = [];
 
   //空白の要素を削除
   targetSyntaxContentArray = targetSyntaxContentArray.filter( (element) => element.trim().length > 0 );
@@ -65,12 +82,32 @@ function formatSyntax(){
 
   //-----＜ 「$this->id = $param['id'] 」のパートを作成 ＞-----
   MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray);
-  ShapingPositionOfEqual(propertySetContentsContentArray, FormattedPropertySetContentsContentArray);
+  ShapingVerticalPosition("=", true, propertySetContentsContentArray, formattedPropertySetContentsContentArray);
 
+  //-----＜ バインドのパートを作成 ＞-----
+  MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, bindContentsContentArray);
+  ShapingVerticalPosition(",", false, bindContentsContentArray, formattedbindContentsContentArray);
 
   //-----＜ 処理結果を出力 ＞-----
   outputResult(propertySyntaxContentArray              , "result-syntax-01");
-  outputResult(FormattedPropertySetContentsContentArray, "result-syntax-02");
+  outputResult(formattedPropertySetContentsContentArray, "result-syntax-02");
+  outputResult(formattedbindContentsContentArray       , "result-syntax-03");
+}
+
+//==============================================
+//             バインドのパートを作成
+//==============================================
+function MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, bindContentsContentArray){
+
+  for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
+
+    bindContentsContentArray.push(
+                                      "$stmt->bindValue(':" + lowercasedTargetSyntaxContentArray[i] + "'"
+                                    + ", $this->" + userSelectedTypeSyntaxContentArray[i] 
+                                    + ");"
+                                 );
+  }
+
 }
 
 //==============================================
@@ -84,15 +121,12 @@ function MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelecte
     propertySetContentsContentArray.push(
                                             "\t" 
                                           + "$this->" + userSelectedTypeSyntaxContentArray[i] 
-                                          + " = MSM_Utils_Text::escHtml($params['" 
+                                          + " = "
+                                          + UTIL_HEADER + "Utils_Text::escHtml($params['" 
                                           + lowercasedTargetSyntaxContentArray[i]
                                           + "']);" 
                                          );
-
-
-
   }
-
 
   propertySetContentsContentArray.push('}')
 
