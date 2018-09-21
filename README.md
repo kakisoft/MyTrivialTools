@@ -48,7 +48,7 @@ https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
 　    
 　    
 　    
-# スネークケースから PHPのプロパティを作る的な何か
+# DBのカラム名を入力して、PHPのプロパティを作る的な何か
 https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
 　    
 　    
