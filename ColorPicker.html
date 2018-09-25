@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>dat.GUI demo</title>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.5/dat.gui.min.js"></script>
+
+<script>
+'use strict';
+
+var myBox01;
+var myBox02;
+
+function MyBox() {
+  this.w = 100;
+  this.h = 100;
+  this.d = 100;
+  this.strokeColor = '#ffffff';
+  this.fillColor = [0, 0, 0];
+  this.hasBorder = true;
+}
+
+function setup() {
+  var gui;
+  var sizeFolder;
+
+  createCanvas(500, 500, WEBGL);
+  gui = new dat.GUI();
+  sizeFolder = gui.addFolder('Size');
+
+  myBox01 = new MyBox();
+  sizeFolder.add(myBox01, 'w', 50, 200);
+  sizeFolder.add(myBox01, 'h', 50, 200);
+  sizeFolder.add(myBox01, 'd', 50, 200);
+  gui.addColor(myBox01, 'strokeColor');
+  gui.addColor(myBox01, 'fillColor');
+  gui.add(myBox01, 'hasBorder');
+
+//   myBox02 = new MyBox();
+//   sizeFolder.add(myBox02, 'w', 150, 200);
+//   sizeFolder.add(myBox02, 'h', 150, 200);
+//   sizeFolder.add(myBox02, 'd', 50, 200);
+//   gui.addColor(myBox02, 'strokeColor');
+//   gui.addColor(myBox02, 'fillColor');
+//   gui.add(myBox02, 'hasBorder');
+
+  sizeFolder.open();
+}
+
+function draw() {
+  background(180);
+  rotateX(frameCount * 0.00);
+  rotateY(frameCount * 0.00);
+  if (myBox01.hasBorder) {
+    stroke(myBox01.strokeColor);
+  } else {
+    noStroke();
+  }
+  fill(myBox01.fillColor);
+  box(myBox01.w, myBox01.h, myBox01.d);
+//   box(myBox02.w+50, myBox02.h+50, myBox02.d+50);
+}    
+</script>  
+</body>
+</html>
