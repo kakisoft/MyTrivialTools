@@ -29,21 +29,25 @@
 <p>
   <textarea id="result-syntax-02" cols="150" rows="10"></textarea>
 </p>
-<h3>━━━ バインド ━━━</h3>
+<h3>━━━ プロパティに Utilを適用 ━━━</h3>
 <p>
    <textarea id="result-syntax-03" cols="150" rows="10"></textarea>
 </p>
-<h3>━━━ レコードから一意の値を取ってきた時 ━━━</h3>
+<h3>━━━ バインド ━━━</h3>
 <p>
    <textarea id="result-syntax-04" cols="150" rows="10"></textarea>
 </p>
-<h3>━━━ insert文 ━━━</h3>
+<h3>━━━ レコードから一意の値を取ってきた時 ━━━</h3>
 <p>
    <textarea id="result-syntax-05" cols="150" rows="10"></textarea>
 </p>
-<h3>━━━ update文 ━━━</h3>
+<h3>━━━ insert文 ━━━</h3>
 <p>
    <textarea id="result-syntax-06" cols="150" rows="10"></textarea>
+</p>
+<h3>━━━ update文 ━━━</h3>
+<p>
+   <textarea id="result-syntax-07" cols="150" rows="10"></textarea>
 </p>
  
 <script>
@@ -77,6 +81,8 @@ function MakeUtilParts(){
   var propertySyntaxContentArray = [];
   var propertySetContentsContentArray = [];
   var formattedPropertySetContentsContentArray = [];
+  var adjustUtilsSetContents = [];
+  var formattedadjustUtilsSetContents = [];
   var bindContentsContentArray = [];
   var formattedbindContentsContentArray = [];
   var setuniqueRecordPartContents = [];
@@ -101,6 +107,10 @@ function MakeUtilParts(){
   MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, propertySetContentsContentArray);
   ShapingVerticalPosition("=", propertySetContentsContentArray, formattedPropertySetContentsContentArray, 1, 1);
 
+  //-----＜ 「$this->id = Util($param['id']) 」のパートを作成 ＞-----
+  MakeAdjustUtilsSetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, adjustUtilsSetContents);
+  ShapingVerticalPosition("=", adjustUtilsSetContents, formattedadjustUtilsSetContents);
+
   //-----＜ バインドのパートを作成 ＞-----
   MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, bindContentsContentArray);
   ShapingVerticalPosition(",", bindContentsContentArray, formattedbindContentsContentArray);
@@ -119,10 +129,11 @@ function MakeUtilParts(){
   //-----＜ 処理結果を出力 ＞-----
   outputResult(propertySyntaxContentArray              , "result-syntax-01");
   outputResult(formattedPropertySetContentsContentArray, "result-syntax-02");
-  outputResult(formattedbindContentsContentArray       , "result-syntax-03");
-  outputResult(formattedSetuniqueRecordPartContents    , "result-syntax-04");
-  outputResult(insertQueryContents                     , "result-syntax-05");
-  outputResult(formattedupdateQueryContents            , "result-syntax-06");
+  outputResult(formattedadjustUtilsSetContents         , "result-syntax-03");
+  outputResult(formattedbindContentsContentArray       , "result-syntax-04");
+  outputResult(formattedSetuniqueRecordPartContents    , "result-syntax-05");
+  outputResult(insertQueryContents                     , "result-syntax-06");
+  outputResult(formattedupdateQueryContents            , "result-syntax-07");
 }
 
 //==============================================
@@ -196,6 +207,25 @@ function MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSy
                                  );
   }
 
+}
+
+//====================================================
+//  「$this->id = Util($param['id']) 」のパートを作成
+//====================================================
+function MakeAdjustUtilsSetContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSyntaxContentArray, adjustUtilsSetContents){
+  FUNCTION_HEADER = "Util";
+
+  for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
+
+    adjustUtilsSetContents.push(
+                                  "\t" 
+                                + "$this->" + userSelectedTypeSyntaxContentArray[i] 
+                                + " = "
+                                + FUNCTION_HEADER + "(" 
+                                + "$this->" + userSelectedTypeSyntaxContentArray[i]
+                                + ");" 
+                                );
+  }
 }
 
 //==============================================
