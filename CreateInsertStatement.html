@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+      <meta charset="utf8">
+      <title>Seq</title>
+  </head>
+<body>
+
+<textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+
+<p>
+  <button type="button" id="format-syntax">format-syntax</button>
+</p>
+<p>
+  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+</p>
+
+<script>
+document.getElementById("format-syntax").addEventListener("click", formatSyntax)
+
+function formatSyntax(){
+  NEW_LINE_CHARACTER = "\n";
+  var resultSyntaxContentArray = [];
+
+  var targetSyntaxElement = document.getElementById("target-syntax");
+  var targetSyntaxContent = targetSyntaxElement.value;
+  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+
+//str.split(区切り文字・正規表現, 分割数);
+//var str = 'user-1,user-2,user-3';
+//var result = str.split(',');
+
+//改行
+//console.log( area.value.split(/\n/) );
+
+  //-----＜ 文字を連結 ＞-----
+  for(var i=0; i < targetSyntaxContentArray.length; i++){
+    
+    [i] =  targetSyntaxContentArray[i] + NEW_LINE_CHARACTER
+                                //  + targetSyntaxContentArray2[i] + NEW_LINE_CHARACTER
+                                //  + targetSyntaxContentArray3[i] + NEW_LINE_CHARACTER
+  }
+
+  
+  //-----＜ 処理結果を出力 ＞-----
+  outputResult(resultSyntaxContentArray);
+}
+
+//====================
+//  結果を出力する
+//====================
+function outputResult(resultSyntaxContentArray){
+  var resultSyntaxElement = document.getElementById("result-syntax");
+  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  resultSyntaxElement.textContent = resultSyntaxContent;
+}
+</script>
+</body>
+</html>
