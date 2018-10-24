@@ -6,34 +6,83 @@
   </head>
 <body>
 
+<div>
+  <input type="radio" name="formatType" value="1" checked>tsv
+  <input type="radio" name="formatType" value="2">csv
+
+  <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 10em">１行目をデータ定義として扱う。（「c」の場合 『"』で囲む）
+</div>
+
 <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
 
 <p>
-  <button type="button" id="format-syntax">format-syntax</button>
+  <button type="button" id="create-InsertStatement">create-InsertStatement</button>
 </p>
 <p>
   <textarea id="result-syntax" cols="100" rows="10"></textarea>
 </p>
 
 <script>
-document.getElementById("format-syntax").addEventListener("click", formatSyntax)
+var FORMAT_TYPE = {
+  TSV : 1,
+  CSV : 2,
+};
 
-function formatSyntax(){
+function getSplitChar(){
+  var switchKey = getSelectedRadioButtonValue("formatType")
+
+  switch (parseInt(switchKey)){
+    case FORMAT_TYPE.TSV:
+      return "\t"
+    case FORMAT_TYPE.CSV:
+      return ","
+  }
+}
+
+document.getElementById("create-InsertStatement").addEventListener("click", createInsertStatement)
+
+
+//======================================
+//           
+//======================================
+function createInsertStatement(){
   NEW_LINE_CHARACTER = "\n";
+
+  var splitChar = getSplitChar();
+
+
+
+
+  isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
+
+console.log(isSpecialControlFirstline);
+
   var resultSyntaxContentArray = [];
 
   var targetSyntaxElement = document.getElementById("target-syntax");
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
-//str.split(区切り文字・正規表現, 分割数);
-//var str = 'user-1,user-2,user-3';
-//var result = str.split(',');
 
-//改行
-//console.log( area.value.split(/\n/) );
 
-  //-----＜ 文字を連結 ＞-----
+  // console.log(splitChar);
+
+
+
+  targetSyntaxContentArray.forEach((lineUnitElement)=>{
+    var linerContentArray = [];
+    var linerContentArray = lineUnitElement.split(splitChar);
+
+console.log(splitChar)
+    linerContentArray.forEach(function(cellUnitElement) {
+      console.log(cellUnitElement)  
+
+    });
+
+  });
+
+
+  //-----＜ discription ＞-----
   for(var i=0; i < targetSyntaxContentArray.length; i++){
     
     [i] =  targetSyntaxContentArray[i] + NEW_LINE_CHARACTER
@@ -55,5 +104,6 @@ function outputResult(resultSyntaxContentArray){
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
 </script>
+<script src="./utils/KakiUtils.js"></script>
 </body>
 </html>
