@@ -13,7 +13,12 @@
   <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 10em">１行目をデータ定義として扱う。（「c」の場合 『"』で囲む）
 </div>
 
-<textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+<br>
+<div>
+  <input type="text" value="__TABLENAME__">
+  <br><br>
+  <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+</div>
 
 <p>
   <button type="button" id="create-InsertStatement">create-InsertStatement</button>
@@ -26,9 +31,13 @@
 
 var forDev1;
 forDev1 = "";
-forDev1 += "id	name	email	company_name"  + "\n";
-forDev1 += "1	kaki	a@cbom	ペーパー"  + "\n";
-forDev1 += "2	soft	b@cbom	架空"  + "\n";
+// forDev1 += ""  + "\n";
+
+forDev1 += "	c		c	c"  + "\n";
+forDev1 += "id	name	age	email	company_name"  + "\n";
+forDev1 += "1	kaki	20	a@cbom	ペーパー"  + "\n";
+forDev1 += "2	soft	30	b@cbom	架空"  + "\n";
+
 
 
 
@@ -78,23 +87,45 @@ function createInsertStatement(){
 
 
 
-  targetSyntaxContentArray.forEach((lineUnitElement)=>{
-    var linerContentArray = [];
-    var linerContentArray = lineUnitElement.split(splitChar);
+//   targetSyntaxContentArray.forEach((lineUnitElement)=>{
+//     var linerContentArray = [];
+//     var linerContentArray = lineUnitElement.split(splitChar);
 
-console.log(splitChar)
-    linerContentArray.forEach(function(cellUnitElement) {
-      console.log(cellUnitElement)  
+// console.log(splitChar)
+//     linerContentArray.forEach(function(cellUnitElement) {
+//       console.log(cellUnitElement)  
 
-    });
+//     });
 
-  });
+//   });
 
+
+  var columnNameLine;
+  // var dataStartLine;
+  if(isSpecialControlFirstline){
+    columnNameLine = 1;
+  }else{
+    columnNameLine = 0;
+  }
+
+  // var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+  var columnNameArray = targetSyntaxContentArray[columnNameLine].split(splitChar);
+  var numberOfColumn = columnNameArray.length;
+
+  var columnStatement = columnNameArray.join(",");
+  // var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+
+
+console.log(columnNameArray)
+console.log(columnStatement)
+  // insert into () value ();
 
   //-----＜ discription ＞-----
-  for(var i=0; i < targetSyntaxContentArray.length; i++){
+  for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
     
-    [i] =  targetSyntaxContentArray[i] + NEW_LINE_CHARACTER
+
+    
+    // [i] =  targetSyntaxContentArray[i] + NEW_LINE_CHARACTER
                                 //  + targetSyntaxContentArray2[i] + NEW_LINE_CHARACTER
                                 //  + targetSyntaxContentArray3[i] + NEW_LINE_CHARACTER
   }
