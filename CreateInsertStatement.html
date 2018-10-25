@@ -23,6 +23,20 @@
 </p>
 
 <script>
+
+var forDev1;
+forDev1 = "";
+forDev1 += "id	name	email	company_name"  + "\n";
+forDev1 += "1	kaki	a@cbom	ペーパー"  + "\n";
+forDev1 += "2	soft	b@cbom	架空"  + "\n";
+
+
+
+document.getElementById("target-syntax").innerHTML = forDev1;
+
+// console.log("sss")
+
+
 var FORMAT_TYPE = {
   TSV : 1,
   CSV : 2,
@@ -49,18 +63,13 @@ function createInsertStatement(){
   NEW_LINE_CHARACTER = "\n";
 
   var splitChar = getSplitChar();
-
-
-
-
-  isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
-
-console.log(isSpecialControlFirstline);
+  var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
 
   var resultSyntaxContentArray = [];
-
   var targetSyntaxElement = document.getElementById("target-syntax");
   var targetSyntaxContent = targetSyntaxElement.value;
+
+
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
 
@@ -96,7 +105,7 @@ console.log(splitChar)
 }
 
 //====================
-//  結果を出力する
+//     結果を出力
 //====================
 function outputResult(resultSyntaxContentArray){
   var resultSyntaxElement = document.getElementById("result-syntax");
