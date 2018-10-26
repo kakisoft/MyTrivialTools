@@ -57,5 +57,11 @@ https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
 　    
 　    
 　    
+# insert文を作る的な何か
+https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
+　    
+　    
+　    
+　    
 # （仮）TemporaryScript01
 https://kakisoft.github.io/MyTrivialTools/TemporaryScript01.html
