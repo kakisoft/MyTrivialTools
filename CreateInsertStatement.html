@@ -15,7 +15,7 @@
 
 <br>
 <div>
-  <input type="text" value="__TABLENAME__">
+  <input type="text" id="tablename" value="__TABLENAME__">
   <br><br>
   <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
 </div>
@@ -32,18 +32,11 @@
 var forDev1;
 forDev1 = "";
 // forDev1 += ""  + "\n";
-
 forDev1 += "	c		c	c"  + "\n";
 forDev1 += "id	name	age	email	company_name"  + "\n";
 forDev1 += "1	kaki	20	a@cbom	ペーパー"  + "\n";
 forDev1 += "2	soft	30	b@cbom	架空"  + "\n";
-
-
-
-
 document.getElementById("target-syntax").innerHTML = forDev1;
-
-// console.log("sss")
 
 
 var FORMAT_TYPE = {
@@ -64,11 +57,12 @@ function getSplitChar(){
 
 document.getElementById("create-InsertStatement").addEventListener("click", createInsertStatement)
 
-
 //======================================
 //           
 //======================================
 function createInsertStatement(){
+  INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3)";
+  TABLE_NAME = document.getElementById("tablename").value;
   NEW_LINE_CHARACTER = "\n";
 
   var splitChar = getSplitChar();
@@ -99,7 +93,9 @@ function createInsertStatement(){
 
 //   });
 
-
+  //--------------------------
+  //    
+  //--------------------------
   var columnNameLine;
   // var dataStartLine;
   if(isSpecialControlFirstline){
@@ -108,19 +104,39 @@ function createInsertStatement(){
     columnNameLine = 0;
   }
 
-  // var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+  //--------------------------
+  //    Get Column Type
+  //--------------------------
+  var columnTypeArray;
+  if(isSpecialControlFirstline){
+    columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
+  }
+
+  //--------------------------
+  //    Get Column Content
+  //--------------------------
   var columnNameArray = targetSyntaxContentArray[columnNameLine].split(splitChar);
   var numberOfColumn = columnNameArray.length;
-
-  var columnStatement = columnNameArray.join(",");
-  // var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  var columnContent = columnNameArray.join(",");
 
 
-console.log(columnNameArray)
-console.log(columnStatement)
-  // insert into () value ();
+// console.log(columnNameArray)
+// console.log(columnStatement)
 
-  //-----＜ discription ＞-----
+
+
+  var valueContent =  "'title1','body001'";
+
+
+  var insertStatement;
+  insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", TABLE_NAME);
+  insertStatement = insertStatement.replace("%s2", columnContent);
+  insertStatement = insertStatement.replace("%s3", valueContent);
+  
+  console.log(insertStatement);
+
+
+//-----＜ discription ＞-----
   for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
     
 
