@@ -5,6 +5,7 @@
       <title>Seq</title>
   </head>
 <body>
+<h1>insert文を作る的な何か</h1>
 
 <div>
   <input type="radio" name="formatType" value="1" checked>tsv
@@ -63,6 +64,7 @@ document.getElementById("create-InsertStatement").addEventListener("click", crea
 function createInsertStatement(){
   INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
   SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
+  SURROUND_CHAR = "\"";
   TABLE_NAME = document.getElementById("tablename").value;
   NEW_LINE_CHARACTER = "\n";
 
@@ -78,7 +80,6 @@ function createInsertStatement(){
   //    
   //--------------------------
   var columnNameLine;
-  // var dataStartLine;
   if(isSpecialControlFirstline){
     columnNameLine = 1;
   }else{
@@ -154,7 +155,7 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
   for(var i=0; i < lineOfDataArray.length; i++){
     value = lineOfDataArray[i];
     if (specialControlColumnNumbersArray.indexOf(i+1) >= 0){
-      value = "\"" + value + "\"";
+      value = surroundText(value, SURROUND_CHAR);
     }
 
     edittedlineOfDataArray.push(value);

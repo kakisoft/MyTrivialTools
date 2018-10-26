@@ -11,3 +11,11 @@ function getSelectedRadioButtonValue(name){
 
     return result;
 }
+
+function surroundText(value, targetChar){
+    var result;
+
+    result = targetChar + value + targetChar;
+
+    return result;
+}
