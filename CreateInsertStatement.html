@@ -65,8 +65,8 @@ function createInsertStatement(){
   INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
   SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
   SURROUND_CHAR = "\"";
-  TABLE_NAME = document.getElementById("tablename").value;
   NEW_LINE_CHARACTER = "\n";
+  TABLE_NAME = document.getElementById("tablename").value;
 
   var splitChar = getSplitChar();
   var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
