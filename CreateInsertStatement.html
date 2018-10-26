@@ -61,7 +61,7 @@ document.getElementById("create-InsertStatement").addEventListener("click", crea
 //           
 //======================================
 function createInsertStatement(){
-  INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3)";
+  INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
   TABLE_NAME = document.getElementById("tablename").value;
   NEW_LINE_CHARACTER = "\n";
 
@@ -125,34 +125,72 @@ function createInsertStatement(){
 
 
 
-  var valueContent =  "'title1','body001'";
+  // var valueContent =  "'title1','body001'";
 
 
-  var insertStatement;
-  insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", TABLE_NAME);
-  insertStatement = insertStatement.replace("%s2", columnContent);
-  insertStatement = insertStatement.replace("%s3", valueContent);
+  // var insertStatement;
+  // insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", TABLE_NAME);
+  // insertStatement = insertStatement.replace("%s2", columnContent);
+  // insertStatement = insertStatement.replace("%s3", valueContent);
   
-  console.log(insertStatement);
+  // console.log(insertStatement);
 
 
-//-----＜ discription ＞-----
+
+  //--------------------------
+  //    Get Data Content
+  //--------------------------
+  var dataArray = [];
+  var inputtedData;
   for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
-    
+    if(targetSyntaxContentArray[i].trim().length <= 0){
+      continue;
+    }
 
+    // console.log(a)
+    // inputtedData = targetSyntaxContentArray[i]
+    // dataArray[i] = targetSyntaxContentArray[i].split(splitChar);
+    var aaa;
+    aaa = targetSyntaxContentArray[i].split(splitChar);
+    bbb = aaa.join(",");
+    dataArray.push(bbb);
+
+
+    // console.log(dataArray[i]);
+
+
+  // var columnContent = columnNameArray.join(",");
+
+
+    // resultSyntaxContentArray[i] = "";
     
-    // [i] =  targetSyntaxContentArray[i] + NEW_LINE_CHARACTER
+    // resultSyntaxContentArray[i] =  targetSyntaxContentArray1[i] + NEW_LINE_CHARACTER
                                 //  + targetSyntaxContentArray2[i] + NEW_LINE_CHARACTER
                                 //  + targetSyntaxContentArray3[i] + NEW_LINE_CHARACTER
   }
 
+
+  //--------------------------
+  //   Set Result Contents
+  //--------------------------
+  var resultSyntaxContentArray = [];
+  var insertStatement;
+  dataArray.forEach((valueContent)=>{
+
+    insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", TABLE_NAME);
+    insertStatement = insertStatement.replace("%s2", columnContent);
+    insertStatement = insertStatement.replace("%s3", valueContent);
+    resultSyntaxContentArray.push(insertStatement);
+
+  });
+
   
-  //-----＜ 処理結果を出力 ＞-----
+  //-----< Output Result >-----
   outputResult(resultSyntaxContentArray);
 }
 
 //====================
-//     結果を出力
+//   Output Result
 //====================
 function outputResult(resultSyntaxContentArray){
   var resultSyntaxElement = document.getElementById("result-syntax");
