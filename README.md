@@ -87,13 +87,13 @@ created_on
 ```
 　　　SnakeToCamel　↓　↑　CamelToSnake
 ```
-MemberId
-RoleId
-MailNotification
-LastLoginOn
-PasswordChangedOn
-CustomFieldId
-CreatedOn
+memberId
+roleId
+mailNotification
+lastLoginOn
+passwordChangedOn
+customFieldId
+createdOn
 ```
 　    
 　    
