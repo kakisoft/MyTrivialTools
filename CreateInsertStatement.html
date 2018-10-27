@@ -202,13 +202,13 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
 //===================================
 function showErrorMessage(errorDataLineArray){
   var errMessage = "";
-  errMessage += "カラム数が不正です。"                                                         + NEW_LINE_CHARACTER;
-  errMessage += "データが崩れている可能性があります。"                                         + NEW_LINE_CHARACTER;
-  errMessage += "（データ内に、タブ or カンマが混入してたり、意図しない改行が入ってたりとか）" + NEW_LINE_CHARACTER;
-  errMessage += ""                                                                             + NEW_LINE_CHARACTER;
-  errMessage += "以下、異常と思われるデータ行です。"                                           + NEW_LINE_CHARACTER;
-  errMessage += "（データ開始行を 1としています。）"                                           + NEW_LINE_CHARACTER;
-  errMessage += ""                                                                             + NEW_LINE_CHARACTER;
+  errMessage += "カラム数が不正です。"                                                     + NEW_LINE_CHARACTER;
+  errMessage += "データが崩れている可能性があります。"                                     + NEW_LINE_CHARACTER;
+  errMessage += "（データ内に、タブ or カンマが混入してたり、意図しない改行が入ってたり）" + NEW_LINE_CHARACTER;
+  errMessage += ""                                                                         + NEW_LINE_CHARACTER;
+  errMessage += "以下、異常と思われるデータ行です。"                                       + NEW_LINE_CHARACTER;
+  errMessage += "（データ開始行を 1としています。）"                                       + NEW_LINE_CHARACTER;
+  errMessage += ""                                                                         + NEW_LINE_CHARACTER;
 
   errorDataLineArray.forEach((el)=>{
     errMessage += el + NEW_LINE_CHARACTER
