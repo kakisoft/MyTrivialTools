@@ -37,13 +37,37 @@ https://kakisoft.github.io/MyTrivialTools/CodeSyntaxFormatter.html
 Readmeもソース内のコメントも日本語なのは、こんな事が要求されるのは、ジャパニーズ・トラディショナル企業オンリーではないかという思い込みから。  
 　  
 そして、エンプラ企業らしく、IE8 での動作確認を完了！      
-（古いブラウザでも動くように配慮。）
+（古いブラウザでも動くように構文を配慮。）
 　        
 加えて、「会社のPCではネットが使えない！」という、スレイブ・ソルジャーにも活用してもらえるようにと、htmlファイル１個で動くように配慮済み！
 　        
 　        
 今見ると、「何だこのイケてないアルゴリズムは！！」と悶絶中！
+　        
 
+# insert文を作る的な何か
+https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
+## 概要
+```
+id	name	age	email	company_name
+1	kaki	20	a@cbom	ペーパー
+2	soft	30	b@cbom	架空
+3	fake	45	y@xcom	税金対策
+```
+↑みたいな内容から
+```sql
+INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (1,"kaki",20,"a@cbom","ペーパー");
+INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (2,"soft",30,"b@cbom","架空");
+INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",45,"y@xcom","税金対策");
+```
+といった INSERT文を生成。      
+　        
+テーブル名をカラム名をだらしなく何度も出力している、Oracleでも使えるように配慮したせい。
+
+　    
+　    
+　    
+　    
 # CodeStyleConverter
 変数名を、スネーク or キャメル or パスカルに変換。      
 https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
@@ -53,12 +77,6 @@ https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
 　    
 # DBのカラム名を入力して、PHPのプロパティを作る的な何か
 https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
-　    
-　    
-　    
-　    
-# insert文を作る的な何か
-https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
 　    
 　    
 　    
