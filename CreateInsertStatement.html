@@ -18,19 +18,20 @@
 <div>
   <input type="text" id="tablename" value="__TABLENAME__">
   <br><br>
-  <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+  <textarea id="target-syntax" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
 </div>
 
 <p>
   <button type="button" id="create-InsertStatement">create-InsertStatement</button>
 </p>
 <p>
-  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+  <textarea id="result-syntax" style="width:95%; height:10em" ></textarea>
 </p>
 
 <script>
 
 //=================================================================
+//----------------------
 //   For Develop Code
 //----------------------
 var forDev1;
@@ -38,8 +39,10 @@ forDev1 = "";
 // forDev1 += ""  + "\n";
 forDev1 += "	c		c	c"  + "\n";
 forDev1 += "id	name	age	email	company_name"  + "\n";
-forDev1 += "1	kaki	20	a@cbom	ペーパー"  + "\n";
-forDev1 += "2	soft	30	b@cbom	架空"  + "\n";
+forDev1 += "1	kaki	20	a@cbom	ペーパー"       + "\n";
+forDev1 += "2	soft	30	b@cbom	架空"           + "\n";
+forDev1 += "3	fake	45	y@xcom	税金対策"        + "\n";
+
 document.getElementById("target-syntax").innerHTML = forDev1;
 //=================================================================
 
