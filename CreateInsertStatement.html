@@ -217,16 +217,43 @@ function showErrorMessage(errorDataLineArray){
   resultSyntaxElement.textContent = errMessage;
 }
 
+
+//===================================
+//  Get Selected Radio Button Value
+//===================================
+function getSelectedRadioButtonValue(name){
+    var radios = document.getElementsByName(name);
+
+    var result;
+    for(var i=0; i<radios.length; i++){
+        if (radios[i].checked) {
+        result = radios[i].value;
+        break;
+        }
+    }
+
+    return result;
+}
+
+//===================================
+//         Surround Text
+//===================================
+function surroundText(value, targetChar){
+    var result;
+
+    result = targetChar + value + targetChar;
+
+    return result;
+}
+
 //===================================
 //          Output Result
 //===================================
 function outputResult(resultSyntaxContentArray){
-  // var resultSyntaxElement = document.getElementById("result_syntax");
   var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
 
 </script>
-<script src="./utils/KakiUtils.js"></script>
 </body>
 </html>
