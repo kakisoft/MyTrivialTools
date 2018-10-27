@@ -46,6 +46,7 @@ Readmeもソース内のコメントも日本語なのは、こんな事が要�
 　        
 　        
 　        
+　        
 
 # insert文を作る的な何か
 https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
