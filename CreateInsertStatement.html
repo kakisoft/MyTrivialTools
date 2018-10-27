@@ -25,10 +25,18 @@
   <button type="button" id="create_InsertStatement">create InsertStatement</button>
 </p>
 <p>
-  <textarea id="result-syntax" style="width:95%; height:10em" ></textarea>
+  <textarea id="result_syntax" style="width:95%; height:10em" ></textarea>
 </p>
 
 <script>
+
+INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
+SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
+NEW_LINE_CHARACTER = "\n";
+SURROUND_CHAR = "\"";
+
+targetSyntaxElement = document.getElementById("target_syntax");
+resultSyntaxElement = document.getElementById("result_syntax");
 
 //=================================================================
 //----------------------
@@ -69,22 +77,16 @@ document.getElementById("create_InsertStatement").addEventListener("click", crea
 //      Create Insert Statement
 //======================================
 function createInsertStatement(){
-  INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
-  SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
-  SURROUND_CHAR = "\"";
-  NEW_LINE_CHARACTER = "\n";
-  TABLE_NAME = document.getElementById("tablename").value;
-
+  var tableName = document.getElementById("tablename").value;
   var splitChar = getSplitChar();
   var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
 
   var resultSyntaxContentArray = [];
-  var targetSyntaxElement = document.getElementById("target_syntax");
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
   //--------------------------
-  //  Get ColumnNameLine
+  //    Get Control Line
   //--------------------------
   var columnNameLine;
   if(isSpecialControlFirstline){
@@ -92,6 +94,8 @@ function createInsertStatement(){
   }else{
     columnNameLine = 0;
   }
+
+  var dataStartLine = columnNameLine + 1;
 
   //--------------------------
   //    Get Column Type
@@ -119,28 +123,29 @@ function createInsertStatement(){
   //--------------------------
   var hasError = false;
   var errorDataLineArray = [];
-  for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
-    xx
+  for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
+    if(targetSyntaxContentArray[i].trim().length <= 0){
+      continue;
+    }
+    lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
+    
+    if(lineOfDataArray.length != numberOfColumn){
+      hasError = true;
+      errorDataLineArray.push(i - columnNameLine);
+    }
   }
-  
-
-
 
   if(hasError){
-    exit;
+    showErrorMessage(errorDataLineArray);
+    return
   }
-  // var resultSyntaxElement = document.getElementById("result-syntax");
-  // var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
-  // resultSyntaxElement.textContent = "えらーやぞ";
-
-
 
   //--------------------------
   //    Get Data Content
   //--------------------------
   var dataArray = [];
   var inputtedData;
-  for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
+  for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
     if(targetSyntaxContentArray[i].trim().length <= 0){
       continue;
     }
@@ -159,7 +164,7 @@ function createInsertStatement(){
   var insertStatement;
   dataArray.forEach((valueContent)=>{
 
-    insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", TABLE_NAME);
+    insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", tableName);
     insertStatement = insertStatement.replace("%s2", columnContent);
     insertStatement = insertStatement.replace("%s3", valueContent);
     resultSyntaxContentArray.push(insertStatement);
@@ -192,14 +197,35 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
   return edittedlineOfDataArray;
 }
 
-//====================
-//   Output Result
-//====================
+//===================================
+//        showErrorMessage
+//===================================
+function showErrorMessage(errorDataLineArray){
+  var errMessage = "";
+  errMessage += "カラム数が不正です。"                                                         + NEW_LINE_CHARACTER;
+  errMessage += "データが崩れている可能性があります。"                                         + NEW_LINE_CHARACTER;
+  errMessage += "（データ内に、タブ or カンマが混入してたり、意図しない改行が入ってたりとか）" + NEW_LINE_CHARACTER;
+  errMessage += ""                                                                             + NEW_LINE_CHARACTER;
+  errMessage += "以下、異常と思われるデータ行です。"                                           + NEW_LINE_CHARACTER;
+  errMessage += "（データ開始行を 1としています。）"                                           + NEW_LINE_CHARACTER;
+  errMessage += ""                                                                             + NEW_LINE_CHARACTER;
+
+  errorDataLineArray.forEach((el)=>{
+    errMessage += el + NEW_LINE_CHARACTER
+  });
+
+  resultSyntaxElement.textContent = errMessage;
+}
+
+//===================================
+//          Output Result
+//===================================
 function outputResult(resultSyntaxContentArray){
-  var resultSyntaxElement = document.getElementById("result-syntax");
+  // var resultSyntaxElement = document.getElementById("result_syntax");
   var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
+
 </script>
 <script src="./utils/KakiUtils.js"></script>
 </body>
