@@ -65,7 +65,7 @@ INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",45,"
 ```
 といった INSERT文を生成。      
 　        
-テーブル名をカラム名をだらしなく何度も出力している、Oracleでも使えるように配慮したせい。
+テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるように配慮したせい。
 
 　    
 　    
