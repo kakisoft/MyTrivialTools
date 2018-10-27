@@ -18,11 +18,11 @@
 <div>
   <input type="text" id="tablename" value="__TABLENAME__">
   <br><br>
-  <textarea id="target-syntax" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
+  <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
 </div>
 
 <p>
-  <button type="button" id="create-InsertStatement">create-InsertStatement</button>
+  <button type="button" id="create_InsertStatement">create InsertStatement</button>
 </p>
 <p>
   <textarea id="result-syntax" style="width:95%; height:10em" ></textarea>
@@ -43,7 +43,7 @@ forDev1 += "1	kaki	12	a@cbom	ペーパー"       + "\n";
 forDev1 += "2	soft	34	b@cbom	架空"           + "\n";
 forDev1 += "3	fake	69	y@xcom	税金対策"        + "\n";
 
-document.getElementById("target-syntax").innerHTML = forDev1;
+document.getElementById("target_syntax").innerHTML = forDev1;
 //=================================================================
 
 
@@ -63,7 +63,7 @@ function getSplitChar(){
   }
 }
 
-document.getElementById("create-InsertStatement").addEventListener("click", createInsertStatement)
+document.getElementById("create_InsertStatement").addEventListener("click", createInsertStatement)
 
 //======================================
 //      Create Insert Statement
@@ -79,7 +79,7 @@ function createInsertStatement(){
   var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
 
   var resultSyntaxContentArray = [];
-  var targetSyntaxElement = document.getElementById("target-syntax");
+  var targetSyntaxElement = document.getElementById("target_syntax");
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
@@ -113,6 +113,27 @@ function createInsertStatement(){
   var columnNameArray = targetSyntaxContentArray[columnNameLine].split(splitChar);
   var numberOfColumn = columnNameArray.length;
   var columnContent = columnNameArray.join(",");
+
+  //--------------------------
+  //      Error Check
+  //--------------------------
+  var hasError = false;
+  var errorDataLineArray = [];
+  for(var i=(columnNameLine+1); i < targetSyntaxContentArray.length; i++){
+    xx
+  }
+  
+
+
+
+  if(hasError){
+    exit;
+  }
+  // var resultSyntaxElement = document.getElementById("result-syntax");
+  // var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  // resultSyntaxElement.textContent = "えらーやぞ";
+
+
 
   //--------------------------
   //    Get Data Content
