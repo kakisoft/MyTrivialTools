@@ -222,28 +222,28 @@ function showErrorMessage(errorDataLineArray){
 //  Get Selected Radio Button Value
 //===================================
 function getSelectedRadioButtonValue(name){
-    var radios = document.getElementsByName(name);
+  var radios = document.getElementsByName(name);
 
-    var result;
-    for(var i=0; i<radios.length; i++){
-        if (radios[i].checked) {
-        result = radios[i].value;
-        break;
-        }
+  var result;
+  for(var i=0; i<radios.length; i++){
+    if (radios[i].checked) {
+    result = radios[i].value;
+    break;
     }
+  }
 
-    return result;
+  return result;
 }
 
 //===================================
 //         Surround Text
 //===================================
 function surroundText(value, targetChar){
-    var result;
+  var result;
 
-    result = targetChar + value + targetChar;
+  result = targetChar + value + targetChar;
 
-    return result;
+  return result;
 }
 
 //===================================
