@@ -74,6 +74,27 @@ INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",45,"
 # CodeStyleConverter
 変数名を、スネーク or キャメル or パスカルに変換。      
 https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
+## 概要
+こんな感じ。
+```
+member_id
+role_id
+mail_notification
+last_login_on
+password_changed_on
+custom_field_id
+created_on
+```
+　　　SnakeToCamel　↓　↑　CamelToSnake
+```
+MemberId
+RoleId
+MailNotification
+LastLoginOn
+PasswordChangedOn
+CustomFieldId
+CreatedOn
+```
 　    
 　    
 　    
