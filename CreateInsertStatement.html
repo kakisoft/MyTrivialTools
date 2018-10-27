@@ -30,6 +30,9 @@
 
 <script>
 
+//=================================================================
+//   For Develop Code
+//----------------------
 var forDev1;
 forDev1 = "";
 // forDev1 += ""  + "\n";
@@ -38,6 +41,7 @@ forDev1 += "id	name	age	email	company_name"  + "\n";
 forDev1 += "1	kaki	20	a@cbom	ペーパー"  + "\n";
 forDev1 += "2	soft	30	b@cbom	架空"  + "\n";
 document.getElementById("target-syntax").innerHTML = forDev1;
+//=================================================================
 
 
 var FORMAT_TYPE = {
@@ -59,7 +63,7 @@ function getSplitChar(){
 document.getElementById("create-InsertStatement").addEventListener("click", createInsertStatement)
 
 //======================================
-//           
+//      Create Insert Statement
 //======================================
 function createInsertStatement(){
   INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
@@ -77,7 +81,7 @@ function createInsertStatement(){
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
   //--------------------------
-  //    
+  //  Get ColumnNameLine
   //--------------------------
   var columnNameLine;
   if(isSpecialControlFirstline){
@@ -143,9 +147,9 @@ function createInsertStatement(){
   outputResult(resultSyntaxContentArray);
 }
 
-//====================
-//   
-//====================
+//===================================
+//   Set Special Control If Needed
+//===================================
 function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersArray){
   if(specialControlColumnNumbersArray.length <= 0){
     return lineOfDataArray;
