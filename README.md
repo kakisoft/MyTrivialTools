@@ -51,20 +51,19 @@ Readmeもソース内のコメントも日本語なのは、こんな事が要�
 # insert文を作る的な何か
 https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
 ## 概要
+こういった内容から
 ```
 id	name	age	email	company_name
 1	kaki	12	a@cbom	ペーパー
 2	soft	34	b@cbom	架空
 3	fake	69	y@xcom	税金対策
 ```
-↑みたいな内容から
+↓みたいな INSERT文を生成。      
 ```sql
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (1,"kaki",12,"a@cbom","ペーパー");
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (2,"soft",34,"b@cbom","架空");
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",69,"y@xcom","税金対策");
 ```
-といった INSERT文を生成。      
-　        
 テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるようにしといたせい。
 
 　    
