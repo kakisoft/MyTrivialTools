@@ -77,20 +77,14 @@ https://kakisoft.github.io/MyTrivialTools/VariableNameStyleConverter.html
 こんな感じ。
 ```
 member_id
-role_id
-mail_notification
 last_login_on
-password_changed_on
 custom_field_id
 created_on
 ```
 　　　SnakeToCamel　↓　↑　CamelToSnake
 ```
 memberId
-roleId
-mailNotification
 lastLoginOn
-passwordChangedOn
 customFieldId
 createdOn
 ```
