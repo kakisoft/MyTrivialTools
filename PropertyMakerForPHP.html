@@ -364,22 +364,22 @@ function CamelToSnake (value){
 //======================================
 //  
 //======================================
-function getSelectedRadioButtonValue(name){
-  //ラジオボタンオブジェクトを取得する
-  var radioButtonGroup = document.getElementsByName(name);
+// function getSelectedRadioButtonValue(name){
+//   //ラジオボタンオブジェクトを取得する
+//   var radioButtonGroup = document.getElementsByName(name);
  
-  //取得したラジオボタンオブジェクトから選択された値を探す
-  var checkedValue;
-  for(var i=0; i<radioButtonGroup.length; i++){
-    if (radioButtonGroup[i].checked) {
-      //選択されたラジオボタンのvalue値を取得する
-      checkedValue = radioButtonGroup[i].value;
-      break;
-    }
-  }
+//   //取得したラジオボタンオブジェクトから選択された値を探す
+//   var checkedValue;
+//   for(var i=0; i<radioButtonGroup.length; i++){
+//     if (radioButtonGroup[i].checked) {
+//       //選択されたラジオボタンのvalue値を取得する
+//       checkedValue = radioButtonGroup[i].value;
+//       break;
+//     }
+//   }
  
-  return checkedValue
-}
+//   return checkedValue
+// }
 
 //====================
 //  結果を出力する
