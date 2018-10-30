@@ -42,22 +42,21 @@ document.getElementById("soften_InsertStatement").addEventListener("click", soft
 //----------------------
 //   For Develop Code
 //----------------------
-var forDev1;
-forDev1 = "";
-// forDev1 += ""  + "\n";
-forDev1 += "INSERT INTO  "  + "\n";
-forDev1 += "__TABLENAME__ "  + "\n";
-forDev1 += "("  + "\n";
-forDev1 += " id,"  + "\n";
-forDev1 += " name,"  + "\n";
-forDev1 += " email"  + "\n";
-forDev1 += ")"  + "\n";
-forDev1 += "VALUES"  + "\n";
-forDev1 += "("  + "\n";
-forDev1 += "1,"  + "\n";
-forDev1 += "kaki,"  + "\n";
-forDev1 += "a@b"  + "\n";
-forDev1 += ")"  + "\n";
+var forDev1 = `
+INSERT INTO  
+__TABLENAME__ 
+(
+ id,
+ name,
+ email
+)
+VALUES
+(
+1,
+kaki,
+a@b
+)
+`
 
 document.getElementById("target_syntax").innerHTML = forDev1;
 
