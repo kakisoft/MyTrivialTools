@@ -85,96 +85,207 @@ function createInsertStatement(){
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
-  //--------------------------
-  //    Get Control Line
-  //--------------------------
-  var columnNameLine;
-  if(isSpecialControlFirstline){
-    columnNameLine = 1;
-  }else{
-    columnNameLine = 0;
-  }
+  var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
 
-  var dataStartLine = columnNameLine + 1;
 
-  //--------------------------
-  //    Get Column Type
-  //--------------------------
-  var columnTypeArray;
-  var specialControlColumnNumbersArray = [];
-  if(isSpecialControlFirstline){
-    columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
-    for(var i=0; i < columnTypeArray.length; i++){
-      if(columnTypeArray[i] == SPECIAL_CONTROL_JUDGMENT_CHAR){
-        specialControlColumnNumbersArray.push(i+1);
-      }
-    }
-  }
+  //-----< Set Control Param >-----
+  setControlParam(controlparam, isSpecialControlFirstline);
 
-  //--------------------------
-  //    Get Column Content
-  //--------------------------
-  var columnNameArray = targetSyntaxContentArray[columnNameLine].split(splitChar);
-  var numberOfColumn = columnNameArray.length;
-  var columnContent = columnNameArray.join(",");
 
-  //--------------------------
-  //      Error Check
-  //--------------------------
+  //-----< Set SpecialControl ColumnNumbers >-----
+  var specialControlColumnNumbersArray = [];  
+  setSpecialControlColumnNumbers(specialControlColumnNumbersArray
+                               , targetSyntaxContentArray
+                               , SPECIAL_CONTROL_JUDGMENT_CHAR
+                               , splitChar
+                               , isSpecialControlFirstline);
+
+
+  //-----< Set Column Content >-----
+  var columnParam = { numberOfColumn: 0 , columnContent: "" };
+  SetColumnParam(columnParam, targetSyntaxContentArray, controlparam, splitChar);
+
+
+  //-----< Check Error >-----
   var hasError = false;
   var errorDataLineArray = [];
-  for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
-    if(targetSyntaxContentArray[i].trim().length <= 0){
-      continue;
-    }
-    lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
-    
-    if(lineOfDataArray.length != numberOfColumn){
-      hasError = true;
-      errorDataLineArray.push(i - columnNameLine);
-    }
-  }
-
+  hasError = checkError(errorDataLineArray, targetSyntaxContentArray, splitChar, controlparam, columnParam);
   if(hasError){
     showErrorMessage(errorDataLineArray);
     return;
   }
 
-  //--------------------------
-  //    Get Data Content
-  //--------------------------
-  var dataArray = [];
+
+  //-----< Set ContentData >-----
+  var contentDataArray = [];
+  SetContentData(contentDataArray
+               , targetSyntaxContentArray
+               , specialControlColumnNumbersArray
+               , controlparam
+               , splitChar);
+
+  
+  //-----< Set Result Contents >-----
+  var resultSyntaxContentArray = [];
+  SetResultContents(resultSyntaxContentArray
+                  , contentDataArray
+                  , tableName
+                  , columnParam);
+
+  //-----< Output Result >-----
+  outputResult(resultSyntaxContentArray);
+}
+
+//=======================================================================================================
+//=======================================================================================================
+
+//-------------------------------------
+//        Set Control Param
+//-------------------------------------
+function setControlParam(controlparam, isSpecialControlFirstline){
+  if(isSpecialControlFirstline){
+    controlparam['columnNameLine'] = 1;
+  }else{
+    controlparam['columnNameLine'] = 0;
+  }
+
+  controlparam['dataStartLine'] = controlparam['columnNameLine'] + 1;
+
+  return;
+}
+
+//-------------------------------------
+//        Set Control Param
+//-------------------------------------
+function setControlParam(controlparam, isSpecialControlFirstline){
+  if(isSpecialControlFirstline){
+    controlparam['columnNameLine'] = 1;
+  }else{
+    controlparam['columnNameLine'] = 0;
+  }
+
+  controlparam['dataStartLine'] = controlparam['columnNameLine'] + 1;
+
+  return;
+}
+
+//-------------------------------------
+//  Set SpecialControl ColumnNumbers
+//-------------------------------------
+function setSpecialControlColumnNumbers(specialControlColumnNumbersArray
+                                      , targetSyntaxContentArray
+                                      , SPECIAL_CONTROL_JUDGMENT_CHAR
+                                      , splitChar
+                                      , isSpecialControlFirstline){
+  var columnTypeArray;
+  if(isSpecialControlFirstline){
+    columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
+    for(var i=0; i < columnTypeArray.length; i++){
+      if(columnTypeArray[i] == SPECIAL_CONTROL_JUDGMENT_CHAR){
+        specialControlColumnNumbersArray.push(i+1);  //Array index starts from 0, it increments.
+      }
+    }
+  }
+
+  return;
+}
+
+//-------------------------------------
+//         Set Column Content
+//-------------------------------------
+function SetColumnParam(columnParam
+                      , targetSyntaxContentArray
+                      , controlparam
+                      , splitChar){
+
+  var columnNameArray = targetSyntaxContentArray[controlparam['columnNameLine']].split(splitChar);
+
+  columnParam['numberOfColumn'] = columnNameArray.length;
+  columnParam['columnContent']  = columnNameArray.join(",");
+
+  return;
+}
+
+//-------------------------------------
+//             Error Check
+//-------------------------------------
+function checkError(errorDataLineArray, targetSyntaxContentArray, splitChar, controlparam, columnParam){
+  var hasError = false;
+
+  for(var i=controlparam['dataStartLine']; i < targetSyntaxContentArray.length; i++){
+    if(targetSyntaxContentArray[i].trim().length <= 0){
+      continue;
+    }
+    lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
+    
+    if(lineOfDataArray.length != columnParam['numberOfColumn']){
+      hasError = true;
+      errorDataLineArray.push(i - controlparam['columnNameLine']);
+    }
+  }
+
+  return hasError;
+}
+
+//-------------------------------------
+//         Set ContentData
+//-------------------------------------
+function SetContentData(contentDataArray
+                      , targetSyntaxContentArray
+                      , specialControlColumnNumbersArray
+                      , controlparam
+                      , splitChar){
+
   var inputtedData;
-  for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
+  for(var i=controlparam['dataStartLine']; i < targetSyntaxContentArray.length; i++){
     if(targetSyntaxContentArray[i].trim().length <= 0){
       continue;
     }
 
-    lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
-    edittedlineOfDataArray = setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersArray);
+    lineOfcontentDataArray = targetSyntaxContentArray[i].split(splitChar);
+    edittedlineOfcontentDataArray = setSpecialControlIfNeeded(lineOfcontentDataArray, specialControlColumnNumbersArray);
 
-    toBeSetData = edittedlineOfDataArray.join(",");
-    dataArray.push(toBeSetData);
+    toBeSetData = edittedlineOfcontentDataArray.join(",");
+    contentDataArray.push(toBeSetData);
   }
 
-  //--------------------------
-  //   Set Result Contents
-  //--------------------------
-  var resultSyntaxContentArray = [];
+  return;
+}
+
+//-------------------------------------
+//        Set Result Contents
+//-------------------------------------
+function SetResultContents(resultSyntaxContentArray
+                         , contentDataArray
+                         , tableName
+                         , columnParam){
+
   var insertStatement;
-  dataArray.forEach((valueContent)=>{
+  contentDataArray.forEach((valueContent)=>{
 
     insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", tableName);
-    insertStatement = insertStatement.replace("%s2", columnContent);
+    insertStatement = insertStatement.replace("%s2", columnParam['columnContent']);
     insertStatement = insertStatement.replace("%s3", valueContent);
     resultSyntaxContentArray.push(insertStatement);
 
   });
 
-  
-  //-----< Output Result >-----
-  outputResult(resultSyntaxContentArray);
+
+  return;
 }
+
+
+//-------------------------------------
+//          Output Result
+//-------------------------------------
+function outputResult(resultSyntaxContentArray){
+  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
+  resultSyntaxElement.textContent = resultSyntaxContent;
+}
+
+//=======================================================================================================
+//=======================================================================================================
+
 
 //===================================
 //   Set Special Control If Needed
@@ -197,6 +308,7 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
   return edittedlineOfDataArray;
 }
 
+
 //===================================
 //        showErrorMessage
 //===================================
@@ -217,6 +329,8 @@ function showErrorMessage(errorDataLineArray){
   resultSyntaxElement.textContent = errMessage;
 }
 
+//=======================================================================================================
+//=======================================================================================================
 
 //===================================
 //  Get Selected Radio Button Value
@@ -246,13 +360,8 @@ function surroundText(value, targetChar){
   return result;
 }
 
-//===================================
-//          Output Result
-//===================================
-function outputResult(resultSyntaxContentArray){
-  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
-  resultSyntaxElement.textContent = resultSyntaxContent;
-}
+//=======================================================================================================
+//=======================================================================================================
 
 </script>
 </body>
