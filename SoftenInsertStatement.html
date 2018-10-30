@@ -71,9 +71,16 @@ function softenInsertStatement(){
   var targetSyntaxContent = targetSyntaxElement.value;
   var resultContentArray = [];
 
+  resultSyntaxElement1.textContent = ""
+  resultSyntaxElement2.innerHTML = ""
+
   //-----< Set ResultChunkSet >-----
   var resultChunkSet = [];
   setResultChunkSet(resultChunkSet, targetSyntaxContent);
+  if(resultChunkSet.length <= 0){
+    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
+    return;
+  }
 
   //-----< Set Result Contents >-----
   setResultContents(resultContentArray, resultChunkSet);
