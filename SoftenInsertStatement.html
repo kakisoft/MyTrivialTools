@@ -6,18 +6,7 @@
   </head>
 <body>
 <h1 style="font-size: 1.5em">insert文のカラムを合わせたい的な何か</h1>
-
 <div>
-  <input type="radio" name="format_type" value="1" checked>tsv
-  <input type="radio" name="format_type" value="2">table
-
-  <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」の場合 『"』で囲む）
-</div>
-
-<br>
-<div>
-  <input type="text" id="tablename" value="__TABLENAME__">
-  <br><br>
   <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
 </div>
 
@@ -30,10 +19,7 @@
 
 <script>
 
-INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
-SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
 NEW_LINE_CHARACTER = "\n";
-SURROUND_CHAR = "\"";
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -62,24 +48,30 @@ forDev1 += ")"  + "\n";
 document.getElementById("target_syntax").innerHTML = forDev1;
 //=================================================================
 
-var RESULT_FORMAT_TYPE = {
-  TSV   : 1,
-  TABLE : 2,
-};
-
-// function getSplitChar(){
-//   var switchKey = getSelectedRadioButtonValue("format_type")
-
-//   switch (parseInt(switchKey)){
-//     case FORMAT_TYPE.TSV:
-//       return "\t"
-//     case FORMAT_TYPE.TABLE:
-//       return ","
-//   }
-// }
 
 document.getElementById("soften_InsertStatement").addEventListener("click", softenInsertStatement)
 
+//======================================
+//      Soften Insert Statement
+//======================================
+function softenInsertStatement(){
+  var targetSyntaxContent = targetSyntaxElement.value;
+  var resultContentArray = [];
+
+  //-----< Set ResultChunkSet >-----
+  var resultChunkSet = [];
+  setResultChunkSet(resultChunkSet, targetSyntaxContent);
+
+  //-----< Set Result Contents >-----
+  setResultContents(resultContentArray, resultChunkSet);
+
+  //-----< Output Result >-----
+  resultSyntaxElement.textContent = resultContentArray[0];
+
+}
+
+//=======================================================================================================
+//=======================================================================================================
 
 //--------------------------
 //   Set ResultChunkSet
@@ -89,7 +81,7 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   CHUNK_END_CHAR   = ")";
 
   var chunkStartPositionArray = getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
-  var chunkEndPositionArray   = getChunkStartPositionArray(CHUNK_END_CHAR, targetSyntaxContent)
+  var chunkEndPositionArray   = getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
 
   if( !(chunkStartPositionArray.length == 2 && chunkEndPositionArray.length == 2) ){
       return false;
@@ -107,171 +99,23 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   return true;
 }
 
+//--------------------------
+//   Set Result Contents
+//--------------------------
+function setResultContents(resultSyntaxContent, resultChunkSet){
+  var tmpArray = [];
 
+  for(var i=0; i < resultChunkSet[0].length; i++){
+    var el = resultChunkSet[0][i].trim() + "\t" +  resultChunkSet[1][i].trim();
+    tmpArray.push(el);
+  }
+  resultSyntaxContent[0] = tmpArray.join(NEW_LINE_CHARACTER);
 
-
-//======================================
-//      Soften Insert Statement
-//======================================
-function softenInsertStatement(){
-//   var resultSyntaxContentArray = [];
-//   var resultSyntax = "";
-//   var targetSyntaxContent = targetSyntaxElement.value;
-//   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
-
-  var targetSyntaxContent = targetSyntaxElement.value;
-  var resultSyntaxContent = "";
-
-
-  resultSyntaxContent = targetSyntaxElement.value;
-
-
-  //-----< Set ResultChunkSet >-----
-  var resultChunkSet = [];
-  setResultChunkSet(resultChunkSet, targetSyntaxContent);
-
-  console.log(resultChunkSet);
-  console.log(resultChunkSet[0]);
-  console.log(resultChunkSet[1]);
-
-
-
-  //-----< Set Result Contents >-----
-//   SetResultContents(resultSyntaxContent, resultChunkSet);
-
-//   //--------------------------
-//   //   Set Result Contents
-//   //--------------------------
-//   var resultSyntaxContentArray = [];
-//   var insertStatement;
-//   dataArray.forEach((valueContent)=>{
-
-//     insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", tableName);
-//     insertStatement = insertStatement.replace("%s2", columnContent);
-//     insertStatement = insertStatement.replace("%s3", valueContent);
-//     resultSyntaxContentArray.push(insertStatement);
-
-//   });
-
-    // resultSyntaxContentArray = targetSyntaxContentArray;
-
-
-
-
-    // resultSyntaxElement.textContent = resultSyntaxContent;
-    resultSyntaxElement.textContent = resultSyntaxContent;
-
-
-
-  //--------------------------
-  //    Get Control Line
-  //--------------------------
-//   var columnNameLine;
-//   if(isSpecialControlFirstline){
-//     columnNameLine = 1;
-//   }else{
-//     columnNameLine = 0;
-//   }
-
-//   var dataStartLine = columnNameLine + 1;
-
-  //--------------------------
-  //    Get Column Type
-  //--------------------------
-//   var columnTypeArray;
-//   var specialControlColumnNumbersArray = [];
-//   if(isSpecialControlFirstline){
-//     columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
-//     for(var i=0; i < columnTypeArray.length; i++){
-//       if(columnTypeArray[i] == SPECIAL_CONTROL_JUDGMENT_CHAR){
-//         specialControlColumnNumbersArray.push(i+1);
-//       }
-//     }
-//   }
-
-  //--------------------------
-  //    Get Column Content
-  //--------------------------
-//   var columnNameArray = targetSyntaxContentArray[columnNameLine].split(splitChar);
-//   var numberOfColumn = columnNameArray.length;
-//   var columnContent = columnNameArray.join(",");
-
-  //--------------------------
-  //      Error Check
-  //--------------------------
-//   var hasError = false;
-//   var errorDataLineArray = [];
-//   for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
-//     if(targetSyntaxContentArray[i].trim().length <= 0){
-//       continue;
-//     }
-//     lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
-    
-//     if(lineOfDataArray.length != numberOfColumn){
-//       hasError = true;
-//       errorDataLineArray.push(i - columnNameLine);
-//     }
-//   }
-
-//   if(hasError){
-//     showErrorMessage(errorDataLineArray);
-//     return;
-//   }
-
-  //--------------------------
-  //    Get Data Content
-  //--------------------------
-//   var dataArray = [];
-//   var inputtedData;
-//   for(var i=dataStartLine; i < targetSyntaxContentArray.length; i++){
-//     if(targetSyntaxContentArray[i].trim().length <= 0){
-//       continue;
-//     }
-
-//     lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
-//     edittedlineOfDataArray = setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersArray);
-
-//     toBeSetData = edittedlineOfDataArray.join(",");
-//     dataArray.push(toBeSetData);
-//   }
-
-//   //--------------------------
-//   //   Set Result Contents
-//   //--------------------------
-//   var resultSyntaxContentArray = [];
-//   var insertStatement;
-//   dataArray.forEach((valueContent)=>{
-
-//     insertStatement = INSERT_STATEMENT_TEMPLATE.replace("%s1", tableName);
-//     insertStatement = insertStatement.replace("%s2", columnContent);
-//     insertStatement = insertStatement.replace("%s3", valueContent);
-//     resultSyntaxContentArray.push(insertStatement);
-
-//   });
-
-  
-  //-----< Output Result >-----
-//   outputResult(resultSyntaxContentArray);
+  return;
 }
 
-//===================================================
-//===================================================
-
-
-
-
-
-
-
-
-
-//===================================
-//          Output Result
-//===================================
-function outputResult(resultSyntaxContentArray){
-  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
-  resultSyntaxElement.textContent = resultSyntaxContent;
-}
+//=======================================================================================================
+//=======================================================================================================
 
 </script>
 <script src="./utils/KakiUtils.js"></script>
