@@ -1,17 +1,24 @@
+//===================================
+//  Get Selected Radio Button Value
+//===================================
 function getSelectedRadioButtonValue(name){
-    var radios = document.getElementsByName(name);
+  var radios = document.getElementsByName(name);
 
-    var result;
-    for(var i=0; i<radios.length; i++){
-        if (radios[i].checked) {
-        result = radios[i].value;
-        break;
-        }
+  var result;
+  for(var i=0; i<radios.length; i++){
+    if (radios[i].checked) {
+      result = radios[i].value;
+      break;
     }
+  }
 
-    return result;
+  return result;
 }
 
+
+//===================================
+//          surround Text
+//===================================  
 function surroundText(value, targetChar){
     var result;
 
@@ -19,3 +26,25 @@ function surroundText(value, targetChar){
 
     return result;
 }
+
+
+//===================================
+//    Get ChunkStartPositionArray
+//===================================  
+function getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent=[]){
+    var chunkStartPositionArray = [];
+
+    var searchPosition = 0;
+    while (searchPosition < targetSyntaxContent.length) {
+      chunkStartPosition = targetSyntaxContent.indexOf(CHUNK_START_CHAR, searchPosition);
+  
+      if(chunkStartPosition > 0){
+        chunkStartPositionArray.push(chunkStartPosition);
+        searchPosition = chunkStartPosition + 1;
+      }else{
+        searchPosition = targetSyntaxContent.length
+      }
+    }
+  
+    return chunkStartPositionArray;    
+  }
