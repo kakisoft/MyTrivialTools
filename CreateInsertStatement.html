@@ -38,6 +38,8 @@ SURROUND_CHAR = "\"";
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
 
+document.getElementById("create_InsertStatement").addEventListener("click", createInsertStatement)
+
 //=================================================================
 //----------------------
 //   For Develop Code
@@ -68,7 +70,6 @@ function getSplitChar(){
   }
 }
 
-document.getElementById("create_InsertStatement").addEventListener("click", createInsertStatement)
 
 //======================================
 //      Create Insert Statement
