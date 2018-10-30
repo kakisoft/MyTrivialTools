@@ -3,6 +3,13 @@
   <head>
       <meta charset="utf8">
       <title>Soften InsertStatement</title>
+      <style>
+        table, td, th { 
+          border: 2px #271c1c solid; 
+          border-collapse: collapse;
+        }
+      </style>
+
   </head>
 <body>
 <h1 style="font-size: 1.5em">insert文のカラムを合わせたい的な何か</h1>
@@ -14,15 +21,22 @@
   <button type="button" id="soften_InsertStatement">Soften InsertStatement</button>
 </p>
 <p>
-  <textarea id="result_syntax" style="width:95%; height:13em" ></textarea>
+  <textarea id="result_syntax1" style="width:95%; height:13em" ></textarea>
 </p>
+
+<div id="result_syntax2">
+</div>
+
 
 <script>
 
 NEW_LINE_CHARACTER = "\n";
 
 targetSyntaxElement = document.getElementById("target_syntax");
-resultSyntaxElement = document.getElementById("result_syntax");
+resultSyntaxElement1 = document.getElementById("result_syntax1");
+resultSyntaxElement2 = document.getElementById("result_syntax2");
+
+document.getElementById("soften_InsertStatement").addEventListener("click", softenInsertStatement)
 
 //=================================================================
 //----------------------
@@ -46,10 +60,9 @@ forDev1 += "a@b"  + "\n";
 forDev1 += ")"  + "\n";
 
 document.getElementById("target_syntax").innerHTML = forDev1;
+
 //=================================================================
 
-
-document.getElementById("soften_InsertStatement").addEventListener("click", softenInsertStatement)
 
 //======================================
 //      Soften Insert Statement
@@ -66,7 +79,8 @@ function softenInsertStatement(){
   setResultContents(resultContentArray, resultChunkSet);
 
   //-----< Output Result >-----
-  resultSyntaxElement.textContent = resultContentArray[0];
+  resultSyntaxElement1.textContent = resultContentArray[0];
+  resultSyntaxElement2.innerHTML = resultContentArray[1];
 
 }
 
@@ -102,7 +116,18 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
 //--------------------------
 //   Set Result Contents
 //--------------------------
-function setResultContents(resultSyntaxContent, resultChunkSet){
+function setResultContents(resultContentArray, resultChunkSet){
+
+  setResult1(resultContentArray, resultChunkSet);
+  setResult2(resultContentArray, resultChunkSet);
+
+  return;
+}
+
+//--------------------------
+//        Result 1
+//--------------------------
+function setResult1(resultSyntaxContent, resultChunkSet){
   var tmpArray = [];
 
   for(var i=0; i < resultChunkSet[0].length; i++){
@@ -110,6 +135,27 @@ function setResultContents(resultSyntaxContent, resultChunkSet){
     tmpArray.push(el);
   }
   resultSyntaxContent[0] = tmpArray.join(NEW_LINE_CHARACTER);
+
+  return;
+}
+
+//--------------------------
+//        Result 2
+//--------------------------
+function setResult2(resultSyntaxContent, resultChunkSet){
+
+  var result = "";
+  for(var i=0; i < resultChunkSet[0].length; i++){
+    var el1 = surroundHTMLTag(resultChunkSet[0][i].trim(), "td");
+    var el2 = surroundHTMLTag(resultChunkSet[1][i].trim(), "td");
+    var el3 = surroundHTMLTag(el1 + el2, "tr");
+
+    result += el3;
+  }
+
+  result = surroundHTMLTag(result, "tbody");
+  result = surroundHTMLTag(result, "table");
+  resultSyntaxContent[1] = result;
 
   return;
 }

@@ -27,6 +27,18 @@ function surroundText(value, targetChar){
     return result;
 }
 
+//===================================
+//        surround HTML Tag
+//===================================  
+function surroundHTMLTag(value, targetTag){
+  var startTag = "<"  + targetTag + ">";
+  var endTag   = "</" + targetTag + ">";
+  var result;
+
+  result = startTag + value + endTag;
+
+  return result;
+}
 
 //===================================
 //    Get ChunkStartPositionArray
