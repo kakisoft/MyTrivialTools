@@ -20,6 +20,10 @@
 <script>
 
 NEW_LINE_CHARACTER = "\n";
+RESERVED_WORD = 
+[
+  "SELECT","FROM","WHERE"
+];
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -42,7 +46,6 @@ from
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
 where  1=1
   and  T1.COLUMN1 = 'CD'
-  param1 = 'a  b'
 group by
     T1.PROD_NO
 
@@ -54,8 +57,36 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 
 
+
+
+
+//------------------------------
+//      Set ResultChunkSet
+//
+// 予約語は大文字化されている前提で動いてます。
+//------------------------------
+function formatSelectContent(selectContentArray, unitArray){
+  
+  // if (unitArray.indexOf("select") >= 0){
+  // if (unitArray.indexOf("select") >= 0){
+  // if (unitArray.search("select") >= 0){
+  // // 存在する
+  //   resultSyntaxElement.textContent = "OK"
+  // }else{
+  //   resultSyntaxElement.textContent = "NG"
+
+  // }
+
+
+  return true;
+}
+
+
 // SELECT col1, (SELECT id FROM XXX)
 
+
+// resultSyntaxElement.textContent = tmp
+// console.log(unitArray)
 
 //======================================
 //      Format SelectStatement
@@ -69,9 +100,16 @@ function formatSelectStatement(){
 
   //-----< Sqlstatoment To UnitArray >-----
   var unitArray = [];
-  sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
+  unitArray = sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
 
 
+  //-----< Capitalize Reserved Words >-----
+  unitArray = capitalizeReservedWords(unitArray, RESERVED_WORD);
+
+
+  //-----< discriptionXXXXXXXX >-----
+  var selectContentArray = [];
+  formatSelectContent(selectContentArray, unitArray);
 
 
 
@@ -99,14 +137,16 @@ function formatSelectStatement(){
 //=======================================================================================================
 //=======================================================================================================
 
-//-----------------------------
-//  Sqlstatoment To UnitArray
+//------------------------------
+// Sqlstatoment To UnitArray
+//
+// Split into syntax units
 //
 // ＜後で修正する点＞
-// スペースが全部カットされちゃうんで、
-//  param1 = 'a  b'
-// といった内容があると、ちゃんと動きません。
-//-----------------------------
+// スペースを全部カットする処理を入れているので、
+//  param1 = 'a   b'
+// といった内容があると、意図通りに動きません。
+//------------------------------
 function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   var tmp;
 
@@ -116,22 +156,45 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   tmp = tmp.replace(/\s+/g, " ");    // Replace one or more spaces by one space 
 
   unitArray = tmp.split(/\s/g);
-  resultSyntaxElement.textContent = tmp
-  console.log(unitArray)
-  return true;
+
+  return unitArray;
 }
 
-//-----------------------------
+// //------------------------------
+// //  Capitalize Reserved Words
+// //------------------------------
+// function capitalizeReservedWords(unitArray, RESERVED_WORD){
+//   var tmpArray = [];
+
+//   unitArray.forEach((el)=>{
+//     upperEl = el.toUpperCase();
+
+//     if(RESERVED_WORD.indexOf(upperEl) >= 0){
+//       tmpArray.push(upperEl);
+//     }else{
+//       tmpArray.push(el);
+//     }
+
+
+//   });
+
+//   unitArray = tmpArray;
+
+//   return unitArray;
+// }
+
+
+//------------------------------
 //      Set ResultChunkSet
-//-----------------------------
+//------------------------------
 function setResultChunkSet(resultChunkSet, targetSyntaxContent){
 
   return true;
 }
 
-//-----------------------------
+//------------------------------
 //     Set Result Contents
-//-----------------------------
+//------------------------------
 function setResultContents(resultContentArray, resultChunkSet){
 
 

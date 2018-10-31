@@ -60,3 +60,23 @@ function getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent=[]){
   
     return chunkStartPositionArray;    
   }
+
+
+//===================================
+//    Capitalize Reserved Words
+//===================================  
+function capitalizeReservedWords(unitArray, RESERVED_WORD){
+  var tmpArray = [];
+
+  unitArray.forEach((el)=>{
+    upperEl = el.toUpperCase();
+
+    if(RESERVED_WORD.indexOf(upperEl) >= 0){
+      tmpArray.push(upperEl);
+    }else{
+      tmpArray.push(el);
+    }
+  });
+
+  return tmpArray;
+}
