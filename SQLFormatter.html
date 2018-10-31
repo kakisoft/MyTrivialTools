@@ -22,10 +22,13 @@
 NEW_LINE_CHARACTER = "\n";
 RESERVED_WORD = 
 [
-  "SELECT","AS", "FROM", "WHERE"
+  "SELECT","AS", "FROM", "LEFT", "RIGHT", "JOIN", "ORTER", "INNER", "ON", 
+  "WHERE", "AND", "GROUP", "ORDER", "BY",
+  "SUM", "MAX"
 ];
 
-SELECT_PREFIX = "   ,";
+// SELECT_PREFIX = "   ,";
+PREFIX_SPACE_COUNT = 4;
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -58,7 +61,12 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 //=================================================================
 
-
+var selectContentArray  = [];
+var fromContentArray    = [];
+var whereContentArray   = [];
+var groupByContentArray = [];
+var orderByContentArray = [];
+var havingContentArray  = [];
 
 
 
@@ -127,13 +135,7 @@ function formatSelectStatement(){
 
 
 
-  //-----< Set ResultChunkSet >-----
-  // var resultChunkSet = [];
-  // setResultChunkSet(resultChunkSet, targetSyntaxContent);
-  // if(resultChunkSet.length <= 0){
-  //   resultSyntaxElement.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
-  //   return;
-  // }
+
 
   // //-----< Set Result Contents >-----
   // setResultContents(resultContentArray, resultChunkSet);
