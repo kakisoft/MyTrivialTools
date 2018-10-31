@@ -78,5 +78,8 @@ function capitalizeReservedWords(unitArray, RESERVED_WORD){
     }
   });
 
-  return tmpArray;
+  unitArray = [];
+  Array.prototype.push.apply(unitArray, tmpArray);
+
+  return;
 }

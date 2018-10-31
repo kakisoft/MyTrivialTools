@@ -61,12 +61,12 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 //=================================================================
 
-var selectContentArray  = [];
-var fromContentArray    = [];
-var whereContentArray   = [];
-var groupByContentArray = [];
-var orderByContentArray = [];
-var havingContentArray  = [];
+// var selectContentArray  = [];
+// var fromContentArray    = [];
+// var whereContentArray   = [];
+// var groupByContentArray = [];
+// var orderByContentArray = [];
+// var havingContentArray  = [];
 
 
 
@@ -82,12 +82,12 @@ var havingContentArray  = [];
 // 副問い合わせは未対応です。
 //------------------------------
 function formatSelectContent(selectContentArray, unitArray){
-  var selectPosition = unitArray.indexOf("SELECT");
-  var fromPosition   = unitArray.indexOf("FROM");
+  // var selectPosition = unitArray.indexOf("SELECT");
+  // var fromPosition   = unitArray.indexOf("FROM");
 
-  var tmpArray = unitArray.slice(selectPosition + 1, fromPosition);
+  // var tmpArray = unitArray.slice(selectPosition + 1, fromPosition);
 
-console.log(tmpArray);
+// console.log(tmpArray);
 
 // , は削除。
 // ・・・ではなく、(,)を削除
@@ -105,6 +105,39 @@ console.log(tmpArray);
 // resultSyntaxElement.textContent = tmp
 // console.log(unitArray)
 
+
+
+
+//------------------------------
+//      
+//------------------------------
+function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
+
+  // primitivePhraseSetArray['selectContentArray'] = [1,2,3]
+  primitivePhraseSetArray['selectContentArray'] = getPrimitiveSelectPhrase(unitArray);
+
+  // return true;
+}
+
+function getPrimitiveSelectPhrase(unitArray){
+  var resultArray = []
+
+  console.log(unitArray)
+  var selectPosition = unitArray.indexOf("SELECT");
+  var fromPosition   = unitArray.indexOf("FROM");
+console.log(selectPosition)
+  var tmpArray = unitArray.slice(selectPosition +1, fromPosition);
+
+console.log(tmpArray);
+
+
+  resultArray = [1,2,3,4,5]
+
+  return resultArray;
+}
+
+ 
+
 //======================================
 //      Format SelectStatement
 //======================================
@@ -115,13 +148,35 @@ function formatSelectStatement(){
   resultSyntaxElement.textContent = ""
 
 
+
   //-----< Sqlstatoment To UnitArray >-----
   var unitArray = [];
-  unitArray = sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
+  var resultSyntaxContentArray = [];
+  sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
 
 
   //-----< Capitalize Reserved Words >-----
-  unitArray = capitalizeReservedWords(unitArray, RESERVED_WORD);
+  capitalizeReservedWords(unitArray, RESERVED_WORD);
+console.log(unitArray)
+
+  //-----< discriptionXXXXXXXX >-----
+  var primitivePhraseSetArray = [];
+  primitivePhraseSetArray['selectContentArray']  = [];
+  primitivePhraseSetArray['fromContentArray']    = [];
+  primitivePhraseSetArray['whereContentArray']   = [];
+  primitivePhraseSetArray['groupByContentArray'] = [];
+  primitivePhraseSetArray['orderByContentArray'] = [];
+  primitivePhraseSetArray['havingContentArray']  = [];
+
+// var selectContentArray  = [];
+// var fromContentArray    = [];
+// var whereContentArray   = [];
+// var groupByContentArray = [];
+// var orderByContentArray = [];
+// var havingContentArray  = [];
+
+  setPrimitivePhraseSet(primitivePhraseSetArray, unitArray);
+console.log(primitivePhraseSetArray['selectContentArray']);
 
 
   //-----< discriptionXXXXXXXX >-----
@@ -165,9 +220,12 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   tmp = tmp.replace(/\r?\n/g, " ");  // Replace newlines with spaces
   tmp = tmp.replace(/\s+/g, " ");    // Replace one or more spaces by one space 
 
-  unitArray = tmp.split(/\s/g);
+  tmpArray = tmp.split(/\s/g);
 
-  return unitArray;
+  // unitArray = [];
+  Array.prototype.push.apply(unitArray, tmpArray);
+
+  return;
 }
 
 
