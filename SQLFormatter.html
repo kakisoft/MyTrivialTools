@@ -7,11 +7,11 @@
 <body>
 <h1 style="font-size: 1.5em">select文を整形したい的な何か</h1>
 <div>
-  <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
+  <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any Select Statement."></textarea>
 </div>
 
 <p>
-  <button type="button" id="format_SelectStatement">Soften SelectStatement</button>
+  <button type="button" id="format_SelectStatement">Format SelectStatement</button>
 </p>
 <p>
   <textarea id="result_syntax" style="width:60%; height:10em" ></textarea>
@@ -42,6 +42,7 @@ from
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
 where  1=1
   and  T1.COLUMN1 = 'CD'
+  param1 = 'a  b'
 group by
     T1.PROD_NO
 
@@ -100,6 +101,11 @@ function formatSelectStatement(){
 
 //-----------------------------
 //  Sqlstatoment To UnitArray
+//
+// ＜後で修正する点＞
+// スペースが全部カットされちゃうんで、
+//  param1 = 'a  b'
+// といった内容があると、ちゃんと動きません。
 //-----------------------------
 function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   var tmp;
@@ -110,7 +116,8 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   tmp = tmp.replace(/\s+/g, " ");    // Replace one or more spaces by one space 
 
   unitArray = tmp.split(/\s/g);
-
+  resultSyntaxElement.textContent = tmp
+  console.log(unitArray)
   return true;
 }
 
