@@ -119,20 +119,20 @@ a@b
 | emai | a@b  | 
 
 
-超長い INSERT文が辛過ぎたんで作った。
+超長い INSERT文が辛過ぎて作った。
 
-　    
-　    
-　    
-　    
-# DBのカラム名を入力して、PHPのプロパティを作る的な何か
-https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
 　    
 　    
 　    
 　    
 # dat.GUI を使ったカラーピッカー
 https://kakisoft.github.io/MyTrivialTools/ColorPicker.html
+　    
+　    
+　    
+　    
+# DBのカラム名を入力して、PHPのプロパティを作る的な何か
+https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
 　    
 　    
 　    
