@@ -22,8 +22,10 @@
 NEW_LINE_CHARACTER = "\n";
 RESERVED_WORD = 
 [
-  "SELECT","FROM","WHERE"
+  "SELECT","AS", "FROM", "WHERE"
 ];
+
+SELECT_PREFIX = "   ,";
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -50,6 +52,7 @@ group by
     T1.PROD_NO
 
 `
+// ※ 途中で「--」のコメントを挟む構文は未対応。
 
 document.getElementById("target_syntax").innerHTML = forDev1;
 
@@ -61,28 +64,34 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 
 //------------------------------
-//      Set ResultChunkSet
+//      
 //
 // 予約語は大文字化されている前提で動いてます。
+//
+// ＜後で修正する点＞
+// SELECT col1, (SELECT id FROM XXX)
+// といったケースは未対応です。
+// 副問い合わせは未対応です。
 //------------------------------
 function formatSelectContent(selectContentArray, unitArray){
-  
-  // if (unitArray.indexOf("select") >= 0){
-  // if (unitArray.indexOf("select") >= 0){
-  // if (unitArray.search("select") >= 0){
-  // // 存在する
-  //   resultSyntaxElement.textContent = "OK"
-  // }else{
-  //   resultSyntaxElement.textContent = "NG"
+  var selectPosition = unitArray.indexOf("SELECT");
+  var fromPosition   = unitArray.indexOf("FROM");
 
-  // }
+  var tmpArray = unitArray.slice(selectPosition + 1, fromPosition);
+
+console.log(tmpArray);
+
+// , は削除。
+// ・・・ではなく、(,)を削除
+// ・・・でもなく、() 内は、ひとつの塊として扱う。
+// AS句 
 
 
   return true;
 }
 
 
-// SELECT col1, (SELECT id FROM XXX)
+
 
 
 // resultSyntaxElement.textContent = tmp
@@ -148,9 +157,8 @@ function formatSelectStatement(){
 // といった内容があると、意図通りに動きません。
 //------------------------------
 function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
-  var tmp;
 
-  tmp = targetSyntaxContent.trim();
+  var tmp = targetSyntaxContent.trim();
   tmp = tmp.replace(/\t/g, " ");     // Replace tabs with spaces
   tmp = tmp.replace(/\r?\n/g, " ");  // Replace newlines with spaces
   tmp = tmp.replace(/\s+/g, " ");    // Replace one or more spaces by one space 
@@ -159,29 +167,6 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
 
   return unitArray;
 }
-
-// //------------------------------
-// //  Capitalize Reserved Words
-// //------------------------------
-// function capitalizeReservedWords(unitArray, RESERVED_WORD){
-//   var tmpArray = [];
-
-//   unitArray.forEach((el)=>{
-//     upperEl = el.toUpperCase();
-
-//     if(RESERVED_WORD.indexOf(upperEl) >= 0){
-//       tmpArray.push(upperEl);
-//     }else{
-//       tmpArray.push(el);
-//     }
-
-
-//   });
-
-//   unitArray = tmpArray;
-
-//   return unitArray;
-// }
 
 
 //------------------------------
