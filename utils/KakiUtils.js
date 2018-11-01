@@ -84,3 +84,22 @@ function capitalizeReservedWords(unitArray, RESERVED_WORD){
 
   return;
 }
+
+
+//===================================
+//    Get Bundled TwoPairArray
+//===================================
+function getBundledTwoPairArray(unitArray, pairList){
+  var retArray = [];
+
+  for(var i=0; i < unitArray.length; i++){
+    if(i + 1 <= unitArray.length && unitArray[i + 1] == pairList[1]){
+      retArray.push(unitArray[i] + " " + unitArray[i+1]); 
+      i++;
+    }else{
+      retArray.push(unitArray[i]);
+    }
+  }
+
+  return retArray;
+}

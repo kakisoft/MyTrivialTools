@@ -20,7 +20,12 @@
 <script>
 
 NEW_LINE_CHARACTER = "\n";
-RESERVED_WORD = 
+DIFINED_PHRASE_LIST = ["SELECT","FROM","WHERE","ORDER BY","GROUP BY","HAVING"];
+DIFINED_SUB_PHRASE_LIST = [
+  "AS", "LEFT", "RIGHT", "JOIN", "ORTER", "INNER", "ON", "AND",
+  "SUM", "MAX"
+];
+RESERVED_WORD_LIST = 
 [
   "SELECT","AS", "FROM", "LEFT", "RIGHT", "JOIN", "ORTER", "INNER", "ON", 
   "WHERE", "AND", "GROUP", "ORDER", "BY",
@@ -53,7 +58,8 @@ where  1=1
   and  T1.COLUMN1 = 'CD'
 group by
     T1.PROD_NO
-
+Order   by
+T1.PROD_NO
 `
 // ※ 途中で「--」のコメントを挟む構文は未対応。
 
@@ -138,16 +144,6 @@ function getPrimitiveSelectPhrase(unitArray){
 
 
 
-//------------------------------
-//      
-//------------------------------
-function bundleMultiConfigurationPhrase(unitArray){
-  // ["GROUP","BY"] => ["GROUP BY"]
-  // ["ORDER","BY"] => ["ORDER BY"]
-
-
-  return true;
-}
 
 
 //======================================
@@ -160,7 +156,6 @@ function formatSelectStatement(){
   resultSyntaxElement.textContent = ""
 
 
-
   //-----< Sqlstatoment To UnitArray >-----
   var unitArray = [];
   var resultSyntaxContentArray = [];
@@ -168,12 +163,12 @@ function formatSelectStatement(){
 
 
   //-----< Capitalize Reserved Words >-----
-  capitalizeReservedWords(unitArray, RESERVED_WORD);
+  capitalizeReservedWords(unitArray, RESERVED_WORD_LIST);
 
 
-
-//bundleMultiConfigurationPhrase(unitArray);
-
+  //-----< Bundle MultiConfigurationPhrase >-----
+  bundleMultiConfigurationPhrase(unitArray);
+console.log(unitArray)
 
   //-----< discriptionXXXXXXXX >-----
   var primitivePhraseSetArray = [];
@@ -219,7 +214,7 @@ function formatSelectStatement(){
 //=======================================================================================================
 //=======================================================================================================
 
-//------------------------------
+//------------------------------------
 // Sqlstatoment To UnitArray
 //
 // Split into syntax units
@@ -228,7 +223,7 @@ function formatSelectStatement(){
 // スペースを全部カットする処理を入れているので、
 //  param1 = 'a   b'
 // といった内容があると、意図通りに動きません。
-//------------------------------
+//------------------------------------
 function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
 
   var tmp = targetSyntaxContent.trim();
@@ -244,18 +239,35 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   return;
 }
 
+//------------------------------------
+//  Bundle MultiConfigurationPhrase
+//------------------------------------
+function bundleMultiConfigurationPhrase(unitArray){
+  var pair1 = ["GROUP","BY"]  // => Change to ["GROUP BY"]
+  var pair2 = ["ORDER","BY"]  // => Change to ["ORDER BY"]
 
-//------------------------------
-//      Set ResultChunkSet
-//------------------------------
+  var tmpArray = unitArray;
+  tmpArray = getBundledTwoPairArray(tmpArray, pair1);
+  tmpArray = getBundledTwoPairArray(tmpArray, pair2);
+
+  unitArray.length = 0;
+  Array.prototype.push.apply(unitArray, tmpArray);
+
+  return true;
+}
+
+
+//------------------------------------
+//         Set ResultChunkSet
+//------------------------------------
 function setResultChunkSet(resultChunkSet, targetSyntaxContent){
 
   return true;
 }
 
-//------------------------------
-//     Set Result Contents
-//------------------------------
+//------------------------------------
+//          Set Result Contents
+//------------------------------------
 function setResultContents(resultContentArray, resultChunkSet){
 
 
