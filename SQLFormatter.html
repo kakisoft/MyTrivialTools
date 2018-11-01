@@ -136,7 +136,19 @@ function getPrimitiveSelectPhrase(unitArray){
   return resultArray;
 }
 
- 
+
+
+//------------------------------
+//      
+//------------------------------
+function bundleMultiConfigurationPhrase(unitArray){
+  // ["GROUP","BY"] => ["GROUP BY"]
+  // ["ORDER","BY"] => ["ORDER BY"]
+
+
+  return true;
+}
+
 
 //======================================
 //      Format SelectStatement
@@ -160,6 +172,7 @@ function formatSelectStatement(){
 
 
 
+//bundleMultiConfigurationPhrase(unitArray);
 
 
   //-----< discriptionXXXXXXXX >-----
