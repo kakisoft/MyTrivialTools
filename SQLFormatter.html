@@ -128,16 +128,12 @@ function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
 function getPrimitiveSelectPhrase(unitArray){
   var resultArray = []
 
-  // console.log(unitArray)
-  var selectPosition = unitArray.indexOf("SELECT");
-  var fromPosition   = unitArray.indexOf("FROM");
-// console.log(selectPosition)
-  var tmpArray = unitArray.slice(selectPosition +1, fromPosition);
+  // resultArray = getTargetWordRange(unitArray, "SELECT", "FROM");
 
-// console.log(tmpArray);
+// var a1 = ["FROM","WHERE","GROUP BY","SELECT","ORDER BY"]
 
-
-  resultArray = [1,2,3,4,5]
+  resultArray = getTargetWordRange(unitArray, "SELECT", DIFINED_PHRASE_LIST);
+console.log(resultArray)
 
   return resultArray;
 }

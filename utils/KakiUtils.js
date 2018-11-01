@@ -103,3 +103,39 @@ function getBundledTwoPairArray(unitArray, pairList){
 
   return retArray;
 }
+
+
+//===================================
+//    
+//===================================
+function getTargetWordRange(unitArray, startWord, endWord){
+  var slicedArray = [];
+  var startPosition = unitArray.indexOf(startWord);
+  var endPosition = unitArray.length;
+
+  var endWordObject = Object.prototype.toString.call(endWord).slice(8, -1);
+  if(endWordObject == "String"){
+    endPosition = unitArray.indexOf(endWord);
+
+  }else if(endWordObject == "Array"){
+    endWord = endWord.filter((el)=> el !== startWord);
+    endWord.forEach((el)=>{
+      var dp = unitArray.indexOf(el);
+      if(dp < endPosition && dp > -1){
+        endPosition = dp;
+      }
+    });
+
+  }else{
+    return slicedArray;
+  }
+
+  if(startPosition <= -1 || startPosition >= endPosition){
+    return slicedArray;
+  }
+
+  slicedArray = unitArray.slice(startPosition +1, endPosition);
+
+  
+  return slicedArray;
+}
