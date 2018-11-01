@@ -64,7 +64,9 @@ INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (1,"kaki",12,"
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (2,"soft",34,"b@cbom","架空");
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",69,"y@xcom","税金対策");
 ```
-テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるようにしといたせい。
+テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるようにしといたせい。  
+　    
+テーブル名とカラム名に、文字列「%s」を含んだ内容を是が非でも使いたい~~奇特な~~方は、ご使用をお控えください。
 
 　    
 　    
