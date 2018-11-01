@@ -122,13 +122,13 @@ function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
 function getPrimitiveSelectPhrase(unitArray){
   var resultArray = []
 
-  console.log(unitArray)
+  // console.log(unitArray)
   var selectPosition = unitArray.indexOf("SELECT");
   var fromPosition   = unitArray.indexOf("FROM");
-console.log(selectPosition)
+// console.log(selectPosition)
   var tmpArray = unitArray.slice(selectPosition +1, fromPosition);
 
-console.log(tmpArray);
+// console.log(tmpArray);
 
 
   resultArray = [1,2,3,4,5]
@@ -157,7 +157,10 @@ function formatSelectStatement(){
 
   //-----< Capitalize Reserved Words >-----
   capitalizeReservedWords(unitArray, RESERVED_WORD);
-console.log(unitArray)
+
+
+
+
 
   //-----< discriptionXXXXXXXX >-----
   var primitivePhraseSetArray = [];
@@ -176,7 +179,7 @@ console.log(unitArray)
 // var havingContentArray  = [];
 
   setPrimitivePhraseSet(primitivePhraseSetArray, unitArray);
-console.log(primitivePhraseSetArray['selectContentArray']);
+// console.log(primitivePhraseSetArray['selectContentArray']);
 
 
   //-----< discriptionXXXXXXXX >-----
@@ -222,7 +225,7 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
 
   tmpArray = tmp.split(/\s/g);
 
-  // unitArray = [];
+  unitArray.length = 0;
   Array.prototype.push.apply(unitArray, tmpArray);
 
   return;

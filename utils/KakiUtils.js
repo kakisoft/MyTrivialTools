@@ -67,8 +67,9 @@ function getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent=[]){
 //===================================  
 function capitalizeReservedWords(unitArray, RESERVED_WORD){
   var tmpArray = [];
+  var tmpUnitArray = unitArray;
 
-  unitArray.forEach((el)=>{
+  tmpUnitArray.forEach((el)=>{
     upperEl = el.toUpperCase();
 
     if(RESERVED_WORD.indexOf(upperEl) >= 0){
@@ -78,7 +79,7 @@ function capitalizeReservedWords(unitArray, RESERVED_WORD){
     }
   });
 
-  unitArray = [];
+  unitArray.length = 0;
   Array.prototype.push.apply(unitArray, tmpArray);
 
   return;
