@@ -100,7 +100,7 @@ function createInsertStatement(){
 
   //-----< Set Column Content >-----
   var columnParam = { numberOfColumn: 0 , columnContent: "" };
-  SetColumnParam(columnParam, targetSyntaxContentArray, controlparam, splitChar);
+  setColumnParam(columnParam, targetSyntaxContentArray, controlparam, splitChar);
 
 
   //-----< Check Error >-----
@@ -190,7 +190,7 @@ function setSpecialControlColumnNumbers(specialControlColumnNumbersArray
 //-------------------------------------
 //         Set Column Content
 //-------------------------------------
-function SetColumnParam(columnParam
+function setColumnParam(columnParam
                       , targetSyntaxContentArray
                       , controlparam
                       , splitChar){
