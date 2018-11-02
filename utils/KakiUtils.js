@@ -114,10 +114,12 @@ function getTargetWordRange(unitArray, startWord, endWord){
   var endPosition = unitArray.length;
 
   var endWordObject = Object.prototype.toString.call(endWord).slice(8, -1);
+console.log(endWordObject)
   if(endWordObject == "String"){
     endPosition = unitArray.indexOf(endWord);
 
   }else if(endWordObject == "Array"){
+    console.log(endWordObject)
     endWord = endWord.filter((el)=> el !== startWord);
     endWord.forEach((el)=>{
       var dp = unitArray.indexOf(el);
@@ -125,6 +127,7 @@ function getTargetWordRange(unitArray, startWord, endWord){
         endPosition = dp;
       }
     });
+    console.log(endPosition)
 
   }else{
     return slicedArray;

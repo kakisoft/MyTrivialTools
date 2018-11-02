@@ -20,7 +20,7 @@
 <script>
 
 NEW_LINE_CHARACTER = "\n";
-DIFINED_PHRASE_LIST = ["SELECT","FROM","WHERE","ORDER BY","GROUP BY","HAVING"];
+DIFINED_PHRASE_LIST = ["SELECT","FROM","WHERE","ORDER BY","GROUP BY","HAVING","LIMIT"];
 DIFINED_SUB_PHRASE_LIST = [
   "AS", "LEFT", "RIGHT", "JOIN", "ORTER", "INNER", "ON", "AND",
   "SUM", "MAX"
@@ -117,29 +117,81 @@ function formatSelectContent(selectContentArray, unitArray){
 //------------------------------
 //      
 //------------------------------
-function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
+// function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
 
-  // primitivePhraseSetArray['selectContentArray'] = [1,2,3]
-  primitivePhraseSetArray['selectContentArray'] = getPrimitiveSelectPhrase(unitArray);
+//   // primitivePhraseSetArray['selectContentArray'] = [1,2,3]
+//   primitivePhraseSetArray['selectContentArray'] = getPrimitiveSelectPhrase(unitArray);
+
+//   // return true;
+// }
+
+// function getPrimitiveSelectPhrase(unitArray){
+//   var resultArray = []
+
+//   // resultArray = getTargetWordRange(unitArray, "SELECT", "FROM");
+
+// // var a1 = ["FROM","WHERE","GROUP BY","SELECT","ORDER BY"]
+
+//   resultArray = getTargetWordRange(unitArray, "SELECT", DIFINED_PHRASE_LIST);
+// console.log(resultArray)
+
+//   return resultArray;
+// }
+
+
+
+  // phraseContentSetArray['selectContentArray']  = [];
+  // phraseContentSetArray['fromContentArray']    = [];
+  // phraseContentSetArray['whereContentArray']   = [];
+  // phraseContentSetArray['groupByContentArray'] = [];
+  // phraseContentSetArray['orderByContentArray'] = [];
+  // phraseContentSetArray['havingContentArray']  = [];
+
+//------------------------------------
+//  
+//------------------------------------
+function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
+
+  var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
+
+
+  phraseContentSetArray['selectContentArray'] = getSelectPhraseContent(unitArray, remainingDifinedPhraseList);
+  phraseContentSetArray['fromContentArray']   = getFromPhraseContent(unitArray, remainingDifinedPhraseList);
 
   // return true;
 }
 
-function getPrimitiveSelectPhrase(unitArray){
-  var resultArray = []
 
-  // resultArray = getTargetWordRange(unitArray, "SELECT", "FROM");
+//------------------------------------
+//  
+//------------------------------------
+function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "SELECT");
+  remainingDifinedPhraseList.length = 0;
+  remainingDifinedPhraseList = tmpList;
 
-// var a1 = ["FROM","WHERE","GROUP BY","SELECT","ORDER BY"]
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
 
-  resultArray = getTargetWordRange(unitArray, "SELECT", DIFINED_PHRASE_LIST);
 console.log(resultArray)
 
   return resultArray;
 }
 
+//------------------------------------
+//  
+//------------------------------------
+function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "FROM");
+  remainingDifinedPhraseList.length = 0;
+  remainingDifinedPhraseList = tmpList;
 
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
+console.log(resultArray)
 
+  return resultArray;
+}
 
 
 //======================================
@@ -167,13 +219,13 @@ function formatSelectStatement(){
 console.log(unitArray)
 
   //-----< discriptionXXXXXXXX >-----
-  var primitivePhraseSetArray = [];
-  primitivePhraseSetArray['selectContentArray']  = [];
-  primitivePhraseSetArray['fromContentArray']    = [];
-  primitivePhraseSetArray['whereContentArray']   = [];
-  primitivePhraseSetArray['groupByContentArray'] = [];
-  primitivePhraseSetArray['orderByContentArray'] = [];
-  primitivePhraseSetArray['havingContentArray']  = [];
+  // var primitivePhraseSetArray = [];
+  // primitivePhraseSetArray['selectContentArray']  = [];
+  // primitivePhraseSetArray['fromContentArray']    = [];
+  // primitivePhraseSetArray['whereContentArray']   = [];
+  // primitivePhraseSetArray['groupByContentArray'] = [];
+  // primitivePhraseSetArray['orderByContentArray'] = [];
+  // primitivePhraseSetArray['havingContentArray']  = [];
 
 // var selectContentArray  = [];
 // var fromContentArray    = [];
@@ -182,7 +234,16 @@ console.log(unitArray)
 // var orderByContentArray = [];
 // var havingContentArray  = [];
 
-  setPrimitivePhraseSet(primitivePhraseSetArray, unitArray);
+  var phraseContentSetArray = [];
+  phraseContentSetArray['selectContentArray']  = [];
+  phraseContentSetArray['fromContentArray']    = [];
+  phraseContentSetArray['whereContentArray']   = [];
+  phraseContentSetArray['groupByContentArray'] = [];
+  phraseContentSetArray['orderByContentArray'] = [];
+  phraseContentSetArray['havingContentArray']  = [];
+
+  // setPrimitivePhraseSet(primitivePhraseSetArray, unitArray);
+  setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST);
 // console.log(primitivePhraseSetArray['selectContentArray']);
 
 
@@ -273,6 +334,24 @@ function setResultContents(resultContentArray, resultChunkSet){
 
 //=======================================================================================================
 //=======================================================================================================
+// 入力された全てのElementを文字列のデータにシリアライズする。
+// http://semooh.jp/jquery/api/ajax/serialize/+/
+
+// function showValues() {
+//       var str = $("form").serialize();
+//       $("#results").text(str);
+//     }
+
+//     $(":checkbox, :radio").click(showValues);
+//     $("select").change(showValues);
+//     showValues();
+
+
+// ⇒
+// single=Single&multiple=Multiple&multiple=Multiple3&check=check2&radio=radio1
+
+// var formParams = $('#enqueteid').serialize();
+
 
 </script>
 <script src="./utils/KakiUtils.js"></script>
