@@ -141,3 +141,53 @@ function getTargetWordRange(unitArray, startWord, endWord){
 
   return slicedArray;
 }
+
+
+//===================================
+//  Get RemovedAfterTarget LineUnit
+//    『「--」 以降の文字を削除』みたいなファンクション。
+//===================================
+function getRemovedAfterTargetLineUnit(targetContent, targetChar){
+  var targetContentArray =  targetContent.split(/\r?\n/g);
+  var resultArray = []
+  
+  targetContentArray.forEach((el)=>{
+    var detectedPosition = el.indexOf(targetChar);
+    if(detectedPosition > -1){
+      resultArray.push(el.slice(0 , detectedPosition));
+    }else{
+      resultArray.push(el);
+    }
+  });
+
+  var resultContent = resultArray.join(NEW_LINE_CHARACTER);
+
+  return resultContent;
+}
+
+
+//===================================
+//  Get RemovedSurroundBySpecifiedCharacters  
+//    『「/*  */」で囲まれた内容を削除』みたいなファンクション。
+//===================================
+function getRemovedSurroundBySpecifiedCharacters(targetContent, startChar, endChar){
+  var resultContent = targetContent;
+  // var ditectPosition = el.indexOf(startChar);
+  var detectedStartPosition;
+  var detectedEndPosition;
+
+  while (true) {
+    var detectedStartPosition = resultContent.indexOf(startChar);
+    var detectedEndPosition   = resultContent.indexOf(endChar);
+    if(detectedStartPosition <= -1 || detectedEndPosition <= -1 || detectedStartPosition > detectedEndPosition){
+      break;
+    }
+
+    firstPart  = resultContent.slice(0,detectedStartPosition);
+    latterPart = resultContent.slice(detectedEndPosition + endChar.length);
+    resultContent = firstPart + latterPart;
+  }
+
+  return resultContent;
+}
+
