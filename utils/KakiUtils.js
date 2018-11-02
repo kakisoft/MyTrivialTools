@@ -138,6 +138,6 @@ function getTargetWordRange(unitArray, startWord, endWord){
 
   slicedArray = unitArray.slice(startPosition +1, endPosition);
 
-  
+
   return slicedArray;
 }

@@ -148,132 +148,54 @@ function formatSelectContent(selectContentArray, unitArray){
   // phraseContentSetArray['havingContentArray']  = [];
   // phraseContentSetArray['limitContentArray']   = [];
 
+
+
 //------------------------------------
 //  
 //------------------------------------
-function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
+function getCommentPartRemovedContent(targetSyntaxContent){
+  var resultContent = targetSyntaxContent;
 
-  var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
-  phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
-  phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
-  phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
-  phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
-  phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
-  phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
-  phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+  //-----< Remove [--] Type Comment >-----
+  if(resultContent.indexOf("--") > -1){
+    // var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
+  }
 
-  // return true;
+  //-----< Remove [/**/] Type Comment >-----
+
+  return resultContent;
 }
 
 
 //------------------------------------
 //  
 //------------------------------------
-function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "SELECT");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+function getCommentPartRemovedContent(targetSyntaxContent, targetChar){
+  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+  var resultArray = []
 
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
+  targetSyntaxContentArray.forEach((el)=>{
+    var ditectPosition = el.indexOf(targetChar);
+    if(ditectPosition > -1){
+      resultArray.push(el.slice(0 , ditectPosition));
+    }else{
+      resultArray.push(el);
+    }
 
+    // upperEl = el.toUpperCase();
 
-  return resultArray;
+    // if(RESERVED_WORD.indexOf(upperEl) >= 0){
+    //   tmpArray.push(upperEl);
+    // }else{
+    //   tmpArray.push(el);
+    // }
+  });
+
+  var resultContent = resultArray.join(NEW_LINE_CHARACTER);
+
+  return resultContent;
 }
-
-//------------------------------------
-//  
-//------------------------------------
-function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "FROM");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
-//------------------------------------
-//  
-//------------------------------------
-function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "WHERE");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
-//------------------------------------
-//  
-//------------------------------------
-function getGroupByPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "GROUP BY");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
-//------------------------------------
-//  
-//------------------------------------
-function getOrderByPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "ORDER BY");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "ORDER BY", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
-
-//------------------------------------
-//  
-//------------------------------------
-function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "HAVING");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
-
-//------------------------------------
-//  
-//------------------------------------
-function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "LIMIT");
-  remainingDifinedPhraseList.length = 0;
-  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
-
-  var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "LIMIT", remainingDifinedPhraseList);
-
-
-  return resultArray;
-}
-
 
 
 
@@ -286,6 +208,8 @@ function formatSelectStatement(){
 
   resultSyntaxElement.textContent = ""
 
+  //-----< Get CommentPartRemovedContent >-----
+  targetSyntaxContent = getCommentPartRemovedContent(targetSyntaxContent);
 
   //-----< Sqlstatoment To UnitArray >-----
   var unitArray = [];
@@ -332,8 +256,8 @@ console.log(unitArray)
 
 
   //-----< discriptionXXXXXXXX >-----
-  var selectContentArray = [];
-  formatSelectContent(selectContentArray, unitArray);
+  // var selectContentArray = [];
+  // formatSelectContent(selectContentArray, unitArray);
 
 
 
@@ -342,10 +266,11 @@ console.log(unitArray)
 
 
 
+  //-----< Set Result Contents >-----
+  var resultContentArray = [];
+  setResultContents(resultContentArray, phraseContentSetArray);
 
 
-  // //-----< Set Result Contents >-----
-  // setResultContents(resultContentArray, resultChunkSet);
 
   //-----< Output Result >-----
   // resultSyntaxElement.textContent = resultContent;
@@ -397,20 +322,150 @@ function bundleMultiConfigurationPhrase(unitArray){
   return true;
 }
 
-
+//=======================================================
 //------------------------------------
-//         Set ResultChunkSet
+//  
 //------------------------------------
-function setResultChunkSet(resultChunkSet, targetSyntaxContent){
+function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
 
-  return true;
+var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
+phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
+phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
+phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
+phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
+phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
+phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+
+
+// return true;
 }
+
+
+//---------------------
+//  
+//---------------------
+function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "SELECT");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+//---------------------
+//  
+//---------------------
+function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "FROM");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+//---------------------
+//  
+//---------------------
+function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "WHERE");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+//---------------------
+//  
+//---------------------
+function getGroupByPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "GROUP BY");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+//---------------------
+//  
+//---------------------
+function getOrderByPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "ORDER BY");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "ORDER BY", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+
+//---------------------
+//  
+//---------------------
+function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "HAVING");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+
+
+//---------------------
+//  
+//---------------------
+function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "LIMIT");
+  remainingDifinedPhraseList.length = 0;
+  Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
+
+  var resultArray = unitArray;
+  resultArray = getTargetWordRange(resultArray, "LIMIT", remainingDifinedPhraseList);
+
+
+  return resultArray;
+}
+//=======================================================
 
 //------------------------------------
 //          Set Result Contents
 //------------------------------------
-function setResultContents(resultContentArray, resultChunkSet){
+function setResultContents(resultContentArray, phraseContentSetArray){
+  // phraseContentSetArray['selectContentArray']  = [];
+  // phraseContentSetArray['fromContentArray']    = [];
+  // phraseContentSetArray['whereContentArray']   = [];
+  // phraseContentSetArray['groupByContentArray'] = [];
+  // phraseContentSetArray['orderByContentArray'] = [];
+  // phraseContentSetArray['havingContentArray']  = [];
+  // phraseContentSetArray['limitContentArray']   = [];
+  var a1 = phraseContentSetArray['selectContentArray'];
 
+  if(a1.length <= 0){
+
+  }
 
   return;
 }
