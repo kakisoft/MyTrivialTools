@@ -28,6 +28,7 @@
 </div>
 
 
+<script src="./utils/KakiStdUtil.js"></script>
 <script>
 
 NEW_LINE_CHARACTER = "\n";
@@ -100,8 +101,8 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   CHUNK_START_CHAR = "(";
   CHUNK_END_CHAR   = ")";
 
-  var chunkStartPositionArray = getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
-  var chunkEndPositionArray   = getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
+  var chunkStartPositionArray = KakiStdUtil.getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
+  var chunkEndPositionArray   = KakiStdUtil.getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
 
   if( !(chunkStartPositionArray.length == 2 && chunkEndPositionArray.length == 2) ){
       return false;
@@ -152,15 +153,15 @@ function setResult2(resultSyntaxContent, resultChunkSet){
 
   var result = "";
   for(var i=0; i < resultChunkSet[0].length; i++){
-    var el1 = surroundHTMLTag(resultChunkSet[0][i].trim(), "td");
-    var el2 = surroundHTMLTag(resultChunkSet[1][i].trim(), "td");
-    var el3 = surroundHTMLTag(el1 + el2, "tr");
+    var el1 = KakiStdUtil.surroundHTMLTag(resultChunkSet[0][i].trim(), "td");
+    var el2 = KakiStdUtil.surroundHTMLTag(resultChunkSet[1][i].trim(), "td");
+    var el3 = KakiStdUtil.surroundHTMLTag(el1 + el2, "tr");
 
     result += el3;
   }
 
-  result = surroundHTMLTag(result, "tbody");
-  result = surroundHTMLTag(result, "table");
+  result = KakiStdUtil.surroundHTMLTag(result, "tbody");
+  result = KakiStdUtil.surroundHTMLTag(result, "table");
   resultSyntaxContent[1] = result;
 
   return;
@@ -170,6 +171,5 @@ function setResult2(resultSyntaxContent, resultChunkSet){
 //=======================================================================================================
 
 </script>
-<script src="./utils/KakiUtils.js"></script>
 </body>
 </html>

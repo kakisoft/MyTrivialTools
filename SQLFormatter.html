@@ -17,6 +17,7 @@
   <textarea id="result_syntax" style="width:60%; height:10em" ></textarea>
 </p>
 
+<script src="./utils/KakiStdUtil.js"></script>
 <script>
 
 NEW_LINE_CHARACTER = "\n";
@@ -181,7 +182,7 @@ function formatSelectStatement(){
 
 
   //-----< Capitalize Reserved Words >-----
-  capitalizeReservedWords(unitArray, RESERVED_WORD_LIST);
+  KakiStdUtil.capitalizeReservedWords(unitArray, RESERVED_WORD_LIST);
 
 
   //-----< Bundle MultiConfigurationPhrase >-----
@@ -251,12 +252,12 @@ function getCommentPartRemovedContent(targetSyntaxContent){
 
   //-----< Remove [--] Type Comment >-----
   if(resultContent.indexOf("--") > -1){
-    resultContent = getRemovedAfterTargetLineUnit(resultContent, "--");
+    resultContent = KakiStdUtil.getRemovedAfterTargetLineUnit(resultContent, "--");
   }
 
   //-----< Remove [/**/] Type Comment >-----
   if(resultContent.indexOf("/*") > -1){
-    resultContent = getRemovedSurroundBySpecifiedCharacters(resultContent, "/*", "*/");
+    resultContent = KakiStdUtil.getRemovedSurroundBySpecifiedCharacters(resultContent, "/*", "*/");
   }
 
   return resultContent;
@@ -295,8 +296,8 @@ function bundleMultiConfigurationPhrase(unitArray){
   var pair2 = ["ORDER","BY"]  // => Change to ["ORDER BY"]
 
   var tmpArray = unitArray;
-  tmpArray = getBundledTwoPairArray(tmpArray, pair1);
-  tmpArray = getBundledTwoPairArray(tmpArray, pair2);
+  tmpArray = KakiStdUtil.getBundledTwoPairArray(tmpArray, pair1);
+  tmpArray = KakiStdUtil.getBundledTwoPairArray(tmpArray, pair2);
 
   unitArray.length = 0;
   Array.prototype.push.apply(unitArray, tmpArray);
@@ -333,7 +334,7 @@ function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -348,7 +349,7 @@ function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -363,7 +364,7 @@ function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -378,7 +379,7 @@ function getGroupByPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -393,7 +394,7 @@ function getOrderByPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "ORDER BY", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "ORDER BY", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -409,7 +410,7 @@ function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -425,7 +426,7 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  resultArray = getTargetWordRange(resultArray, "LIMIT", remainingDifinedPhraseList);
+  resultArray = KakiStdUtil.getTargetWordRange(resultArray, "LIMIT", remainingDifinedPhraseList);
 
 
   return resultArray;
@@ -475,6 +476,5 @@ function setResultContents(resultContentArray, phraseContentSetArray){
 
 
 </script>
-<script src="./utils/KakiUtils.js"></script>
 </body>
 </html>

@@ -1,7 +1,9 @@
+var KakiStdUtil = {};
+
 //===================================
 //  Get Selected Radio Button Value
 //===================================
-function getSelectedRadioButtonValue(name){
+KakiStdUtil.getSelectedRadioButtonValue = function(name){
   var radios = document.getElementsByName(name);
 
   var result;
@@ -19,7 +21,7 @@ function getSelectedRadioButtonValue(name){
 //===================================
 //          surround Text
 //===================================  
-function surroundText(value, targetChar){
+KakiStdUtil.surroundText = function(value, targetChar){
     var result;
 
     result = targetChar + value + targetChar;
@@ -29,8 +31,8 @@ function surroundText(value, targetChar){
 
 //===================================
 //        surround HTML Tag
-//===================================  
-function surroundHTMLTag(value, targetTag){
+//===================================
+KakiStdUtil.surroundHTMLTag = function(value, targetTag){
   var startTag = "<"  + targetTag + ">";
   var endTag   = "</" + targetTag + ">";
   var result;
@@ -42,8 +44,8 @@ function surroundHTMLTag(value, targetTag){
 
 //===================================
 //    Get ChunkStartPositionArray
-//===================================  
-function getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent=[]){
+//===================================
+KakiStdUtil.getChunkStartPositionArray = function(CHUNK_START_CHAR, targetSyntaxContent=[]){
     var chunkStartPositionArray = [];
 
     var searchPosition = 0;
@@ -64,8 +66,8 @@ function getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent=[]){
 
 //===================================
 //    Capitalize Reserved Words
-//===================================  
-function capitalizeReservedWords(unitArray, RESERVED_WORD){
+//===================================
+KakiStdUtil.capitalizeReservedWords = function(unitArray, RESERVED_WORD){
   var tmpArray = [];
   var tmpUnitArray = unitArray;
 
@@ -89,7 +91,7 @@ function capitalizeReservedWords(unitArray, RESERVED_WORD){
 //===================================
 //    Get Bundled TwoPairArray
 //===================================
-function getBundledTwoPairArray(unitArray, pairList){
+KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
   var retArray = [];
 
   for(var i=0; i < unitArray.length; i++){
@@ -108,7 +110,7 @@ function getBundledTwoPairArray(unitArray, pairList){
 //===================================
 //    
 //===================================
-function getTargetWordRange(unitArray, startWord, endWord){
+KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
   var slicedArray = [];
   var startPosition = unitArray.indexOf(startWord);
   var endPosition = unitArray.length;
@@ -147,7 +149,7 @@ function getTargetWordRange(unitArray, startWord, endWord){
 //  Get RemovedAfterTarget LineUnit
 //    『「--」 以降の文字を削除』みたいなファンクション。
 //===================================
-function getRemovedAfterTargetLineUnit(targetContent, targetChar){
+KakiStdUtil.getRemovedAfterTargetLineUnit = function(targetContent, targetChar){
   var targetContentArray =  targetContent.split(/\r?\n/g);
   var resultArray = []
   
@@ -170,9 +172,9 @@ function getRemovedAfterTargetLineUnit(targetContent, targetChar){
 //  Get RemovedSurroundBySpecifiedCharacters  
 //    『「/*  */」で囲まれた内容を削除』みたいなファンクション。
 //===================================
-function getRemovedSurroundBySpecifiedCharacters(targetContent, startChar, endChar){
+KakiStdUtil.getRemovedSurroundBySpecifiedCharacters = function(targetContent, startChar, endChar){
   var resultContent = targetContent;
-  // var ditectPosition = el.indexOf(startChar);
+
   var detectedStartPosition;
   var detectedEndPosition;
 

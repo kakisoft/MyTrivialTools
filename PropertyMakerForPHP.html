@@ -52,6 +52,9 @@
    <textarea id="result-syntax-07" cols="150" rows="10"></textarea>
 </p>
  
+
+<script src="./utils/KakiStdUtil.js"></script>
+<script src="./utils/ShapingVerticalPosition.js"></script>
 <script>
 
 var FUNCTION_KEY = {
@@ -293,7 +296,7 @@ function MakeConvertToUserSelectedType(targetSyntaxContentArray, resultSyntaxCon
 //======================================
 function ConvertVariableNameStyleFactory (value){
   var editedValue = value
-  var SWITCH_KEY = getSelectedRadioButtonValue("functionKey")
+  var SWITCH_KEY = KakiStdUtil.getSelectedRadioButtonValue("functionKey")
 
   switch (parseInt(SWITCH_KEY)){
     case FUNCTION_KEY.SNAKE_TO_PASCAL:
@@ -390,7 +393,5 @@ function outputResult(resultSyntaxContentArray, elementId){
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
 </script>
-<script src="./utils/ShapingVerticalPosition.js"></script>
-<script src="./utils/KakiUtils.js"></script>
 </body>
 </html>
