@@ -56,9 +56,11 @@ T1.PROD_NAME
 col1, col2
     col3
 */
---sum(decode(T2.CATEGORY,'1',T1.SALES                 ,0              ))  as  SALES,
+ ,sum(decode(T2.CATEGORY,'1',T1.SALES                 ,0              ))  as  SALES,
+ max( T2.PARAM1 ) as PMX
+--  sum(decode(T2.CATEGORY,'2' , T1.SALES                , v0              ))  as  DET,
 --	sum(decode(T2.CATEGORY,'2',round(T1.PAYMENT / 1.08 ), T1.PAYMENT))  as  PAYMENT,
-		sum(t1.nm1)
+		--    sum(t1.nm1)
 ,max(t2.mm1)
 from              
     TABLE1  AS T1           
@@ -70,84 +72,11 @@ group by
 Order   by
 T1.PROD_NO
 `
-// ※ 途中で「--」のコメントを挟む構文は未対応。
+
 
 document.getElementById("target_syntax").innerHTML = forDev1;
 
 //=================================================================
-
-// var selectContentArray  = [];
-// var fromContentArray    = [];
-// var whereContentArray   = [];
-// var groupByContentArray = [];
-// var orderByContentArray = [];
-// var havingContentArray  = [];
-
-
-
-
-//------------------------------
-//      
-//
-// 予約語は大文字化されている前提で動いてます。
-//
-// ＜後で修正する点＞
-// SELECT col1, (SELECT id FROM XXX)
-// といったケースは未対応です。
-// 副問い合わせは未対応です。
-//------------------------------
-function formatSelectContent(selectContentArray, unitArray){
-  // var selectPosition = unitArray.indexOf("SELECT");
-  // var fromPosition   = unitArray.indexOf("FROM");
-
-  // var tmpArray = unitArray.slice(selectPosition + 1, fromPosition);
-
-// console.log(tmpArray);
-
-// , は削除。
-// ・・・ではなく、(,)を削除
-// ・・・でもなく、() 内は、ひとつの塊として扱う。
-// AS句 
-
-
-  return true;
-}
-
-
-
-
-
-// resultSyntaxElement.textContent = tmp
-// console.log(unitArray)
-
-
-
-
-//------------------------------
-//      
-//------------------------------
-// function setPrimitivePhraseSet(primitivePhraseSetArray, unitArray){
-
-//   // primitivePhraseSetArray['selectContentArray'] = [1,2,3]
-//   primitivePhraseSetArray['selectContentArray'] = getPrimitiveSelectPhrase(unitArray);
-
-//   // return true;
-// }
-
-// function getPrimitiveSelectPhrase(unitArray){
-//   var resultArray = []
-
-//   // resultArray = getTargetWordRange(unitArray, "SELECT", "FROM");
-
-// // var a1 = ["FROM","WHERE","GROUP BY","SELECT","ORDER BY"]
-
-//   resultArray = getTargetWordRange(unitArray, "SELECT", DIFINED_PHRASE_LIST);
-// console.log(resultArray)
-
-//   return resultArray;
-// }
-
-
 
   // phraseContentSetArray['selectContentArray']  = [];
   // phraseContentSetArray['fromContentArray']    = [];
@@ -156,11 +85,6 @@ function formatSelectContent(selectContentArray, unitArray){
   // phraseContentSetArray['orderByContentArray'] = [];
   // phraseContentSetArray['havingContentArray']  = [];
   // phraseContentSetArray['limitContentArray']   = [];
-
-
-
-
-
 
 
 //======================================
@@ -213,6 +137,17 @@ console.log(unitArray)
   phraseContentSetArray['orderByContentArray'] = [];
   phraseContentSetArray['havingContentArray']  = [];
   phraseContentSetArray['limitContentArray']   = [];
+
+
+  phraseContentSetArray['selectContent']  = [];
+  phraseContentSetArray['fromContent']    = [];
+  phraseContentSetArray['whereContent']   = [];
+  phraseContentSetArray['groupByContent'] = [];
+  phraseContentSetArray['orderByContent'] = [];
+  phraseContentSetArray['havingContent']  = [];
+  phraseContentSetArray['limitContent']   = [];
+
+
 
   // setPrimitivePhraseSet(primitivePhraseSetArray, unitArray);
   setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST);
@@ -312,18 +247,40 @@ function bundleMultiConfigurationPhrase(unitArray){
 function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
 
 var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
-phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
-phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
-phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
-phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
-phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
-phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
-phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+// phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+// phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
+// phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
+// phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
+// phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
+// phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
+// phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+
+
+phraseContentSetArray['selectContent']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
 
 
 // return true;
 }
 
+
+
+
+//------------------------------
+//      
+//
+// 予約語は大文字化されている前提で動いてます。
+//
+// ＜後で修正する点＞
+// SELECT col1, (SELECT id FROM XXX)
+// といったケースは未対応です。
+// 副問い合わせは未対応です。
+//------------------------------
+
+
+
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
 
 //---------------------
 //  
@@ -336,9 +293,86 @@ function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
 
+  resultArray = getPhraseSetArray(resultArray, "(", ")");
+  console.log(resultArray)
+
+
+  // resultArray = getPhraseSetArray(resultArray, "(", ")");
+  resultContent = getOutputSelectPhraseContent(resultArray, ",");
+console.log(resultContent)
+
+  return resultContent;
+}
+
+//---------------------
+//  
+//---------------------
+function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
+  var StringifiedContent = "";
+
+  var targetObjectName = KakiStdUtil.getObjectName(targetContent);
+  if(targetObjectName == "String"){
+    StringifiedContent = targetContent;
+  }else if(targetObjectName == "Array"){
+    var tmpString = KakiStdUtil.getAppendCharToSpecifiedContent(targetContent, "AS", "  ", "  ");
+    StringifiedContent = tmpString.join("");
+  }else{
+    return "";
+  }
+
+  var resultArray = [];
+  var ignoreStackCount = 0;
+  var cutStartPosition = 0;
+  // var isIncludedIgnoreChar = false;
+  for(var i=0; i<StringifiedContent.length-1; i++){
+    c = StringifiedContent.substring(i, i+1);
+    //-----( ignore if [,] included [()] )-----
+    if(c == ignoreStartChar){
+      ignoreStackCount++;
+    }
+    if(c == ignoreEndChar){
+      ignoreStackCount--;
+      if(ignoreStackCount < 0){
+        ignoreStackCount = 0;
+        i = StringifiedContent.length-1;
+      }
+    }
+
+    //-----( set content )-----
+    if(c == "," && ignoreStackCount == 0){
+      content = StringifiedContent.substring(cutStartPosition, i);
+      resultArray.push(content)
+      i++;
+      cutStartPosition = i;
+    }
+  }
 
   return resultArray;
 }
+
+//---------------------
+//  
+//---------------------
+function getOutputSelectPhraseContent(targetContentArray, prefixChar=","){
+  prefixChar      = prefixChar.padStart(PREFIX_SPACE_COUNT, " ");
+  firstPrefixChar = "".padStart(PREFIX_SPACE_COUNT, " ");
+
+  var resultArray = [];
+  resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
+  
+  var resultContent = "";
+  resultContent = resultArray.join(prefixChar);
+  if(resultContent.length > 0){
+    resultContent = firstPrefixChar + resultContent
+  }
+
+
+  return resultContent;
+}
+
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
 
 //---------------------
 //  
@@ -433,6 +467,11 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
 }
 //=======================================================
 
+
+
+
+//=======================================================
+
 //------------------------------------
 //          Set Result Contents
 //------------------------------------
@@ -446,9 +485,9 @@ function setResultContents(resultContentArray, phraseContentSetArray){
   // phraseContentSetArray['limitContentArray']   = [];
   var a1 = phraseContentSetArray['selectContentArray'];
 
-  if(a1.length <= 0){
+  // if(a1.length <= 0){
 
-  }
+  // }
 
   return;
 }

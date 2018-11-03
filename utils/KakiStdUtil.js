@@ -19,6 +19,16 @@ KakiStdUtil.getSelectedRadioButtonValue = function(name){
 
 
 //===================================
+//         Get ObjectName
+//===================================
+KakiStdUtil.getObjectName = function(targetObject){
+  var objectName = Object.prototype.toString.call(targetObject).slice(8, -1);
+
+  return objectName;
+}
+
+
+//===================================
 //          surround Text
 //===================================  
 KakiStdUtil.surroundText = function(value, targetChar){
@@ -42,8 +52,32 @@ KakiStdUtil.surroundHTMLTag = function(value, targetTag){
   return result;
 }
 
+
+//===================================
+//          
+//
+//  [AS] => [  AS  ]
+//===================================  
+KakiStdUtil.getAppendCharToSpecifiedContent = function(targetArray, targetChar, firstAppendContent="", lastAppendContent=""){
+  var resultArray = [];
+
+  targetArray.forEach((el)=>{
+    if(el == targetChar){
+      resultArray.push(firstAppendContent + el + lastAppendContent);
+    }else{
+      resultArray.push(el);
+    }
+  });
+
+  return resultArray;
+}
+
+
 //===================================
 //    Get ChunkStartPositionArray
+// 
+// ex. Gather "(" positions
+// ex. Gather ")" positions
 //===================================
 KakiStdUtil.getChunkStartPositionArray = function(CHUNK_START_CHAR, targetSyntaxContent=[]){
     var chunkStartPositionArray = [];
@@ -90,6 +124,9 @@ KakiStdUtil.capitalizeReservedWords = function(unitArray, RESERVED_WORD){
 
 //===================================
 //    Get Bundled TwoPairArray
+//
+// var pair1 = ["GROUP","BY"]  // => Change to ["GROUP BY"]
+// var pair2 = ["ORDER","BY"]  // => Change to ["ORDER BY"]
 //===================================
 KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
   var retArray = [];
@@ -109,13 +146,15 @@ KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
 
 //===================================
 //    
+//
+// get SelectPhrase, FromPhrase, WherePhrase...
 //===================================
 KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
   var slicedArray = [];
   var startPosition = unitArray.indexOf(startWord);
   var endPosition = unitArray.length;
 
-  var endWordObject = Object.prototype.toString.call(endWord).slice(8, -1);
+  var endWordObject = KakiStdUtil.getObjectName(endWord);
 
   if(endWordObject == "String"){
     endPosition = unitArray.indexOf(endWord);
@@ -147,6 +186,7 @@ KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
 
 //===================================
 //  Get RemovedAfterTarget LineUnit
+//
 //    『「--」 以降の文字を削除』みたいなファンクション。
 //===================================
 KakiStdUtil.getRemovedAfterTargetLineUnit = function(targetContent, targetChar){
@@ -169,7 +209,8 @@ KakiStdUtil.getRemovedAfterTargetLineUnit = function(targetContent, targetChar){
 
 
 //===================================
-//  Get RemovedSurroundBySpecifiedCharacters  
+//  Get RemovedSurroundBySpecifiedCharacters
+//
 //    『「/*  */」で囲まれた内容を削除』みたいなファンクション。
 //===================================
 KakiStdUtil.getRemovedSurroundBySpecifiedCharacters = function(targetContent, startChar, endChar){
