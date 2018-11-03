@@ -11,7 +11,12 @@
   <input type="radio" name="format_type" value="1" checked>tsv
   <input type="radio" name="format_type" value="2">csv<span style="font-size: 0.7em">　（「""」囲みのデータ形式は未対応。）</span>
 
-  <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」の場合 『"』で囲む）
+  <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」の場合 『'』or『"』で囲む）
+    <span>囲む文字</span>
+    【
+    <input type="radio" name="surround_char_type" value="1" checked>『 ' 』
+    <input type="radio" name="surround_char_type" value="2">『 " 』
+    】
 </div>
 
 <br>
@@ -33,7 +38,8 @@
 INSERT_STATEMENT_TEMPLATE = "INSERT INTO %s1 (%s2) VALUES (%s3);";
 SPECIAL_CONTROL_JUDGMENT_CHAR = "c";
 NEW_LINE_CHARACTER = "\n";
-SURROUND_CHAR = "\"";
+// SURROUND_CHAR = "\"";
+SURROUND_CHAR = "";
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -58,6 +64,12 @@ var FORMAT_TYPE = {
   CSV : 2,
 };
 
+var SURROUND_CHAR_TYPE = {
+  SINGLE_QUOTATION : 1,
+  DOUBLE_QUOTATION : 2,
+};
+
+
 function getSplitChar(){
   var switchKey = getSelectedRadioButtonValue("format_type")
 
@@ -69,13 +81,26 @@ function getSplitChar(){
   }
 }
 
+function getSurroundChar(){
+  var surroundChar = getSelectedRadioButtonValue("surround_char_type")
+
+  switch (parseInt(surroundChar)){
+    case SURROUND_CHAR_TYPE.SINGLE_QUOTATION:
+      return "'"
+    case SURROUND_CHAR_TYPE.DOUBLE_QUOTATION:
+      return "\"";
+    default:
+      return "\"";
+  }
+}
 
 //======================================
 //      Create Insert Statement
 //======================================
 function createInsertStatement(){
+  SURROUND_CHAR  = getSurroundChar();
   var tableName = document.getElementById("tablename").value;
-  var splitChar = getSplitChar();
+  var splitChar  = getSplitChar();
   var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
 
   var resultSyntaxContentArray = [];
