@@ -7,9 +7,10 @@
 <body>
 <h1 style="font-size: 1.5em">select文を整形したい的な何か</h1>
 <div>
-  <input type="radio" name="result_type" value="1" checked>予約語を大文字にする
-  <input type="radio" name="result_type" value="2">予約語を小文字にする
-
+  <div>
+    <input type="radio" name="result_type" value="1" checked>予約語を大文字にする
+    <input type="radio" name="result_type" value="2">予約語を小文字にする
+  </div>
   <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any Select Statement."></textarea>
 </div>
 
@@ -49,7 +50,7 @@ document.getElementById("format_SelectStatement").addEventListener("click", outp
 //   For Develop Code
 //----------------------
 var forDev1 = `
-select               
+SELECT               
     T1.PROD_NO,
 T1.PROD_NAME
 ,  T2.COL1   als
@@ -83,29 +84,16 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 var RESULT_TYPE = {
   TO_UPPER : 1,
-  TO_ROWER : 2,
+  TO_LOWER : 2,
 };
-
-function getResultType(){
-  var value = KakiStdUtil.getSelectedRadioButtonValue("result_type")
-
-  switch (parseInt(value)){
-    case RESULT_TYPE.TO_UPPER:
-      return "\t"
-    case RESULT_TYPE.TO_UPPER:
-      return ","
-  }
-}
 
 //=================================================================
 
 
 function outputformattedSelectStatement(){
-  var splitChar  = getSplitChar();
-
-
+  var resultType  = KakiStdUtil.getSelectedRadioButtonValue("result_type");
   var targetSyntaxContent = targetSyntaxElement.value;
-  var resultContent = formatSelectStatement(targetSyntaxContent);
+  var resultContent = formatSelectStatement(targetSyntaxContent, resultType);
 
   resultSyntaxElement.textContent = resultContent;
 }
@@ -120,10 +108,14 @@ function outputformattedSelectStatement(){
   // phraseContentSetArray['limitContentArray']   = [];
 
 
+
 //======================================
 //      Format SelectStatement
+//
+// resultType : 1 - Capitalize reserved words.
+//              2 - Make reserved words lowercase.
 //======================================
-function formatSelectStatement(targetSyntaxContent){
+function formatSelectStatement(targetSyntaxContent, resultType="1"){
 
   //-----< Get CommentPartRemovedContent >-----
   targetSyntaxContent = getCommentPartRemovedContent(targetSyntaxContent);
@@ -133,10 +125,9 @@ function formatSelectStatement(targetSyntaxContent){
   var resultSyntaxContentArray = [];
   sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
 
-
-  //-----< Capitalize Reserved Words >-----
-  KakiStdUtil.capitalizeReservedWords(unitArray, RESERVED_WORD_LIST);
-
+  //-----< ToUppr or ToLower Reserved Words >-----
+  ToUpprOrToLowerReservedWords(unitArray, resultType);
+console.log(unitArray)
 
   //-----< Bundle MultiConfigurationPhrase >-----
   bundleMultiConfigurationPhrase(unitArray);
@@ -194,7 +185,7 @@ console.log(unitArray)
 
 
   //-----< Get Result Contents >-----
-  var resultContent = getResultContent(phraseContentSetArray);
+  var resultContent = getResultContent(phraseContentSetArray, resultType);
   
 
   return resultContent;
@@ -251,6 +242,39 @@ function sqlstatomentToUnitArray(unitArray, targetSyntaxContent){
   return;
 }
 
+
+//------------------------------------
+//  ToUppr Or ToLower ReservedWords
+//------------------------------------
+function ToUpprOrToLowerReservedWords(unitArray, resultType){
+  var tmpArray = [];
+
+  if(resultType == RESULT_TYPE.TO_LOWER){
+    tmpArray = unitArray.map(function(el){
+        if(RESERVED_WORD_LIST.indexOf(el.toUpperCase()) >= 0){ 
+          return el.toLowerCase();
+        }else{
+          return el;
+        }
+      }
+    );
+
+  }else{
+    tmpArray = unitArray.map(function(el){
+        if(RESERVED_WORD_LIST.indexOf(el.toUpperCase()) >= 0){ 
+          return el.toUpperCase();
+        }else{
+          return el;
+        }
+      }
+    );    
+  }
+
+  unitArray.length = 0;
+  Array.prototype.push.apply(unitArray, tmpArray);
+
+}
+
 //------------------------------------
 //  Bundle MultiConfigurationPhrase
 //------------------------------------
@@ -303,17 +327,16 @@ phraseContentSetArray['selectContent']  = getSelectPhraseContent(unitArray , rem
 //  
 //---------------------
 function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
-  var tmpList = remainingDifinedPhraseList.filter((el)=> el !== "SELECT");
+  var tmpList = remainingDifinedPhraseList.filter((el)=> el.toUpperCase() !== "SELECT");
   remainingDifinedPhraseList.length = 0;
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
-
   resultArray = getPhraseSetArray(resultArray, "(", ")");
-console.log(resultArray)
 
   resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
+console.log("===========")
 console.log(resultContent)
 
   return resultContent;
@@ -495,7 +518,7 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
 //------------------------------------
 //          Get Result Contents
 //------------------------------------
-function getResultContent(phraseContentSetArray){
+function getResultContent(phraseContentSetArray, resultType){
   var resultContent = "";
   // phraseContentSetArray['selectContentArray']  = [];
   // phraseContentSetArray['fromContentArray']    = [];
@@ -507,9 +530,16 @@ function getResultContent(phraseContentSetArray){
   var a1 = phraseContentSetArray['selectContent'];
 
   if(phraseContentSetArray['selectContent'].length > 0){
-    resultContent += "SELECT" + NEW_LINE_CHARACTER;
+    if(resultType == RESULT_TYPE.TO_LOWER){
+      resultContent += "select" + NEW_LINE_CHARACTER;
+    }else{
+      resultContent += "SELECT" + NEW_LINE_CHARACTER;
+    }
+
     resultContent += phraseContentSetArray['selectContent'];
   }
+
+
 
   // if(a1.length <= 0){
 

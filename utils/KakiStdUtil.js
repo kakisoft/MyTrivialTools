@@ -132,7 +132,8 @@ KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
   var retArray = [];
 
   for(var i=0; i < unitArray.length; i++){
-    if(i + 1 <= unitArray.length && unitArray[i + 1] == pairList[1]){
+    // if(i + 1 <= unitArray.length && unitArray[i + 1] == pairList[1]){
+    if(i + 1 <= unitArray.length && String(unitArray[i + 1]).toUpperCase() == String(pairList[1]).toUpperCase()){
       retArray.push(unitArray[i] + " " + unitArray[i+1]); 
       i++;
     }else{
@@ -150,6 +151,8 @@ KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
 // get SelectPhrase, FromPhrase, WherePhrase...
 //===================================
 KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
+  unitArray = unitArray.map((el) => el.toUpperCase());
+
   var slicedArray = [];
   var startPosition = unitArray.indexOf(startWord);
   var endPosition = unitArray.length;
@@ -160,7 +163,7 @@ KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
     endPosition = unitArray.indexOf(endWord);
 
   }else if(endWordObject == "Array"){
-
+    endWord = endWord.map((el) => el.toUpperCase());
     endWord = endWord.filter((el)=> el !== startWord);
     endWord.forEach((el)=>{
       var dp = unitArray.indexOf(el);
