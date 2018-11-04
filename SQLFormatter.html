@@ -300,22 +300,6 @@ function bundleMultiConfigurationPhrase(unitArray){
 function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
 
   var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
-  // phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
-  // phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
-  // phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
-  // phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
-  // phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
-  // phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
-  // phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
-
-  // phraseContentSetArray['selectContent']  = [];
-  // phraseContentSetArray['fromContent']    = [];
-  // phraseContentSetArray['whereContent']   = [];
-  // phraseContentSetArray['groupByContent'] = [];
-  // phraseContentSetArray['orderByContent'] = [];
-  // phraseContentSetArray['havingContent']  = [];
-  // phraseContentSetArray['limitContent']   = [];
-
   phraseContentSetArray['selectContent']   = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
   phraseContentSetArray['fromContent']     = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
   phraseContentSetArray['whereContent']    = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
@@ -324,7 +308,6 @@ function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LI
   phraseContentSetArray['havingContent']   = getHavingPhraseContent(unitArray , remainingDifinedPhraseList);
   phraseContentSetArray['limitContent']    = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
 
-  // return true;
 }
 
 
@@ -514,14 +497,6 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
 //------------------------------------
 function getResultContent(phraseContentSetArray, resultType){
   var resultContent = "";
-  // phraseContentSetArray['selectContentArray']  = [];
-  // phraseContentSetArray['fromContentArray']    = [];
-  // phraseContentSetArray['whereContentArray']   = [];
-  // phraseContentSetArray['groupByContentArray'] = [];
-  // phraseContentSetArray['orderByContentArray'] = [];
-  // phraseContentSetArray['havingContentArray']  = [];
-  // phraseContentSetArray['limitContentArray']   = [];
-
   // phraseContentSetArray['selectContent']  = [];
   // phraseContentSetArray['fromContent']    = [];
   // phraseContentSetArray['whereContent']   = [];
