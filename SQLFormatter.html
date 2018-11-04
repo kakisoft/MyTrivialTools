@@ -72,6 +72,8 @@ from
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
 where  1=1
   and  T1.COLUMN1 = 'CD'
+
+
 group by
     T1.PROD_NO   ,   T2.PROD_SUB_NO,  T2.PROD_CATEGORY_NO
 Order   by T1.PROD_NO,T2.PROD_SUB_NO
@@ -465,6 +467,10 @@ function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
 
+  var targetContent = resultArray.join("");
+  resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(targetContent, ",", "(", ")");
+  resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
+
 
   return resultContent;
 }
@@ -508,6 +514,7 @@ function getResultContent(phraseContentSetArray, resultType){
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "select");
 
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "group by");
+  resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "having");
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "order by");
 
   return resultContent;
