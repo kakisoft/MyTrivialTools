@@ -66,13 +66,14 @@ col1, col2
 --	sum(decode(T2.CATEGORY,'2',round(T1.PAYMENT / 1.08 ), T1.PAYMENT))  as  PAYMENT,
 		--    sum(t1.nm1)
 ,max(t2.mm1)
+    , col3
 from              
     TABLE1  AS T1           
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
 where  1=1
   and  T1.COLUMN1 = 'CD'
 group by
-    T1.PROD_NO
+    T1.PROD_NO   ,   T2.PROD_SUB_NO
 Order   by
 T1.PROD_NO
 `
@@ -120,14 +121,16 @@ function formatSelectStatement(targetSyntaxContent, resultType="1"){
   //-----< Get CommentPartRemovedContent >-----
   targetSyntaxContent = getCommentPartRemovedContent(targetSyntaxContent);
 
+
   //-----< Sqlstatoment To UnitArray >-----
   var unitArray = [];
   var resultSyntaxContentArray = [];
   sqlstatomentToUnitArray(unitArray, targetSyntaxContent);
 
+
   //-----< ToUppr or ToLower Reserved Words >-----
   ToUpprOrToLowerReservedWords(unitArray, resultType);
-console.log(unitArray)
+
 
   //-----< Bundle MultiConfigurationPhrase >-----
   bundleMultiConfigurationPhrase(unitArray);
@@ -272,7 +275,6 @@ function ToUpprOrToLowerReservedWords(unitArray, resultType){
 
   unitArray.length = 0;
   Array.prototype.push.apply(unitArray, tmpArray);
-
 }
 
 //------------------------------------
@@ -298,29 +300,40 @@ function bundleMultiConfigurationPhrase(unitArray){
 //------------------------------------
 function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
 
-var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
-// phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
-// phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
-// phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
-// phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
-// phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
-// phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
-// phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+  var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
+  // phraseContentSetArray['selectContentArray']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+  // phraseContentSetArray['fromContentArray']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
+  // phraseContentSetArray['whereContentArray']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
+  // phraseContentSetArray['groupByContentArray'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
+  // phraseContentSetArray['orderByContentArray'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
+  // phraseContentSetArray['havingContentArray']  = getHavingPhraseContent( unitArray, remainingDifinedPhraseList);
+  // phraseContentSetArray['limitContentArray']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
 
+  // phraseContentSetArray['selectContent']  = [];
+  // phraseContentSetArray['fromContent']    = [];
+  // phraseContentSetArray['whereContent']   = [];
+  // phraseContentSetArray['groupByContent'] = [];
+  // phraseContentSetArray['orderByContent'] = [];
+  // phraseContentSetArray['havingContent']  = [];
+  // phraseContentSetArray['limitContent']   = [];
 
-phraseContentSetArray['selectContent']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+  phraseContentSetArray['selectContent']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+  phraseContentSetArray['fromContent']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
+  phraseContentSetArray['whereContent']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
+  phraseContentSetArray['groupByContent'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
+  phraseContentSetArray['orderByContent'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
+  phraseContentSetArray['havingContent']  = getHavingPhraseContent(unitArray , remainingDifinedPhraseList);
+  phraseContentSetArray['limitContent']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
 
-
-// return true;
+  // return true;
 }
 
 
-
-
-
-
+//=================================================================================================
+//=================================================================================================
 
 //--------------------------------------------------------------------
+//                           SELECT
 //--------------------------------------------------------------------
 
 //---------------------
@@ -336,8 +349,7 @@ function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = getPhraseSetArray(resultArray, "(", ")");
 
   resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
-console.log("===========")
-console.log(resultContent)
+
 
   return resultContent;
 }
@@ -360,30 +372,7 @@ function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
   }
 
   var resultArray = [];
-  var ignoreStackCount = 0;
-  var cutStartPosition = 0;
-  for(var i=0; i<stringifiedContent.length-1; i++){
-    c = stringifiedContent.substring(i, i+1);
-    //-----( ignore if [,] included [()] )-----
-    if(c == ignoreStartChar){
-      ignoreStackCount++;
-    }
-    if(c == ignoreEndChar){
-      ignoreStackCount--;
-      if(ignoreStackCount < 0){
-        ignoreStackCount = 0;
-        i = stringifiedContent.length-1;
-      }
-    }
-
-    //-----( set content )-----
-    if(c == "," && ignoreStackCount == 0){
-      content = stringifiedContent.substring(cutStartPosition, i);
-      resultArray.push(content)
-      i++;
-      cutStartPosition = i;
-    }
-  }
+  resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(stringifiedContent, ",", ignoreStartChar, ignoreEndChar);
 
   //-----( Corresponds to aliases without "AS" )-----
   resultArray = resultArray.map((el) => KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect(el) );
@@ -393,28 +382,8 @@ function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
   return resultArray;
 }
 
-//---------------------
-//  
-//---------------------
-// function getSpSeparatedByLine(targetContentArray, prefixChar=","){
-//   prefixChar      = prefixChar.padStart(PREFIX_SPACE_COUNT, " ");
-//   firstPrefixChar = "".padStart(PREFIX_SPACE_COUNT, " ");
-
-//   var resultArray = [];
-//   resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
-  
-//   var resultContent = "";
-//   resultContent = resultArray.join(prefixChar);
-//   if(resultContent.length > 0){
-//     resultContent = firstPrefixChar + resultContent
-//   }
-
-
-//   return resultContent;
-// }
-
-
 //--------------------------------------------------------------------
+//                           FROM
 //--------------------------------------------------------------------
 
 //---------------------
@@ -432,6 +401,10 @@ function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
   return resultArray;
 }
 
+//--------------------------------------------------------------------
+//                           WHERE
+//--------------------------------------------------------------------
+
 //---------------------
 //  
 //---------------------
@@ -447,6 +420,11 @@ function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
   return resultArray;
 }
 
+
+//--------------------------------------------------------------------
+//                           GROUP BY
+//--------------------------------------------------------------------
+
 //---------------------
 //  
 //---------------------
@@ -459,8 +437,35 @@ function getGroupByPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
 
 
-  return resultArray;
+console.log("=========================xxx")
+console.log(resultArray)
+console.log("=========================xxx")
+
+  // resultArray = getPhraseSetArray(resultArray, "(", ")");
+  var targetContent = resultArray.join("");
+console.log("=========================zzz")
+console.log(targetContent)
+console.log("=========================zzz")
+  resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(targetContent, ",", "(", ")");
+
+console.log("=========================bbb")
+console.log(resultArray)
+console.log("=========================bbb")
+
+
+  resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
+
+console.log("=========================groupeee")
+console.log(resultContent)
+console.log("=========================groupeee")
+
+
+  return resultContent;
 }
+
+//--------------------------------------------------------------------
+//                           ORDER BY
+//--------------------------------------------------------------------
 
 //---------------------
 //  
@@ -478,6 +483,10 @@ function getOrderByPhraseContent(unitArray, remainingDifinedPhraseList){
 }
 
 
+//--------------------------------------------------------------------
+//                           HAVING
+//--------------------------------------------------------------------
+
 //---------------------
 //  
 //---------------------
@@ -494,6 +503,10 @@ function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
 }
 
 
+//--------------------------------------------------------------------
+//                           LIMIT
+//--------------------------------------------------------------------
+
 //---------------------
 //  
 //---------------------
@@ -508,12 +521,9 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
 
   return resultArray;
 }
-//=======================================================
+//=================================================================================================
+//=================================================================================================
 
-
-
-
-//=======================================================
 
 //------------------------------------
 //          Get Result Contents
@@ -527,27 +537,39 @@ function getResultContent(phraseContentSetArray, resultType){
   // phraseContentSetArray['orderByContentArray'] = [];
   // phraseContentSetArray['havingContentArray']  = [];
   // phraseContentSetArray['limitContentArray']   = [];
-  var a1 = phraseContentSetArray['selectContent'];
 
-  if(phraseContentSetArray['selectContent'].length > 0){
-    if(resultType == RESULT_TYPE.TO_LOWER){
-      resultContent += "select" + NEW_LINE_CHARACTER;
-    }else{
-      resultContent += "SELECT" + NEW_LINE_CHARACTER;
-    }
+  // phraseContentSetArray['selectContent']  = [];
+  // phraseContentSetArray['fromContent']    = [];
+  // phraseContentSetArray['whereContent']   = [];
+  // phraseContentSetArray['groupByContent'] = [];
+  // phraseContentSetArray['orderByContent'] = [];
+  // phraseContentSetArray['havingContent']  = [];
+  // phraseContentSetArray['limitContent']   = [];
 
-    resultContent += phraseContentSetArray['selectContent'];
-  }
+  resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "select");
 
-
-
-  // if(a1.length <= 0){
-
-  // }
 
   return resultContent;
 }
 
+//------------------------------------
+//    Get PhraseUnit ResultContent
+//------------------------------------
+function getPhraseUnitResultContent(phraseContentSetArray, resultType, phrase){
+  var phraseUnitResultContent = "";
+
+  if(phraseContentSetArray[phrase + 'Content'].length > 0){
+    if(resultType == RESULT_TYPE.TO_LOWER){
+      phraseUnitResultContent += phrase.toLowerCase() + NEW_LINE_CHARACTER;
+    }else{
+      phraseUnitResultContent += phrase.toUpperCase() + NEW_LINE_CHARACTER;
+    }
+
+    phraseUnitResultContent += phraseContentSetArray[phrase + 'Content'];
+  }
+
+  return phraseUnitResultContent;
+}
 
 //=======================================================================================================
 //=======================================================================================================

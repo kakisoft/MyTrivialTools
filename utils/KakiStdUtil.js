@@ -32,11 +32,11 @@ KakiStdUtil.getObjectName = function(targetObject){
 //          surround Text
 //===================================  
 KakiStdUtil.surroundText = function(value, targetChar){
-    var result;
+  var result;
 
-    result = targetChar + value + targetChar;
+  result = targetChar + value + targetChar;
 
-    return result;
+  return result;
 }
 
 //===================================
@@ -80,22 +80,22 @@ KakiStdUtil.getAppendCharToSpecifiedContent = function(targetArray, targetChar, 
 // ex. Gather ")" positions
 //===================================
 KakiStdUtil.getChunkStartPositionArray = function(CHUNK_START_CHAR, targetSyntaxContent=[]){
-    var chunkStartPositionArray = [];
+  var chunkStartPositionArray = [];
 
-    var searchPosition = 0;
-    while (searchPosition < targetSyntaxContent.length) {
-      chunkStartPosition = targetSyntaxContent.indexOf(CHUNK_START_CHAR, searchPosition);
-  
-      if(chunkStartPosition > 0){
-        chunkStartPositionArray.push(chunkStartPosition);
-        searchPosition = chunkStartPosition + 1;
-      }else{
-        searchPosition = targetSyntaxContent.length
-      }
+  var searchPosition = 0;
+  while (searchPosition < targetSyntaxContent.length) {
+    chunkStartPosition = targetSyntaxContent.indexOf(CHUNK_START_CHAR, searchPosition);
+
+    if(chunkStartPosition > 0){
+      chunkStartPositionArray.push(chunkStartPosition);
+      searchPosition = chunkStartPosition + 1;
+    }else{
+      searchPosition = targetSyntaxContent.length
     }
-  
-    return chunkStartPositionArray;    
   }
+
+  return chunkStartPositionArray;    
+}
 
 
 //===================================
@@ -156,7 +156,6 @@ KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
   var slicedArray = [];
   var startPosition = unitArray.indexOf(startWord);
   var endPosition = unitArray.length;
-
   var endWordObject = KakiStdUtil.getObjectName(endWord);
 
   if(endWordObject == "String"){
@@ -270,22 +269,59 @@ KakiStdUtil.getSpSeparatedByLine = function(targetContentArray, prefixSpaceCount
 //  TABLE1.COL1[\t]ALIAS1 => TABLE1.COL1  ALIAS1  
 //===================================
 KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent, SeparatedChar="\t", toSeparateChar="  "){
-    var resultContent = "";
-    var tmpArray = targetContent;
-    
-    tmpArray = tmpArray.split("\t");
-    tmpArray = tmpArray.filter((el)=> el != "");
-    if(tmpArray.length != 2){
-      return targetContent;
-    }
-
-    resultContent = tmpArray.join(toSeparateChar);
-
-    return resultContent;
+  var resultContent = "";
+  var tmpArray = targetContent;
+  
+  tmpArray = tmpArray.split("\t");
+  tmpArray = tmpArray.filter((el)=> el != "");
+  if(tmpArray.length != 2){
+    return targetContent;
   }
+
+  resultContent = tmpArray.join(toSeparateChar);
+
+  return resultContent;
+}
   
 //===================================
-//  
 // 
+// 
+//  t1.col1, round(t1.com2, 4)  #=> ["t1.col1", "round(t1.com2, 4)"]
 //===================================
+KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, separateChar, ignoreStartChar, ignoreEndChar){
+  var resultArray = [];
+  var ignoreStackCount = 0;
+  var cutStartPosition = 0;
 
+  var content = "";
+  for(var i=0; i<targetContent.length-1; i++){
+    c = targetContent.substring(i, i+1);
+    //-----( example : ignore if [,] included [()] )-----
+    if(c == ignoreStartChar){
+      ignoreStackCount++;
+    }
+    if(c == ignoreEndChar){
+      ignoreStackCount--;
+      if(ignoreStackCount < 0){
+        ignoreStackCount = 0;
+        i = targetContent.length-1;
+      }
+    }
+  
+    //-----( set content )-----
+    if(c == separateChar && ignoreStackCount == 0){
+      content = targetContent.substring(cutStartPosition, i);
+      resultArray.push(content)
+      i++;
+      cutStartPosition = i;
+    }
+
+    //-----( for Last Char Condition )-----
+    if(i == targetContent.length-2 && cutStartPosition < targetContent.length-2){
+      content = targetContent.substring(cutStartPosition, targetContent.length);
+      resultArray.push(content)
+    }
+  }
+
+  return resultArray;
+}
