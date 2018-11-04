@@ -73,9 +73,8 @@ from
 where  1=1
   and  T1.COLUMN1 = 'CD'
 group by
-    T1.PROD_NO   ,   T2.PROD_SUB_NO
-Order   by
-T1.PROD_NO
+    T1.PROD_NO   ,   T2.PROD_SUB_NO,  T2.PROD_CATEGORY_NO
+Order   by T1.PROD_NO,T2.PROD_SUB_NO
 `
 
 
@@ -153,22 +152,22 @@ console.log(unitArray)
 // var havingContentArray  = [];
 
   var phraseContentSetArray = [];
-  phraseContentSetArray['selectContentArray']  = [];
-  phraseContentSetArray['fromContentArray']    = [];
-  phraseContentSetArray['whereContentArray']   = [];
-  phraseContentSetArray['groupByContentArray'] = [];
-  phraseContentSetArray['orderByContentArray'] = [];
-  phraseContentSetArray['havingContentArray']  = [];
-  phraseContentSetArray['limitContentArray']   = [];
+  // phraseContentSetArray['selectContentArray']  = [];
+  // phraseContentSetArray['fromContentArray']    = [];
+  // phraseContentSetArray['whereContentArray']   = [];
+  // phraseContentSetArray['groupByContentArray'] = [];
+  // phraseContentSetArray['orderByContentArray'] = [];
+  // phraseContentSetArray['havingContentArray']  = [];
+  // phraseContentSetArray['limitContentArray']   = [];
 
 
-  phraseContentSetArray['selectContent']  = [];
-  phraseContentSetArray['fromContent']    = [];
-  phraseContentSetArray['whereContent']   = [];
-  phraseContentSetArray['groupByContent'] = [];
-  phraseContentSetArray['orderByContent'] = [];
-  phraseContentSetArray['havingContent']  = [];
-  phraseContentSetArray['limitContent']   = [];
+  phraseContentSetArray['selectContent']   = [];
+  phraseContentSetArray['fromContent']     = [];
+  phraseContentSetArray['whereContent']    = [];
+  phraseContentSetArray['group byContent'] = [];
+  phraseContentSetArray['order byContent'] = [];
+  phraseContentSetArray['havingContent']   = [];
+  phraseContentSetArray['limitContent']    = [];
 
 
 
@@ -317,13 +316,13 @@ function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LI
   // phraseContentSetArray['havingContent']  = [];
   // phraseContentSetArray['limitContent']   = [];
 
-  phraseContentSetArray['selectContent']  = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
-  phraseContentSetArray['fromContent']    = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
-  phraseContentSetArray['whereContent']   = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
-  phraseContentSetArray['groupByContent'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
-  phraseContentSetArray['orderByContent'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
-  phraseContentSetArray['havingContent']  = getHavingPhraseContent(unitArray , remainingDifinedPhraseList);
-  phraseContentSetArray['limitContent']   = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
+  phraseContentSetArray['selectContent']   = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
+  phraseContentSetArray['fromContent']     = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
+  phraseContentSetArray['whereContent']    = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
+  phraseContentSetArray['group byContent'] = getGroupByPhraseContent(unitArray, remainingDifinedPhraseList);
+  phraseContentSetArray['order byContent'] = getOrderByPhraseContent(unitArray, remainingDifinedPhraseList);
+  phraseContentSetArray['havingContent']   = getHavingPhraseContent(unitArray , remainingDifinedPhraseList);
+  phraseContentSetArray['limitContent']    = getLimitPhraseContent(unitArray  , remainingDifinedPhraseList);
 
   // return true;
 }
@@ -398,7 +397,7 @@ function getFromPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "FROM", remainingDifinedPhraseList);
 
 
-  return resultArray;
+  return resultContent;
 }
 
 //--------------------------------------------------------------------
@@ -417,7 +416,7 @@ function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
 
 
-  return resultArray;
+  return resultContent;
 }
 
 
@@ -436,28 +435,9 @@ function getGroupByPhraseContent(unitArray, remainingDifinedPhraseList){
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "GROUP BY", remainingDifinedPhraseList);
 
-
-console.log("=========================xxx")
-console.log(resultArray)
-console.log("=========================xxx")
-
-  // resultArray = getPhraseSetArray(resultArray, "(", ")");
   var targetContent = resultArray.join("");
-console.log("=========================zzz")
-console.log(targetContent)
-console.log("=========================zzz")
   resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(targetContent, ",", "(", ")");
-
-console.log("=========================bbb")
-console.log(resultArray)
-console.log("=========================bbb")
-
-
   resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
-
-console.log("=========================groupeee")
-console.log(resultContent)
-console.log("=========================groupeee")
 
 
   return resultContent;
@@ -478,8 +458,12 @@ function getOrderByPhraseContent(unitArray, remainingDifinedPhraseList){
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "ORDER BY", remainingDifinedPhraseList);
 
+  var targetContent = resultArray.join("");
+  resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(targetContent, ",", "(", ")");
+  resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
 
-  return resultArray;
+
+  return resultContent;
 }
 
 
@@ -499,7 +483,7 @@ function getHavingPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "HAVING", remainingDifinedPhraseList);
 
 
-  return resultArray;
+  return resultContent;
 }
 
 
@@ -519,7 +503,7 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "LIMIT", remainingDifinedPhraseList);
 
 
-  return resultArray;
+  return resultContent;
 }
 //=================================================================================================
 //=================================================================================================
@@ -548,6 +532,8 @@ function getResultContent(phraseContentSetArray, resultType){
 
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "select");
 
+  resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "group by");
+  resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "order by");
 
   return resultContent;
 }
