@@ -71,9 +71,9 @@ var SURROUND_CHAR_TYPE = {
 
 
 function getSplitChar(){
-  var switchKey = getSelectedRadioButtonValue("format_type")
+  var value = getSelectedRadioButtonValue("format_type")
 
-  switch (parseInt(switchKey)){
+  switch (parseInt(value)){
     case FORMAT_TYPE.TSV:
       return "\t"
     case FORMAT_TYPE.CSV:
@@ -82,9 +82,9 @@ function getSplitChar(){
 }
 
 function getSurroundChar(){
-  var surroundChar = getSelectedRadioButtonValue("surround_char_type")
+  var value = getSelectedRadioButtonValue("surround_char_type")
 
-  switch (parseInt(surroundChar)){
+  switch (parseInt(value)){
     case SURROUND_CHAR_TYPE.SINGLE_QUOTATION:
       return "'"
     case SURROUND_CHAR_TYPE.DOUBLE_QUOTATION:

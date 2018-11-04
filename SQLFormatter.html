@@ -7,6 +7,9 @@
 <body>
 <h1 style="font-size: 1.5em">select文を整形したい的な何か</h1>
 <div>
+  <input type="radio" name="result_type" value="1" checked>予約語を大文字にする
+  <input type="radio" name="result_type" value="2">予約語を小文字にする
+
   <textarea id="target_syntax" style="width:60%; height:10em" placeholder="Please input any Select Statement."></textarea>
 </div>
 
@@ -39,7 +42,7 @@ PREFIX_SPACE_COUNT = 4;
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
 
-document.getElementById("format_SelectStatement").addEventListener("click", formatSelectStatement)
+document.getElementById("format_SelectStatement").addEventListener("click", outputformattedSelectStatement)
 
 //=================================================================
 //----------------------
@@ -78,6 +81,36 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 
 //=================================================================
 
+var RESULT_TYPE = {
+  TO_UPPER : 1,
+  TO_ROWER : 2,
+};
+
+function getResultType(){
+  var value = KakiStdUtil.getSelectedRadioButtonValue("result_type")
+
+  switch (parseInt(value)){
+    case RESULT_TYPE.TO_UPPER:
+      return "\t"
+    case RESULT_TYPE.TO_UPPER:
+      return ","
+  }
+}
+
+//=================================================================
+
+
+function outputformattedSelectStatement(){
+  var splitChar  = getSplitChar();
+
+
+  var targetSyntaxContent = targetSyntaxElement.value;
+  var resultContent = formatSelectStatement(targetSyntaxContent);
+
+  resultSyntaxElement.textContent = resultContent;
+}
+
+
   // phraseContentSetArray['selectContentArray']  = [];
   // phraseContentSetArray['fromContentArray']    = [];
   // phraseContentSetArray['whereContentArray']   = [];
@@ -90,11 +123,7 @@ document.getElementById("target_syntax").innerHTML = forDev1;
 //======================================
 //      Format SelectStatement
 //======================================
-function formatSelectStatement(){
-  var targetSyntaxContent = targetSyntaxElement.value;
-  var resultContent = "";
-
-  resultSyntaxElement.textContent = ""
+function formatSelectStatement(targetSyntaxContent){
 
   //-----< Get CommentPartRemovedContent >-----
   targetSyntaxContent = getCommentPartRemovedContent(targetSyntaxContent);
@@ -164,12 +193,11 @@ console.log(unitArray)
 
 
 
+  //-----< Get Result Contents >-----
+  var resultContent = getResultContent(phraseContentSetArray);
+  
 
-  //-----< Set Result Contents >-----
-  var resultContentArray = [];
-  setResultContents(resultContentArray, phraseContentSetArray);
-
-
+  return resultContent;
 
   //-----< Output Result >-----
   // resultSyntaxElement.textContent = resultContent;
@@ -465,9 +493,10 @@ function getLimitPhraseContent(unitArray, remainingDifinedPhraseList){
 //=======================================================
 
 //------------------------------------
-//          Set Result Contents
+//          Get Result Contents
 //------------------------------------
-function setResultContents(resultContentArray, phraseContentSetArray){
+function getResultContent(phraseContentSetArray){
+  var resultContent = "";
   // phraseContentSetArray['selectContentArray']  = [];
   // phraseContentSetArray['fromContentArray']    = [];
   // phraseContentSetArray['whereContentArray']   = [];
@@ -475,13 +504,18 @@ function setResultContents(resultContentArray, phraseContentSetArray){
   // phraseContentSetArray['orderByContentArray'] = [];
   // phraseContentSetArray['havingContentArray']  = [];
   // phraseContentSetArray['limitContentArray']   = [];
-  var a1 = phraseContentSetArray['selectContentArray'];
+  var a1 = phraseContentSetArray['selectContent'];
+
+  if(phraseContentSetArray['selectContent'].length > 0){
+    resultContent += "SELECT" + NEW_LINE_CHARACTER;
+    resultContent += phraseContentSetArray['selectContent'];
+  }
 
   // if(a1.length <= 0){
 
   // }
 
-  return;
+  return resultContent;
 }
 
 
