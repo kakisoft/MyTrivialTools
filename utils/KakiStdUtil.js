@@ -234,3 +234,55 @@ KakiStdUtil.getRemovedSurroundBySpecifiedCharacters = function(targetContent, st
   return resultContent;
 }
 
+
+//===================================
+//  Get getSpSeparated ByLine
+// 
+// (ex)
+// First Line  :    col1
+// Second Line :   ,col2
+// Third Line  :   ,col3
+//===================================
+KakiStdUtil.getSpSeparatedByLine = function(targetContentArray, prefixSpaceCount, prefixChar=","){
+  prefixChar      = prefixChar.padStart(prefixSpaceCount, " ");
+  firstPrefixChar = "".padStart(prefixSpaceCount, " ");
+
+  var resultArray = [];
+  resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
+  
+  var resultContent = "";
+  resultContent = resultArray.join(prefixChar);
+  if(resultContent.length > 0){
+    resultContent = firstPrefixChar + resultContent
+  }
+
+
+  return resultContent;
+}
+
+//===================================
+//  
+// 
+// (ex)
+//  TABLE1.COL1[\t]ALIAS1 => TABLE1.COL1  ALIAS1  
+//===================================
+KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent, SeparatedChar="\t", toSeparateChar="  "){
+    var resultContent = "";
+    var tmpArray = targetContent;
+    
+    tmpArray = tmpArray.split("\t");
+    tmpArray = tmpArray.filter((el)=> el != "");
+    if(tmpArray.length != 2){
+      return targetContent;
+    }
+
+    resultContent = tmpArray.join(toSeparateChar);
+
+    return resultContent;
+  }
+  
+//===================================
+//  
+// 
+//===================================
+

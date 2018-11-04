@@ -49,7 +49,7 @@ var forDev1 = `
 select               
     T1.PROD_NO,
 T1.PROD_NAME
-,  T2.COL1
+,  T2.COL1   als
     ,T2.COL2 --com
 /* これはコメント   */
 /*
@@ -294,11 +294,9 @@ function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
 
   resultArray = getPhraseSetArray(resultArray, "(", ")");
-  console.log(resultArray)
+console.log(resultArray)
 
-
-  // resultArray = getPhraseSetArray(resultArray, "(", ")");
-  resultContent = getOutputSelectPhraseContent(resultArray, ",");
+  resultContent = KakiStdUtil.getSpSeparatedByLine(resultArray, PREFIX_SPACE_COUNT, ",");
 console.log(resultContent)
 
   return resultContent;
@@ -308,14 +306,15 @@ console.log(resultContent)
 //  
 //---------------------
 function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
-  var StringifiedContent = "";
+  var stringifiedContent = "";
 
   var targetObjectName = KakiStdUtil.getObjectName(targetContent);
   if(targetObjectName == "String"){
-    StringifiedContent = targetContent;
+    stringifiedContent = targetContent;
   }else if(targetObjectName == "Array"){
     var tmpString = KakiStdUtil.getAppendCharToSpecifiedContent(targetContent, "AS", "  ", "  ");
-    StringifiedContent = tmpString.join("");
+    stringifiedContent = tmpString.join("\t");  // In fact I want to connect everything ...  But I am doing this to correspond to an alias that omits "AS".
+    // stringifiedContent = tmpString.join("");
   }else{
     return "";
   }
@@ -323,9 +322,8 @@ function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
   var resultArray = [];
   var ignoreStackCount = 0;
   var cutStartPosition = 0;
-  // var isIncludedIgnoreChar = false;
-  for(var i=0; i<StringifiedContent.length-1; i++){
-    c = StringifiedContent.substring(i, i+1);
+  for(var i=0; i<stringifiedContent.length-1; i++){
+    c = stringifiedContent.substring(i, i+1);
     //-----( ignore if [,] included [()] )-----
     if(c == ignoreStartChar){
       ignoreStackCount++;
@@ -334,18 +332,23 @@ function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
       ignoreStackCount--;
       if(ignoreStackCount < 0){
         ignoreStackCount = 0;
-        i = StringifiedContent.length-1;
+        i = stringifiedContent.length-1;
       }
     }
 
     //-----( set content )-----
     if(c == "," && ignoreStackCount == 0){
-      content = StringifiedContent.substring(cutStartPosition, i);
+      content = stringifiedContent.substring(cutStartPosition, i);
       resultArray.push(content)
       i++;
       cutStartPosition = i;
     }
   }
+
+  //-----( Corresponds to aliases without "AS" )-----
+  resultArray = resultArray.map((el) => KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect(el) );
+  resultArray = resultArray.map((el) => el.replace(/\t/g,"") );
+
 
   return resultArray;
 }
@@ -353,22 +356,22 @@ function getPhraseSetArray(targetContent, ignoreStartChar, ignoreEndChar){
 //---------------------
 //  
 //---------------------
-function getOutputSelectPhraseContent(targetContentArray, prefixChar=","){
-  prefixChar      = prefixChar.padStart(PREFIX_SPACE_COUNT, " ");
-  firstPrefixChar = "".padStart(PREFIX_SPACE_COUNT, " ");
+// function getSpSeparatedByLine(targetContentArray, prefixChar=","){
+//   prefixChar      = prefixChar.padStart(PREFIX_SPACE_COUNT, " ");
+//   firstPrefixChar = "".padStart(PREFIX_SPACE_COUNT, " ");
 
-  var resultArray = [];
-  resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
+//   var resultArray = [];
+//   resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
   
-  var resultContent = "";
-  resultContent = resultArray.join(prefixChar);
-  if(resultContent.length > 0){
-    resultContent = firstPrefixChar + resultContent
-  }
+//   var resultContent = "";
+//   resultContent = resultArray.join(prefixChar);
+//   if(resultContent.length > 0){
+//     resultContent = firstPrefixChar + resultContent
+//   }
 
 
-  return resultContent;
-}
+//   return resultContent;
+// }
 
 
 //--------------------------------------------------------------------
