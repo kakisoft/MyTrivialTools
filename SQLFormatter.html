@@ -39,6 +39,7 @@ RESERVED_WORD_LIST =
 
 // SELECT_PREFIX = "   ,";
 PREFIX_SPACE_COUNT = 4;
+FIRST_TRUE_CONDITION = "1=1";
 
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement = document.getElementById("result_syntax");
@@ -514,7 +515,7 @@ function getResultContent(phraseContentSetArray, resultType){
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "group by");
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "having");
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "order by");
-console.log(resultContent)
+
   return resultContent;
 }
 
