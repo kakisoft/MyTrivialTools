@@ -72,8 +72,6 @@ from
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
 where  1=1
   and  T1.COLUMN1 = 'CD'
-
-
 group by
     T1.PROD_NO   ,   T2.PROD_SUB_NO,  T2.PROD_CATEGORY_NO
 Order   by T1.PROD_NO,T2.PROD_SUB_NO
@@ -300,8 +298,8 @@ function bundleMultiConfigurationPhrase(unitArray){
 //  
 //------------------------------------
 function setPhraseContentSet(phraseContentSetArray, unitArray, DIFINED_PHRASE_LIST){
+  var remainingDifinedPhraseList = DIFINED_PHRASE_LIST.concat();
 
-  var remainingDifinedPhraseList = DIFINED_PHRASE_LIST;
   phraseContentSetArray['selectContent']   = getSelectPhraseContent(unitArray , remainingDifinedPhraseList);
   phraseContentSetArray['fromContent']     = getFromPhraseContent(unitArray   , remainingDifinedPhraseList);
   phraseContentSetArray['whereContent']    = getWherePhraseContent(unitArray  , remainingDifinedPhraseList);
@@ -516,7 +514,7 @@ function getResultContent(phraseContentSetArray, resultType){
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "group by");
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "having");
   resultContent += getPhraseUnitResultContent(phraseContentSetArray, resultType, "order by");
-
+console.log(resultContent)
   return resultContent;
 }
 
