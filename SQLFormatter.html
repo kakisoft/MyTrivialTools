@@ -211,7 +211,7 @@ function getCommentPartRemovedContent(targetSyntaxContent){
     resultContent = KakiStdUtil.getRemovedAfterTargetLineUnit(resultContent, "--");
   }
 
-  //-----< Remove [/**/] Type Comment >-----
+  //-----< Remove [/* */] Type Comment >-----
   if(resultContent.indexOf("/*") > -1){
     resultContent = KakiStdUtil.getRemovedSurroundBySpecifiedCharacters(resultContent, "/*", "*/");
   }
