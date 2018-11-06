@@ -71,8 +71,11 @@ col1, col2
 from              
     TABLE1  AS T1           
     left join TABLE2 T2 on T1.CATEGORY_CD = T2.CATEGORY_CD
-where  1=1
-  and  T1.COLUMN1 = 'CD'
+--where  1=1
+where  T1.COLUMN1 = 'CD'
+  and  T1.COLUMN2 = 'XN'
+    and (T2.COL3 ='X1' or T2.COL3 = 'X2')
+  AND ( T2.COL4 = 1 AND T2.COL4 = 2)
 group by
     T1.PROD_NO   ,   T2.PROD_SUB_NO,  T2.PROD_CATEGORY_NO
 Order   by T1.PROD_NO,T2.PROD_SUB_NO
@@ -399,9 +402,37 @@ function getWherePhraseContent(unitArray, remainingDifinedPhraseList){
   var resultArray = unitArray;
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "WHERE", remainingDifinedPhraseList);
 
+  resultArray = appendFirstTrueConditionIfNeeded(resultArray, FIRST_TRUE_CONDITION);
+
+// console.log(resultArray)
+  var stringifiedContent = resultArray.join(" ");
+  // resultArray = KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar(stringifiedContent, "AND", "(", ")");
+
+console.log(resultArray)
 
   return resultContent;
 }
+
+//---------------------
+//  
+//---------------------
+function appendFirstTrueConditionIfNeeded(targetArray, firstTrueCondition){
+  var tmpString = targetArray.join("");
+
+  if(tmpString < firstTrueCondition.length){
+    return targetArray;
+  }
+
+  var compareString = tmpString.slice(0, firstTrueCondition.length);
+  if(compareString != firstTrueCondition){
+    targetArray.unshift(firstTrueCondition);
+  }
+
+  return targetArray;
+
+}
+
+
 
 
 //--------------------------------------------------------------------
