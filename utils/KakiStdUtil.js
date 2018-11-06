@@ -287,6 +287,50 @@ KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent
 // 
 // 
 //  t1.col1, round(t1.com2, 4)  #=> ["t1.col1", "round(t1.com2, 4)"]
+//   !!SINGLE CHAR ONLY!!
+//===================================
+// KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar_single = function(targetContent, separateChar, ignoreStartChar, ignoreEndChar){
+//   var resultArray = [];
+//   var ignoreStackCount = 0;
+//   var cutStartPosition = 0;
+
+//   var content = "";
+//   for(var i=0; i<targetContent.length-1; i++){
+//     c = targetContent.substring(i, i+1);
+//     //-----( example : ignore if [,] included [()] )-----
+//     if(c == ignoreStartChar){
+//       ignoreStackCount++;
+//     }
+//     if(c == ignoreEndChar){
+//       ignoreStackCount--;
+//       if(ignoreStackCount < 0){
+//         ignoreStackCount = 0;
+//         i = targetContent.length-1;
+//       }
+//     }
+  
+//     //-----( set content )-----
+//     if(c == separateChar && ignoreStackCount == 0){
+//       content = targetContent.substring(cutStartPosition, i);
+//       resultArray.push(content)
+//       i++;
+//       cutStartPosition = i;
+//     }
+
+//     //-----( for Last Char Condition )-----
+//     if(i == targetContent.length-2 && cutStartPosition < targetContent.length-2){
+//       content = targetContent.substring(cutStartPosition, targetContent.length);
+//       resultArray.push(content)
+//     }
+//   }
+
+//   return resultArray;
+// }
+
+//===================================
+// 
+// 
+//  t1.col1, round(t1.com2, 4)  #=> ["t1.col1", "round(t1.com2, 4)"]
 //===================================
 KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, separateChar, ignoreStartChar, ignoreEndChar){
   var resultArray = [];
@@ -294,17 +338,24 @@ KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, sep
   var cutStartPosition = 0;
 
   var content = "";
-  for(var i=0; i<targetContent.length-1; i++){
-    c = targetContent.substring(i, i+1);
+  var sl = separateChar.length;
+  var isl = ignoreStartChar.length;
+  var iel = ignoreEndChar.length;
+
+  for(var i=0; i<targetContent.length-sl; i++){
+    c = targetContent.substring(i, i+sl);
+    isc = targetContent.substring(i, i+isl);
+    iec = targetContent.substring(i, i+iel);
+
     //-----( example : ignore if [,] included [()] )-----
-    if(c == ignoreStartChar){
+    if(isc == ignoreStartChar){
       ignoreStackCount++;
     }
-    if(c == ignoreEndChar){
+    if(iec == ignoreEndChar){
       ignoreStackCount--;
       if(ignoreStackCount < 0){
         ignoreStackCount = 0;
-        i = targetContent.length-1;
+        i = targetContent.length-sl;
       }
     }
   
@@ -312,12 +363,12 @@ KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, sep
     if(c == separateChar && ignoreStackCount == 0){
       content = targetContent.substring(cutStartPosition, i);
       resultArray.push(content)
-      i++;
+      i+= sl;
       cutStartPosition = i;
     }
 
     //-----( for Last Char Condition )-----
-    if(i == targetContent.length-2 && cutStartPosition < targetContent.length-2){
+    if(i == targetContent.length-sl-1 && cutStartPosition < targetContent.length-sl-1){
       content = targetContent.substring(cutStartPosition, targetContent.length);
       resultArray.push(content)
     }
