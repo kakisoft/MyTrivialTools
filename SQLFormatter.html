@@ -332,9 +332,7 @@ function getSelectPhraseContent(unitArray, remainingDifinedPhraseList){
   Array.prototype.push.apply(remainingDifinedPhraseList, tmpList);
 
   var resultArray = unitArray;
-  console.log("=============")
   console.log(resultArray)
-  console.log("=============")
   resultArray = KakiStdUtil.getTargetWordRange(resultArray, "SELECT", remainingDifinedPhraseList);
   console.log("=============aaa")
   console.log(resultArray)
