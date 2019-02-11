@@ -2,175 +2,183 @@
 <html lang="ja">
   <head>
       <meta charset="utf8">
-      <title>CodeSyntaxFormatter</title>
+      <title>MarkDownTableConverter</title>
+      <style>
+        table, td, th { 
+          border: 2px #271c1c solid; 
+          border-collapse: collapse;
+        }
+      </style>
+
   </head>
 <body>
+<h1 style="font-size: 1.5em">MarkDownTableConverter 的な何か</h1>
+<div>
+  <p>
+    <input type="radio" name="functionKey" value="0">tsv To MarkDownTable
+    &emswp;&emsp;&emsp;&emsp;
+    <input type="radio" name="functionKey" value="1" checked>MarkDownTable To tsv  
+  </p>
+</div>
+<div>
+  <p>
+    <input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 1.5em">１行目をデータ定義として扱う。
+  </p>
+</div>
+<div>
+  <textarea id="target-content" style="width:60%; height:10em" placeholder="Please input any code."></textarea>
+</div>
+
 <p>
-  before
-  <textarea id="target-syntax" cols="100" rows="10" placeholder="Please input any code."></textarea>
+  <button type="button" id="execute-function01">MarkDownTableConvertert</button>
 </p>
 <p>
-  <button type="button" id="format-syntax">format-syntax</button>
-</p>
-<p>
-  after
-  <textarea id="result-syntax" cols="100" rows="10"></textarea>
+  <textarea id="result_syntax1" style="width:60%; height:10em" ></textarea>
 </p>
 
+<div id="result_syntax2">
+</div>
+
+
+<script src="./utils/KakiStdUtil.js"></script>
 <script>
-document.getElementById("format-syntax").addEventListener("click", formatSyntax)
 
-function formatSyntax(){
-  SPACE_CHARACTER = " ";
-  NEW_LINE_CHARACTER = "\n";
-  EQUAL_CHARACTER = "=";
+NEW_LINE_CHARACTER = "\n";
 
-  var targetSyntaxElement = document.getElementById("target-syntax");
+targetSyntaxElement = document.getElementById("target-content");
+resultSyntaxElement1 = document.getElementById("result_syntax1");
+resultSyntaxElement2 = document.getElementById("result_syntax2");
+
+document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
+
+//=================================================================
+//----------------------
+//   For Develop Code
+//----------------------
+var forDev1 = `id	name	age	email	company_name
+1	kaki	12	a@cbom	ペーパー
+2	soft	34	b@cbom	架空
+3	fake	69	y@xcom	税金対策
+`
+
+document.getElementById("target-content").innerHTML = forDev1;
+
+//=================================================================
+
+
+//======================================
+//       convertMarkDownTable
+//======================================
+function convertMarkDownTable(){
+  var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
+
+
   var targetSyntaxContent = targetSyntaxElement.value;
-  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
-  var resultSyntaxContentArray = [];
+  var resultContentArray = [];
 
-  //-----＜ シンタックスの右側のスペースを整形 ＞-----
-  formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentArray);
+  resultSyntaxElement1.textContent = ""
+  resultSyntaxElement2.innerHTML = ""
 
-  //-----＜ イコール前後のスペースを整形 ＞-----
-  targetSyntaxContentArray = resultSyntaxContentArray; //前回の処理結果を、今回の処理ターゲットとして設定
-  resultSyntaxContentArray = []; //前回の処理結果をクリア
-  formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSyntaxContentArray);
 
-  //-----＜ 処理結果を出力 ＞-----
-  outputResult(resultSyntaxContentArray);
-}
+  //-----< Set Control Param >-----
+  // setControlParam(controlparam, isSpecialControlFirstline);
 
-//======================================
-//  シンタックスの右側のスペースを整形
-//======================================
-function formatFirstSyntaxOfRight(targetSyntaxContentArray, resultSyntaxContentArray){
-  var edittingContextArray = [];
-  var maxSizeFirstSyntax = 0;
-  var maxSpaceCountLeftSideOfSyntax = 0;
-
-  //--------------------
-  //  入力内容を取得
-  //--------------------
-  for(var i=0; i < targetSyntaxContentArray.length; i++){
-
-    //最初のシンタックスの開始位置を検出。
-    var firstSyntaxStartPosition = targetSyntaxContentArray[i].search("[^"+ SPACE_CHARACTER +"]");
-
-    //最初のシンタックスの終了位置を検出。
-    var firstSyntaxEndPosition = targetSyntaxContentArray[i].indexOf(SPACE_CHARACTER, firstSyntaxStartPosition);
-    if( firstSyntaxEndPosition <= -1 ){
-      firstSyntaxEndPosition = targetSyntaxContentArray[i].length;
-    }
-
-    //行ごとのデータを保持する
-    edittingContextArray[i] = [
-                                 targetSyntaxContentArray[i].slice(firstSyntaxStartPosition, firstSyntaxEndPosition)
-                                ,targetSyntaxContentArray[i].slice(firstSyntaxEndPosition + 1)
-                              ];
-
-    //最初のシンタックスの左側のスペース数を保持。
-    if( maxSpaceCountLeftSideOfSyntax < firstSyntaxStartPosition ){
-      maxSpaceCountLeftSideOfSyntax = firstSyntaxStartPosition;
-    }
-
-    //最初のシンタックスの最大サイズを記録する。
-    if( maxSizeFirstSyntax <  edittingContextArray[i][0].length){
-      maxSizeFirstSyntax = edittingContextArray[i][0].length;
-    }
+  //-----< Set ResultChunkSet >-----
+  var resultChunkSet = [];
+  setResultChunkSet(resultChunkSet, targetSyntaxContent);
+  if(resultChunkSet.length <= 0){
+    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
+    return;
   }
 
-  //--------------------
-  //       編集
-  //--------------------
-  for(var i=0; i < edittingContextArray.length; i++){
-    resultSyntaxContentArray[i] = "";
+  //-----< Set Result Contents >-----
+  setResultContents(resultContentArray, resultChunkSet);
 
-    //最初のシンタックスの左側をスペースで埋める
-    for(var j=0; j < maxSpaceCountLeftSideOfSyntax; j++){
-      resultSyntaxContentArray[i] += SPACE_CHARACTER;
-    }
-
-    //最初のシンタックスをセット
-    resultSyntaxContentArray[i] += edittingContextArray[i][0];
-
-    //最初のシンタックスの右側をスペースで整形する
-    resultSyntaxContentArray[i] += SPACE_CHARACTER;
-    if( edittingContextArray[i][0].length <= maxSizeFirstSyntax ){
-      for(var k=edittingContextArray[i][0].length; k < maxSizeFirstSyntax; k++){
-        resultSyntaxContentArray[i] += SPACE_CHARACTER;
-      }
-    }
-
-    //残りの構文をセット
-    resultSyntaxContentArray[i] += edittingContextArray[i][1].trim();
-  }
+  //-----< Output Result >-----
+  resultSyntaxElement1.textContent = resultContentArray[0];
+  resultSyntaxElement2.innerHTML = resultContentArray[1];
 
 }
 
-//======================================
-//  イコール前後のスペースを整形
-//======================================
-function formatEqualCharacterBeforeAndAfter(targetSyntaxContentArray, resultSyntaxContentArray){
-  var edittingContextArray = [];
-  var maxSizeLeftSideOfEqualCaracter = 0;
+//=======================================================================================================
+//=======================================================================================================
 
-  //--------------------
-  //  入力内容を取得
-  //--------------------
-  for(var i=0; i < targetSyntaxContentArray.length; i++){
+//--------------------------
+//   Set ResultChunkSet
+//--------------------------
+function setResultChunkSet(resultChunkSet, targetSyntaxContent){
+  CHUNK_START_CHAR = "(";
+  CHUNK_END_CHAR   = ")";
 
-    //イコールの位置を検索。
-    var equalCharacterPosition = targetSyntaxContentArray[i].search("["+ EQUAL_CHARACTER +"]");
-    if(equalCharacterPosition <= -1){
-      equalCharacterPosition = targetSyntaxContentArray[i].length; //検出できなかった場合、末尾までデータを切り出す。
-    }
+  var chunkStartPositionArray = KakiStdUtil.getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
+  var chunkEndPositionArray   = KakiStdUtil.getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
 
-    //行ごとのデータを保持する
-    edittingContextArray[i] = [
-                                 targetSyntaxContentArray[i].slice(0, equalCharacterPosition)
-                                ,targetSyntaxContentArray[i].slice(equalCharacterPosition).trim()
-                              ];
-
-    //イコールの左側のシンタックスの、最大サイズを記録する。
-    if( maxSizeLeftSideOfEqualCaracter <  edittingContextArray[i][0].length){
-      maxSizeLeftSideOfEqualCaracter = edittingContextArray[i][0].length;
-    }
-
+  if( !(chunkStartPositionArray.length == 2 && chunkEndPositionArray.length == 2) ){
+      return false;
   }
 
+  var chunk1 = targetSyntaxContent.slice(chunkStartPositionArray[0]+1 ,chunkEndPositionArray[0]).trim();
+  var chunk2 = targetSyntaxContent.slice(chunkStartPositionArray[1]+1 ,chunkEndPositionArray[1]).trim();
 
-  //--------------------
-  //       編集
-  //--------------------
-  for(var i=0; i < edittingContextArray.length; i++){
-    resultSyntaxContentArray[i] = "";
+  var splittedChunk1 = chunk1.split(",");
+  var splittedChunk2 = chunk2.split(",");
 
-    //イコールの左側のシンタックスをセット。
-    resultSyntaxContentArray[i] += edittingContextArray[i][0];
+  resultChunkSet[0] = splittedChunk1;
+  resultChunkSet[1] = splittedChunk2;
 
-    //イコールの左側のシンタックスの右側を、スペースで整形する。
-    if( edittingContextArray[i][0].length <= maxSizeLeftSideOfEqualCaracter ){
-      for(var k=edittingContextArray[i][0].length; k < maxSizeLeftSideOfEqualCaracter; k++){
-        resultSyntaxContentArray[i] += SPACE_CHARACTER;
-      }
-    }
+  return true;
+}
 
-    //残りの構文をセット
-    resultSyntaxContentArray[i] += edittingContextArray[i][1];
+//--------------------------
+//   Set Result Contents
+//--------------------------
+function setResultContents(resultContentArray, resultChunkSet){
+
+  setResult1(resultContentArray, resultChunkSet);
+  setResult2(resultContentArray, resultChunkSet);
+
+  return;
+}
+
+//--------------------------
+//        Result 1
+//--------------------------
+function setResult1(resultSyntaxContent, resultChunkSet){
+  var tmpArray = [];
+
+  for(var i=0; i < resultChunkSet[0].length; i++){
+    var el = resultChunkSet[0][i].trim() + "\t" +  resultChunkSet[1][i].trim();
+    tmpArray.push(el);
   }
+  resultSyntaxContent[0] = tmpArray.join(NEW_LINE_CHARACTER);
+
+  return;
 }
 
+//--------------------------
+//        Result 2
+//--------------------------
+function setResult2(resultSyntaxContent, resultChunkSet){
 
-//====================
-//  結果を出力する
-//====================
-function outputResult(resultSyntaxContentArray){
-  var resultSyntaxElement = document.getElementById("result-syntax");
-  var resultSyntaxContent = resultSyntaxContentArray.join(NEW_LINE_CHARACTER);
-  resultSyntaxElement.textContent = resultSyntaxContent;
+  var result = "";
+  for(var i=0; i < resultChunkSet[0].length; i++){
+    var el1 = KakiStdUtil.surroundHTMLTag(resultChunkSet[0][i].trim(), "td");
+    var el2 = KakiStdUtil.surroundHTMLTag(resultChunkSet[1][i].trim(), "td");
+    var el3 = KakiStdUtil.surroundHTMLTag(el1 + el2, "tr");
+
+    result += el3;
+  }
+
+  result = KakiStdUtil.surroundHTMLTag(result, "tbody");
+  result = KakiStdUtil.surroundHTMLTag(result, "table");
+  resultSyntaxContent[1] = result;
+
+  return;
 }
+
+//=======================================================================================================
+//=======================================================================================================
+
 </script>
 </body>
 </html>
