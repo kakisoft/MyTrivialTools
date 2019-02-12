@@ -15,9 +15,9 @@
 <h1 style="font-size: 1.5em">MarkDownTableConverter 的な何か</h1>
 <div>
   <p>
-    <input type="radio" name="switch-key" value="0" checked>tsv To MarkDownTable
+    <input type="radio" name="switch-key" value="1" checked>tsv To MarkDownTable
     &emsp;&emsp;&emsp;&emsp;
-    <input type="radio" name="switch-key" value="1">MarkDownTable To tsv  
+    <input type="radio" name="switch-key" value="2">MarkDownTable To tsv  
   </p>
 </div>
 <div>
@@ -51,7 +51,7 @@ resultSyntaxElement2 = document.getElementById("result_syntax2");
 
 document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
 
-//=================================================================
+//=======================================================================================================
 //----------------------
 //   For Develop Code
 //----------------------
@@ -63,12 +63,12 @@ var forDev1 = `id	name	age	email	company_name
 
 document.getElementById("target-content").innerHTML = forDev1;
 
-//=================================================================
+//=======================================================================================================
 var SWITCH_KEY = {
   TSV_TO_MARKDOWNTABLE : 1,
   MARKDOWNTABLE_TO_TSV : 2,
 };
-//=================================================================
+//=======================================================================================================
 
 //======================================
 //       convertMarkDownTable
@@ -77,7 +77,6 @@ function convertMarkDownTable(){
   var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
   var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
 
-  console.table({switchKey})
 
   // var targetSyntaxContent = targetSyntaxElement.value;
   // var resultContentArray = [];
@@ -91,6 +90,7 @@ function convertMarkDownTable(){
 
   //-----< Set Control Param >-----
   setControlParam(controlparam, switchKey, isSpecialControlFirstline);
+
 
 
   // //-----< Set ResultChunkSet >-----
@@ -117,8 +117,8 @@ function convertMarkDownTable(){
 //        Set Control Param
 //-------------------------------------
 function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
-  columnNameLine;
-  dataStartLine;
+  columnNameLine = 0;
+  dataStartLine  = 0;
 
   if(isSpecialControlFirstline){
     columnNameLine = 0;
@@ -126,7 +126,7 @@ function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
     columnNameLine = -1;  // Column Name Line is Not Exists
   }
 
-
+console.log(parseInt(switchKey))
   switch (parseInt(switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
       if(isSpecialControlFirstline){
