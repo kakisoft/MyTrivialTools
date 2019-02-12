@@ -74,21 +74,16 @@ var SWITCH_KEY = {
 //       convertMarkDownTable
 //======================================
 function convertMarkDownTable(){
-  var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
   var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+  var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
 
+  var resultSyntaxContentArray = [];
+  var targetSyntaxContent = targetSyntaxElement.value;
+  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
-  // var targetSyntaxContent = targetSyntaxElement.value;
-  // var resultContentArray = [];
-
-  // resultSyntaxElement1.textContent = ""
-  // resultSyntaxElement2.innerHTML = ""
-
-
-
-  var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
 
   //-----< Set Control Param >-----
+  var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
   setControlParam(controlparam, switchKey, isSpecialControlFirstline);
 
 
@@ -126,7 +121,7 @@ function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
     columnNameLine = -1;  // Column Name Line is Not Exists
   }
 
-console.log(parseInt(switchKey))
+
   switch (parseInt(switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
       if(isSpecialControlFirstline){
@@ -150,6 +145,19 @@ console.log(parseInt(switchKey))
   return;
 }
 
+//-------------------------------------
+//        get SplitChar
+//-------------------------------------
+function getSplitChar(switchKey){
+
+  switch (parseInt(switchKey)){
+    case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
+      return "\t"
+    case SWITCH_KEY.MARKDOWNTABLE_TO_TSV:
+      return "|"
+  }
+
+}
 
 //=======================================================================================================
 //=======================================================================================================
