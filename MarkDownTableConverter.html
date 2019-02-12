@@ -82,7 +82,7 @@ function convertMarkDownTable(){
   // var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
 
   //-----< Set Control Param >-----
-  // setControlParam(controlparam, isSpecialControlFirstline);
+  setControlParam(controlparam, isSpecialControlFirstline);
 
 
   // //-----< Set ResultChunkSet >-----
@@ -115,7 +115,7 @@ function setControlParam(controlparam, isSpecialControlFirstline){
     controlparam['columnNameLine'] = 0;
   }
 
-  controlparam['dataStartLine'] = controlparam['columnNameLine'] + 1;
+  controlparam['dataStartLine'] = controlparam['columnNameLine'] + 2;
 
   return;
 }
