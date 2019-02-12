@@ -79,102 +79,47 @@ function convertMarkDownTable(){
   resultSyntaxElement1.textContent = ""
   resultSyntaxElement2.innerHTML = ""
 
+  // var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
 
   //-----< Set Control Param >-----
   // setControlParam(controlparam, isSpecialControlFirstline);
 
-  //-----< Set ResultChunkSet >-----
-  var resultChunkSet = [];
-  setResultChunkSet(resultChunkSet, targetSyntaxContent);
-  if(resultChunkSet.length <= 0){
-    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
-    return;
-  }
+
+  // //-----< Set ResultChunkSet >-----
+  // var resultChunkSet = [];
+  // setResultChunkSet(resultChunkSet, targetSyntaxContent);
+  // if(resultChunkSet.length <= 0){
+  //   resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
+  //   return;
+  // }
 
   //-----< Set Result Contents >-----
   setResultContents(resultContentArray, resultChunkSet);
 
   //-----< Output Result >-----
-  resultSyntaxElement1.textContent = resultContentArray[0];
-  resultSyntaxElement2.innerHTML = resultContentArray[1];
+  // resultSyntaxElement1.textContent = resultContentArray[0];
+  // resultSyntaxElement2.innerHTML = resultContentArray[1];
 
 }
 
 //=======================================================================================================
 //=======================================================================================================
 
-//--------------------------
-//   Set ResultChunkSet
-//--------------------------
-function setResultChunkSet(resultChunkSet, targetSyntaxContent){
-  CHUNK_START_CHAR = "(";
-  CHUNK_END_CHAR   = ")";
-
-  var chunkStartPositionArray = KakiStdUtil.getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
-  var chunkEndPositionArray   = KakiStdUtil.getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
-
-  if( !(chunkStartPositionArray.length == 2 && chunkEndPositionArray.length == 2) ){
-      return false;
+//-------------------------------------
+//        Set Control Param
+//-------------------------------------
+function setControlParam(controlparam, isSpecialControlFirstline){
+  if(isSpecialControlFirstline){
+    controlparam['columnNameLine'] = 1;
+  }else{
+    controlparam['columnNameLine'] = 0;
   }
 
-  var chunk1 = targetSyntaxContent.slice(chunkStartPositionArray[0]+1 ,chunkEndPositionArray[0]).trim();
-  var chunk2 = targetSyntaxContent.slice(chunkStartPositionArray[1]+1 ,chunkEndPositionArray[1]).trim();
-
-  var splittedChunk1 = chunk1.split(",");
-  var splittedChunk2 = chunk2.split(",");
-
-  resultChunkSet[0] = splittedChunk1;
-  resultChunkSet[1] = splittedChunk2;
-
-  return true;
-}
-
-//--------------------------
-//   Set Result Contents
-//--------------------------
-function setResultContents(resultContentArray, resultChunkSet){
-
-  setResult1(resultContentArray, resultChunkSet);
-  setResult2(resultContentArray, resultChunkSet);
+  controlparam['dataStartLine'] = controlparam['columnNameLine'] + 1;
 
   return;
 }
 
-//--------------------------
-//        Result 1
-//--------------------------
-function setResult1(resultSyntaxContent, resultChunkSet){
-  var tmpArray = [];
-
-  for(var i=0; i < resultChunkSet[0].length; i++){
-    var el = resultChunkSet[0][i].trim() + "\t" +  resultChunkSet[1][i].trim();
-    tmpArray.push(el);
-  }
-  resultSyntaxContent[0] = tmpArray.join(NEW_LINE_CHARACTER);
-
-  return;
-}
-
-//--------------------------
-//        Result 2
-//--------------------------
-function setResult2(resultSyntaxContent, resultChunkSet){
-
-  var result = "";
-  for(var i=0; i < resultChunkSet[0].length; i++){
-    var el1 = KakiStdUtil.surroundHTMLTag(resultChunkSet[0][i].trim(), "td");
-    var el2 = KakiStdUtil.surroundHTMLTag(resultChunkSet[1][i].trim(), "td");
-    var el3 = KakiStdUtil.surroundHTMLTag(el1 + el2, "tr");
-
-    result += el3;
-  }
-
-  result = KakiStdUtil.surroundHTMLTag(result, "tbody");
-  result = KakiStdUtil.surroundHTMLTag(result, "table");
-  resultSyntaxContent[1] = result;
-
-  return;
-}
 
 //=======================================================================================================
 //=======================================================================================================
