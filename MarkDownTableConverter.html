@@ -75,6 +75,7 @@ var SWITCH_KEY = {
 //======================================
 function convertMarkDownTable(){
   var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+  var splitChar = getSplitChar(switchKey);
   var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
 
   var resultSyntaxContentArray = [];
@@ -87,10 +88,9 @@ function convertMarkDownTable(){
   setControlParam(controlparam, switchKey, isSpecialControlFirstline);
 
 
-
-  // //-----< Set ResultChunkSet >-----
-  // var resultChunkSet = [];
-  // setResultChunkSet(resultChunkSet, targetSyntaxContent);
+  //-----< Set ResultChunkSet >-----
+  var resultChunkSet = [];
+  setResultChunkSet(resultChunkSet, targetSyntaxContentArray, splitChar);
   // if(resultChunkSet.length <= 0){
   //   resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
   //   return;
@@ -103,7 +103,7 @@ function convertMarkDownTable(){
   // resultSyntaxElement1.textContent = resultContentArray[0];
   // resultSyntaxElement2.innerHTML = resultContentArray[1];
 
-}
+  }
 
 //=======================================================================================================
 //=======================================================================================================
@@ -158,6 +158,24 @@ function getSplitChar(switchKey){
   }
 
 }
+
+
+//-------------------------------------
+//      Set ResultChunkSet
+//-------------------------------------
+function setResultChunkSet(resultChunkSet, targetSyntaxContentArray, splitChar){
+
+console.log('bb')
+
+  targetSyntaxContentArray.forEach(el => {
+    // console.log(el)
+    // columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
+    var elList = el.split(splitChar);
+
+    console.table({elList})
+  });
+}
+
 
 //=======================================================================================================
 //=======================================================================================================
