@@ -75,8 +75,8 @@ var SWITCH_KEY = {
 //======================================
 function convertMarkDownTable(){
   var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
-  var splitChar = getSplitChar(switchKey);
-  var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
+  // var splitChar = getSplitChar(switchKey);
+  // var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
 
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetSyntaxElement.value;
@@ -84,13 +84,22 @@ function convertMarkDownTable(){
 
 
   //-----< Set Control Param >-----
-  var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
-  setControlParam(controlparam, switchKey, isSpecialControlFirstline);
+  var controlparam = { 
+      switchKey                 : switchKey
+    , splitChar                 : getSplitChar(switchKey)
+    , isSpecialControlFirstline : document.getElementById("is-special-contr ol-firstline").checked
+    , columnNameLine : 0 
+    , dataStartLine  : 0 
+  };
+  // setControlParam(controlparam, switchKey, isSpecialControlFirstline);
+  setControlParam(controlparam);
 
 
   //-----< Set ResultChunkSet >-----
-  var resultChunkSet = [];
-  setResultChunkSet(resultChunkSet, targetSyntaxContentArray, splitChar);
+  var resultContentArray = [];
+  setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam);
+
+  // setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam, splitChar);
   // if(resultChunkSet.length <= 0){
   //   resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
   //   return;
@@ -111,27 +120,28 @@ function convertMarkDownTable(){
 //-------------------------------------
 //        Set Control Param
 //-------------------------------------
-function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
+// function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
+function setControlParam(controlparam){
   columnNameLine = 0;
   dataStartLine  = 0;
 
-  if(isSpecialControlFirstline){
+  if(controlparam.isSpecialControlFirstline){
     columnNameLine = 0;
   }else{
     columnNameLine = -1;  // Column Name Line is Not Exists
   }
 
 
-  switch (parseInt(switchKey)){
+  switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
-      if(isSpecialControlFirstline){
+      if(controlparam.isSpecialControlFirstline){
         dataStartLine = 1;
       }else{
         dataStartLine = 0;
       }
       break
     case SWITCH_KEY.MARKDOWNTABLE_TO_TSV:
-      if(isSpecialControlFirstline){
+      if(controlparam.isSpecialControlFirstline){
         dataStartLine = 2;
       }else{
         dataStartLine = 0;
@@ -139,8 +149,10 @@ function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
       break
   }
 
-  controlparam['columnNameLine'] = columnNameLine;
-  controlparam['dataStartLine']  = dataStartLine;
+  // controlparam['columnNameLine'] = columnNameLine;
+  // controlparam['dataStartLine']  = dataStartLine;
+  controlparam.columnNameLine = columnNameLine;
+  controlparam.dataStartLine  = dataStartLine;
 
   return;
 }
@@ -161,19 +173,41 @@ function getSplitChar(switchKey){
 
 
 //-------------------------------------
-//      Set ResultChunkSet
+//      Set ResultContentArray
 //-------------------------------------
-function setResultChunkSet(resultChunkSet, targetSyntaxContentArray, splitChar){
+function setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam){
 
 console.log('bb')
 
   targetSyntaxContentArray.forEach(el => {
     // console.log(el)
     // columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
-    var elList = el.split(splitChar);
+    // var elList = el.split(splitChar);
 
-    console.table({elList})
+    // console.table({elList})
   });
+
+
+  var loopStartPosition;
+
+console.log(controlparam.columnNameLine)
+
+  if(controlparam.columnNameLine > -1){
+    // loopStartPosition = controlparam['dataStartLine'];
+
+    resultContentArray.push("ssss")
+  }
+  // controlparam['columnNameLine'] = columnNameLine;
+  // controlparam['dataStartLine']  = dataStartLine;
+
+
+
+  for(var i=0; i<targetSyntaxContentArray.length; i++){
+
+  }
+
+
+  console.table({resultContentArray})
 }
 
 
