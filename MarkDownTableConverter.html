@@ -26,7 +26,7 @@
   <button type="button" id="execute-function01">MarkDownTableConvertert</button>
 </p>
 <p>
-  <textarea id="result_syntax1" style="width:60%; height:10em" ></textarea>
+  <textarea id="result-syntax" style="width:60%; height:10em"></textarea>
 </p>
 
 <div id="result_syntax2">
@@ -38,9 +38,9 @@
 
 NEW_LINE_CHARACTER = "\n";
 
-targetSyntaxElement = document.getElementById("target-content");
-resultSyntaxElement1 = document.getElementById("result_syntax1");
-resultSyntaxElement2 = document.getElementById("result_syntax2");
+targetContentElement = document.getElementById("target-content");
+resultContentElement = document.getElementById("result-syntax");
+// resultContentElement2 = document.getElementById("result_syntax2");
 
 document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
 
@@ -72,7 +72,7 @@ function convertMarkDownTable(){
   // var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
 
   var resultSyntaxContentArray = [];
-  var targetSyntaxContent = targetSyntaxElement.value;
+  var targetSyntaxContent = targetContentElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
 
 
@@ -92,11 +92,11 @@ function convertMarkDownTable(){
 
   //-----< Set ResultChunkSet >-----
   var resultContentArray = [];
-  setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam);
+  setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam);
 
   // setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam, splitChar);
   // if(resultChunkSet.length <= 0){
-  //   resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
+  //   resultContentElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
   //   return;
   // }
 
@@ -104,8 +104,9 @@ function convertMarkDownTable(){
   // setResultContents(resultContentArray, resultChunkSet);
 
   //-----< Output Result >-----
-  // resultSyntaxElement1.textContent = resultContentArray[0];
-  // resultSyntaxElement2.innerHTML = resultContentArray[1];
+  // resultContentElement1.textContent = resultContentArray[0];
+  // resultContentElement2.innerHTML = resultContentArray[1];
+  outputResult(resultContentArray);
 
   }
 
@@ -169,10 +170,18 @@ function setControlParam(controlparam){
 }
 
 
+function outputResult(resultContentArray){
+  // var resultContentElement = document.getElementById("result-syntax");
+  var resultSyntaxContent = resultContentArray.join(NEW_LINE_CHARACTER);
+  resultContentElement.textContent = resultSyntaxContent;
+
+  // resultContentElement.textContent = 'aaaaa';
+}
+
 //-------------------------------------
 //      Set ResultContentArray
 //-------------------------------------
-function setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam){
+function setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam){
 
 
   targetSyntaxContentArray.forEach(el => {
@@ -210,6 +219,10 @@ function setResultChunkSet(resultContentArray, targetSyntaxContentArray, control
 
 
   for(var i=controlparam.dataStartLine; i<targetSyntaxContentArray.length; i++){
+    if(targetSyntaxContentArray[i].trim().length <= 0){
+      continue;
+    }
+
     var el = targetSyntaxContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
