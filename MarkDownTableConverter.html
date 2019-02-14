@@ -3,13 +3,6 @@
   <head>
       <meta charset="utf8">
       <title>MarkDownTableConverter</title>
-      <style>
-        table, td, th { 
-          border: 2px #271c1c solid; 
-          border-collapse: collapse;
-        }
-      </style>
-
   </head>
 <body>
 <h1 style="font-size: 1.5em">MarkDownTableConverter 的な何か</h1>
@@ -74,7 +67,7 @@ var SWITCH_KEY = {
 //       convertMarkDownTable
 //======================================
 function convertMarkDownTable(){
-  var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+  // var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
   // var splitChar = getSplitChar(switchKey);
   // var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
 
@@ -85,15 +78,17 @@ function convertMarkDownTable(){
 
   //-----< Set Control Param >-----
   var controlparam = { 
-      switchKey                 : switchKey
-    , splitChar                 : getSplitChar(switchKey)
-    , isSpecialControlFirstline : document.getElementById("is-special-contr ol-firstline").checked
+      switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+    , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
+    , splitChar                 : null
+    , replaceChar               : null
     , columnNameLine : 0 
     , dataStartLine  : 0 
   };
   // setControlParam(controlparam, switchKey, isSpecialControlFirstline);
   setControlParam(controlparam);
 
+console.table({controlparam})
 
   //-----< Set ResultChunkSet >-----
   var resultContentArray = [];
@@ -120,8 +115,11 @@ function convertMarkDownTable(){
 //-------------------------------------
 //        Set Control Param
 //-------------------------------------
-// function setControlParam(controlparam, switchKey, isSpecialControlFirstline){
 function setControlParam(controlparam){
+
+  //---------------------
+  //
+  //---------------------
   columnNameLine = 0;
   dataStartLine  = 0;
 
@@ -130,7 +128,6 @@ function setControlParam(controlparam){
   }else{
     columnNameLine = -1;  // Column Name Line is Not Exists
   }
-
 
   switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
@@ -149,26 +146,26 @@ function setControlParam(controlparam){
       break
   }
 
-  // controlparam['columnNameLine'] = columnNameLine;
-  // controlparam['dataStartLine']  = dataStartLine;
   controlparam.columnNameLine = columnNameLine;
   controlparam.dataStartLine  = dataStartLine;
 
-  return;
-}
 
-//-------------------------------------
-//        get SplitChar
-//-------------------------------------
-function getSplitChar(switchKey){
-
-  switch (parseInt(switchKey)){
+  //---------------------
+  //
+  //---------------------
+  switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
-      return "\t"
+      controlparam.splitChar   = "\t";
+      controlparam.replaceChar = "|";
+      break;
+
     case SWITCH_KEY.MARKDOWNTABLE_TO_TSV:
-      return "|"
+      controlparam.splitChar   = "|";
+      controlparam.replaceChar = "\t";
+      break;
   }
 
+  return;
 }
 
 
