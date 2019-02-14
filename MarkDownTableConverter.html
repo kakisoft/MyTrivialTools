@@ -29,10 +29,6 @@
   <textarea id="result-syntax" style="width:60%; height:10em"></textarea>
 </p>
 
-<div id="result_syntax2">
-</div>
-
-
 <script src="./utils/KakiStdUtil.js"></script>
 <script>
 
@@ -40,7 +36,6 @@ NEW_LINE_CHARACTER = "\n";
 
 targetContentElement = document.getElementById("target-content");
 resultContentElement = document.getElementById("result-syntax");
-// resultContentElement2 = document.getElementById("result_syntax2");
 
 document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
 
@@ -67,10 +62,6 @@ var SWITCH_KEY = {
 //       convertMarkDownTable
 //======================================
 function convertMarkDownTable(){
-  // var switchKey = KakiStdUtil.getSelectedRadioButtonValue("switch-key")
-  // var splitChar = getSplitChar(switchKey);
-  // var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
-
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetContentElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
@@ -85,27 +76,15 @@ function convertMarkDownTable(){
     , columnNameLine : 0 
     , dataStartLine  : 0 
   };
-  // setControlParam(controlparam, switchKey, isSpecialControlFirstline);
   setControlParam(controlparam);
 
-// console.table({controlparam})
 
-  //-----< Set ResultChunkSet >-----
+  //-----< Set ResultContentArray >-----
   var resultContentArray = [];
   setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam);
 
-  // setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam, splitChar);
-  // if(resultChunkSet.length <= 0){
-  //   resultContentElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
-  //   return;
-  // }
-
-  //-----< Set Result Contents >-----
-  // setResultContents(resultContentArray, resultChunkSet);
 
   //-----< Output Result >-----
-  // resultContentElement1.textContent = resultContentArray[0];
-  // resultContentElement2.innerHTML = resultContentArray[1];
   outputResult(resultContentArray);
 
   }
@@ -170,13 +149,14 @@ function setControlParam(controlparam){
 }
 
 
+//-------------------------------------
+//           Output Result
+//-------------------------------------
 function outputResult(resultContentArray){
-  // var resultContentElement = document.getElementById("result-syntax");
   var resultSyntaxContent = resultContentArray.join(NEW_LINE_CHARACTER);
   resultContentElement.textContent = resultSyntaxContent;
-
-  // resultContentElement.textContent = 'aaaaa';
 }
+
 
 //-------------------------------------
 //      Set ResultContentArray
