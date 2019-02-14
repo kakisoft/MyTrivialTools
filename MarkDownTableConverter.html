@@ -88,7 +88,7 @@ function convertMarkDownTable(){
   // setControlParam(controlparam, switchKey, isSpecialControlFirstline);
   setControlParam(controlparam);
 
-console.table({controlparam})
+// console.table({controlparam})
 
   //-----< Set ResultChunkSet >-----
   var resultContentArray = [];
@@ -174,7 +174,6 @@ function setControlParam(controlparam){
 //-------------------------------------
 function setResultChunkSet(resultContentArray, targetSyntaxContentArray, controlparam){
 
-console.log('bb')
 
   targetSyntaxContentArray.forEach(el => {
     // console.log(el)
@@ -187,26 +186,40 @@ console.log('bb')
 
   var loopStartPosition;
 
-console.log(controlparam.columnNameLine)
+// console.log(controlparam.columnNameLine)
 
   if(controlparam.columnNameLine > -1){
     // loopStartPosition = controlparam['dataStartLine'];
+    // var elList = targetSyntaxContentArray[0].split(controlparam.splitChar);
 
-    resultContentArray.push("ssss")
+    // var el = targetSyntaxContentArray[0].replace(controlparam.splitChar, controlparam.replaceChar);
+    var el = targetSyntaxContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+    
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+
+    // .split(' ').join('-'); 
+
+    console.table({el})
+    resultContentArray.push(el)
   }
   // controlparam['columnNameLine'] = columnNameLine;
   // controlparam['dataStartLine']  = dataStartLine;
 
 
 
-  for(var i=0; i<targetSyntaxContentArray.length; i++){
-
+  for(var i=controlparam.dataStartLine; i<targetSyntaxContentArray.length; i++){
+    var el = targetSyntaxContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+    resultContentArray.push(el)
   }
 
 
   console.table({resultContentArray})
 }
-
 
 //=======================================================================================================
 //=======================================================================================================
