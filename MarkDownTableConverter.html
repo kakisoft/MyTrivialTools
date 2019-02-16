@@ -204,7 +204,7 @@ function setResultContentArray(resultContentArray, targetSyntaxContentArray, con
   targetSyntaxContentArray = targetSyntaxContentArray.filter( (el)=> el.trim().length > 0);
   // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
   if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
-    targetSyntaxContentArray = targetSyntaxContentArray.map((el) => el.slice(1, -1));
+    targetSyntaxContentArray = targetSyntaxContentArray.map((el) => el.trim().slice(1, -1));
   }
  
 
