@@ -56,13 +56,13 @@ https://kakisoft.github.io/MyTrivialTools/CreateInsertStatement.html
 id	name	age	email	company_name
 1	kaki	12	a@cbom	ペーパー
 2	soft	34	b@cbom	架空
-3	fake	69	y@xcom	税金対策
+3	fake	56	y@xcom	税金対策
 ```
 ↓みたいな INSERT文を生成。      
 ```sql
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (1,"kaki",12,"a@cbom","ペーパー");
 INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (2,"soft",34,"b@cbom","架空");
-INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",69,"y@xcom","税金対策");
+INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",56,"y@xcom","税金対策");
 ```
 テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるようにしといたせい。  
 　    
@@ -137,7 +137,7 @@ https://kakisoft.github.io/MyTrivialTools/MarkDownTableConverter
 id	name	age	email	company_name
 1	kaki	12	a@cbom	ペーパー
 2	soft	34	b@cbom	架空
-3	fake	69	y@xcom	税金対策
+3	fake	56	y@xcom	税金対策
 ```
 　　　TSV to MarkDownTable　↓　↑　MarkDownTable to TSV  
 ```
@@ -145,7 +145,7 @@ id	name	age	email	company_name
 |:--|:--|:--|:--|:--|
 |1|kaki|12|a@cbom|ペーパー|
 |2|soft|34|b@cbom|架空|
-|3|fake|69|y@xcom|税金対策|
+|3|fake|56|y@xcom|税金対策|
 ```
 　    
 　    
