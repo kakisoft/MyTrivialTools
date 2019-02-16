@@ -127,8 +127,26 @@ a@b
 　    
 　    
 　    
-# （作成中）
-https://kakisoft.github.io/MyTrivialTools/MarkDownTableConverter
+# MarkDownTableConverter 的な何か
+TSV ⇔ MarkDown形式のテーブル  
+https://kakisoft.github.io/MyTrivialTools/MarkDownTableConverter  
+
+## 概要
+こんな感じ。
+```
+id	name	age	email	company_name
+1	kaki	12	a@cbom	ペーパー
+2	soft	34	b@cbom	架空
+3	fake	69	y@xcom	税金対策
+```
+　　　TSV to MarkDownTable　↓　↑　MarkDownTable to TSV  
+```
+|id|name|age|email|company_name|
+|:--|:--|:--|:--|:--|
+|1|kaki|12|a@cbom|ペーパー|
+|2|soft|34|b@cbom|架空|
+|3|fake|69|y@xcom|税金対策|
+```
 　    
 　    
 　    
