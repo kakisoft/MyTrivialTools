@@ -44,25 +44,27 @@ document.getElementById("switch-key-1").addEventListener("click", setPlaceholder
 document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
 
+
+window.onload = function(){
+  setPlaceholderForInputText();
+}
+
 //=======================================================================================================
 //----------------------
 //   For Develop Code
 //----------------------
-var forDev1 = `id	name	age	email	company_name
+var sampleInput01 = `id	name	age	email	company_name
 1	kaki	12	a@cbom	ペーパー
 2	soft	34	b@cbom	架空
 3	fake	69	y@xcom	税金対策
 `
 
-var forDev2 = `|id|name|age|email|company_name|
+var sampleInput02 = `|id|name|age|email|company_name|
 |:--|:--|:--|:--|:--|
 |1|kaki|12|a@cbom|ペーパー|
 |2|soft|34|b@cbom|架空|
 |3|fake|69|y@xcom|税金対策|
 `
-
-
-document.getElementById("target-content").innerHTML = forDev2;
 
 //=======================================================================================================
 var SWITCH_KEY = {
@@ -72,7 +74,17 @@ var SWITCH_KEY = {
 //=======================================================================================================
 
 function setPlaceholderForInputText(){
-  console.log('sssss');
+  switch (parseInt(KakiStdUtil.getSelectedRadioButtonValue("switch-key"))){
+    case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
+      targetContentElement.placeholder = sampleInput01;
+      break
+    case SWITCH_KEY.MARKDOWNTABLE_TO_TSV:
+      targetContentElement.placeholder = sampleInput02;
+      break
+    default:
+      targetContentElement.placeholder = "";
+      break
+  }
 }
 
 //=======================================================================================================
@@ -84,6 +96,11 @@ function convertMarkDownTable(){
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetContentElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+
+  //-----< Return If not Text Inputted >-----
+  if(targetSyntaxContent.trim().length <= 0){
+    return;
+  }
 
   //-----< Set Control Param >-----
   var controlparam = { 
