@@ -166,47 +166,32 @@ function outputResult(resultContentArray){
 //-------------------------------------
 function setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam){
 
-
-  targetSyntaxContentArray.forEach(el => {
-    // console.log(el)
-    // columnTypeArray = targetSyntaxContentArray[0].split(splitChar);
-    // var elList = el.split(splitChar);
-
-    // console.table({elList})
-  });
-
-
-  var loopStartPosition;
-
-// console.log(controlparam.columnNameLine)
-
-  if(controlparam.columnNameLine > -1){
-    // loopStartPosition = controlparam['dataStartLine'];
-    // var elList = targetSyntaxContentArray[0].split(controlparam.splitChar);
-
-    // var el = targetSyntaxContentArray[0].replace(controlparam.splitChar, controlparam.replaceChar);
+    //==========<  >==========
+    if(controlparam.columnNameLine > -1){
     var el = targetSyntaxContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
-    
+
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
     }
-
-    var numOfel = targetSyntaxContentArray[0].split(controlparam.splitChar).length;
-    console.table({numOfel})
-    for(var i=0; i<numOfel; i++){
-
-    }
-
-    // .split(' ').join('-'); 
-
-    console.table({el})
     resultContentArray.push(el)
+
+
+    //----------< if TSV to MarkDown, Add Align Control Line >----------
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      var numOfel = targetSyntaxContentArray[0].split(controlparam.splitChar).length;
+      var addEl = "";
+
+      addEl += controlparam.replaceChar;
+      for(var i=0; i<numOfel; i++){
+        addEl += controlparam.markdownAlignControlChar;
+        addEl += controlparam.replaceChar;
+      }
+
+      resultContentArray.push(addEl)
+    }
   }
-  // controlparam['columnNameLine'] = columnNameLine;
-  // controlparam['dataStartLine']  = dataStartLine;
 
-
-
+  //==========<  >==========
   for(var i=controlparam.dataStartLine; i<targetSyntaxContentArray.length; i++){
     if(targetSyntaxContentArray[i].trim().length <= 0){
       continue;
