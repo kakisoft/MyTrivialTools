@@ -61,8 +61,13 @@ a@b
 
 document.getElementById("target_syntax").innerHTML = forDev1;
 
-//=================================================================
+//=======================================================================================================
+var ERROR_STATUS = {
+     1 : "( ) が無いとか、「 ( 」 と 「 ) 」 の数がおかしいとか。"
+   , 2 : "「,」の数がおかしいとか。 "
+};
 
+//=======================================================================================================
 
 //======================================
 //      Soften Insert Statement
@@ -76,9 +81,9 @@ function softenInsertStatement(){
 
   //-----< Set ResultChunkSet >-----
   var resultChunkSet = [];
-  setResultChunkSet(resultChunkSet, targetSyntaxContent);
-  if(resultChunkSet.length <= 0){
-    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "( ) が無いとか、「 ( 」 と 「 ) 」 の数がおかしいとか。 ";
+  var errorCode = setResultChunkSet(resultChunkSet, targetSyntaxContent);
+  if(errorCode > 0){
+    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "( ) が無いとか、「 ( 」 と 「 ) 」 の数がおかしいとか、「,」の数がおかしいとか。 ";
     return;
   }
 
@@ -107,7 +112,7 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   if(    (chunkStartPositionArray.length != chunkEndPositionArray.length) 
       || (chunkStartPositionArray.length < 2)
     ){
-      return false;
+      return 1;
   }
 
   var chunk1 = targetSyntaxContent.slice(chunkStartPositionArray[0]+1 ,chunkEndPositionArray[0]).trim();
@@ -119,7 +124,7 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   resultChunkSet[0] = splittedChunk1;
   resultChunkSet[1] = splittedChunk2;
 
-  return true;
+  return 0;
 }
 
 //--------------------------
