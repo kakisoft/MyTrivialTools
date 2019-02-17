@@ -78,7 +78,7 @@ function softenInsertStatement(){
   var resultChunkSet = [];
   setResultChunkSet(resultChunkSet, targetSyntaxContent);
   if(resultChunkSet.length <= 0){
-    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "() が無いとか。 ";
+    resultSyntaxElement1.textContent = "データ何かおかしいかも。" + NEW_LINE_CHARACTER + "( ) が無いとか、「 ( 」 と 「 ) 」 の数がおかしいとか。 ";
     return;
   }
 
@@ -104,12 +104,14 @@ function setResultChunkSet(resultChunkSet, targetSyntaxContent){
   var chunkStartPositionArray = KakiStdUtil.getChunkStartPositionArray(CHUNK_START_CHAR, targetSyntaxContent)
   var chunkEndPositionArray   = KakiStdUtil.getChunkStartPositionArray(CHUNK_END_CHAR  , targetSyntaxContent)
 
-  if( !(chunkStartPositionArray.length == 2 && chunkEndPositionArray.length == 2) ){
+  if(    (chunkStartPositionArray.length != chunkEndPositionArray.length) 
+      || (chunkStartPositionArray.length < 2)
+    ){
       return false;
   }
 
   var chunk1 = targetSyntaxContent.slice(chunkStartPositionArray[0]+1 ,chunkEndPositionArray[0]).trim();
-  var chunk2 = targetSyntaxContent.slice(chunkStartPositionArray[1]+1 ,chunkEndPositionArray[1]).trim();
+  var chunk2 = targetSyntaxContent.slice(chunkStartPositionArray[1]+1 ,chunkEndPositionArray[chunkEndPositionArray.length-1]).trim();
 
   var splittedChunk1 = chunk1.split(",");
   var splittedChunk2 = chunk2.split(",");
