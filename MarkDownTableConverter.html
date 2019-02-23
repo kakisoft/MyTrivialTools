@@ -29,7 +29,7 @@
   <button type="button" id="execute-function01">Convert</button>
 </p>
 <p>
-  <textarea id="result-syntax" style="width:60%; height:10em"></textarea>
+  <textarea id="result-content-01" style="width:60%; height:10em"></textarea>
 </p>
 
 <script src="./utils/KakiStdUtil.js"></script>
@@ -38,7 +38,7 @@
 NEW_LINE_CHARACTER = "\n";
 
 targetContentElement = document.getElementById("target-content");
-resultContentElement = document.getElementById("result-syntax");
+resultContentElement = document.getElementById("result-content-01");
 
 document.getElementById("switch-key-1").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
@@ -90,7 +90,7 @@ function setPlaceholderForInputText(){
 //=======================================================================================================
 
 //======================================
-//       convertMarkDownTable
+//       Convert MarkDownTable
 //======================================
 function convertMarkDownTable(){
   var resultSyntaxContentArray = [];
@@ -123,7 +123,7 @@ function convertMarkDownTable(){
   //-----< Output Result >-----
   outputResult(resultContentArray);
 
-  }
+}
 
 //=======================================================================================================
 //=======================================================================================================
@@ -246,6 +246,46 @@ function setResultContentArray(resultContentArray, targetSyntaxContentArray, con
 
 //=======================================================================================================
 //=======================================================================================================
+
+//======================================
+//       Format MarkDownTable
+//======================================
+function formatMarkDownTable(){
+  var resultSyntaxContentArray = [];
+  var targetSyntaxContent = targetContentElement.value;
+  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+
+  //-----< Return If not Text Inputted >-----
+  if(targetSyntaxContent.trim().length <= 0){
+    return;
+  }
+
+  //-----< Set Control Param >-----
+  var controlparam = { 
+      switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+    , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
+    , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
+    , splitChar                 : null
+    , replaceChar               : null
+    , columnNameLine : 0 
+    , dataStartLine  : 0 
+  };
+  setControlParam(controlparam);
+
+
+  //-----< Set ResultContentArray >-----
+  var resultContentArray = [];
+  setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam);
+
+
+  //-----< Output Result >-----
+  outputResult(resultContentArray);
+
+}
+
+//=======================================================================================================
+//=======================================================================================================
+
 
 </script>
 </body>
