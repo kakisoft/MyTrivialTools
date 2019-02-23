@@ -46,6 +46,7 @@ document.getElementById("execute-function01").addEventListener("click", convertM
 
 
 window.onload = function(){
+  // targetContentElement.value = sampleInput01; //for Debug
   setPlaceholderForInputText();
 }
 
@@ -71,6 +72,19 @@ var SWITCH_KEY = {
   TSV_TO_MARKDOWNTABLE : 1,
   MARKDOWNTABLE_TO_TSV : 2,
 };
+
+
+// var controlparam = { 
+//       switchKey                 : null
+//     , isSpecialControlFirstline : null
+//     , markdownAlignControlChar  : null
+//     , splitChar                 : null
+//     , replaceChar               : null
+//     , columnNameLine : 0 
+//     , dataStartLine  : 0 
+// };
+
+//=======================================================================================================
 //=======================================================================================================
 
 function setPlaceholderForInputText(){
@@ -87,6 +101,32 @@ function setPlaceholderForInputText(){
   }
 }
 
+
+//=======================================================================================================
+//=======================================================================================================
+
+
+
+//=======================================================================================================
+//=======================================================================================================
+
+//======================================
+//          Set ControlParam
+//======================================
+// setControlParam(controlparam);
+//   //-----< Set Control Param >-----
+//   var controlparam = { 
+//       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
+//     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
+//     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
+//     , splitChar                 : null
+//     , replaceChar               : null
+//     , columnNameLine : 0 
+//     , dataStartLine  : 0 
+//   };
+
+
+//=======================================================================================================
 //=======================================================================================================
 
 //======================================
