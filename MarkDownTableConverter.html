@@ -318,8 +318,21 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
 
 
 console.table({maxlengthMemoArray})
+  //==========<  >==========
+  var tmpArray01 = [];
+  targetContentArray.forEach(el => {
+    tmpArray01.push(el.split(controlparam.replaceChar))
+  });
 
+  console.table({tmpArray01})
+  console.table({data:tmpArray01[0]})
+// console.table({data:tmpArray01[0][0]})
 
+  resultContentArray = [];
+  for(var i=0; i<tmpArray01.length; i++){
+    var resultElArray = [];
+    
+  }
 
   // //==========< format >==========
   // // Remove Blank Line
