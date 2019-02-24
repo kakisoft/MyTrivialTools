@@ -31,6 +31,12 @@
 <p>
   <textarea id="result-content-01" style="width:60%; height:10em"></textarea>
 </p>
+<p>
+  <button type="button" id="execute-function02">Format</button>
+</p>
+<p>
+  <textarea id="result-content-02" style="width:60%; height:10em"></textarea>
+</p>
 
 <script src="./utils/KakiStdUtil.js"></script>
 <script>
@@ -39,6 +45,7 @@ NEW_LINE_CHARACTER = "\n";
 
 targetContentElement = document.getElementById("target-content");
 resultContentElement01 = document.getElementById("result-content-01");
+resultContentElement02 = document.getElementById("result-content-02");
 
 document.getElementById("switch-key-1").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
@@ -46,7 +53,7 @@ document.getElementById("execute-function01").addEventListener("click", convertP
 
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //for Debug
+  targetContentElement.value = sampleInput01; //for Debug
   setPlaceholderForInputText();
 }
 
@@ -131,66 +138,11 @@ function convertProcessFacade(){
 
 
   //-----< Format MarkDownTable >-----
-  // resultContentArray = [];
-  // targetContent = resultContentElement01.value;
-  // targetContentArray =  targetContent.split(/\r?\n/g);
-  // formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
-
-  // //-----< Output Result2 >-----
-  // outputResult(resultContentArray);
-
-}
-
-//=======================================================================================================
-//=======================================================================================================
-
-//======================================
-//       Convert MarkDownTable
-//======================================
-function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
-  
-  //==========< format >==========
-  // Remove Blank Line
-  targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
-  // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
-  if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
-    targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
-  }
- 
-
-  //==========< Set Header >==========
-  if(controlparam.columnNameLine > -1){
-    var el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
-
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
-    }
-    resultContentArray.push(el)
-
-    //-----( if TSV to MarkDown, Add Align Control Line )-----
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
-      var addEl = "";
-
-      addEl += controlparam.replaceChar;
-      for(var i=0; i<numOfel; i++){
-        addEl += controlparam.markdownAlignControlChar;
-        addEl += controlparam.replaceChar;
-      }
-
-      resultContentArray.push(addEl)
-    }
-  }
-
-  //==========< Set Body >==========
-  for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
-    var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
-    // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
-    }
-    resultContentArray.push(el)
-  }
+  resultContentArray = [];
+  targetContent = resultContentElement01.value;
+  targetContentArray =  targetContent.split(/\r?\n/g);
+  formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  outputResult(resultContentElement02, resultContentArray);
 
 }
 
@@ -276,6 +228,56 @@ function outputResult(reflectionTargetElement, resultContentArray){
 
 //=======================================================================================================
 //=======================================================================================================
+
+//======================================
+//       Convert MarkDownTable
+//======================================
+function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
+
+  //==========< format >==========
+  // Remove Blank Line
+  targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
+  // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
+  if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
+    targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
+  }
+
+
+  //==========< Set Header >==========
+  if(controlparam.columnNameLine > -1){
+    var el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+    resultContentArray.push(el)
+
+    //-----( if TSV to MarkDown, Add Align Control Line )-----
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
+      var addEl = "";
+
+      addEl += controlparam.replaceChar;
+      for(var i=0; i<numOfel; i++){
+        addEl += controlparam.markdownAlignControlChar;
+        addEl += controlparam.replaceChar;
+      }
+
+      resultContentArray.push(addEl)
+    }
+  }
+
+  //==========< Set Body >==========
+  for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
+    var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+    resultContentArray.push(el)
+  }
+
+}
 
 //======================================
 //       Format MarkDownTable
