@@ -32,14 +32,14 @@
   <textarea id="result-content-01" style="width:60%; height:10em"></textarea>
 </p>
 
-<div style="visibility: hidden">
+<!-- <div style="visibility: hidden"> -->
 <p>
   <button type="button" id="execute-function02">Format</button>
 </p>
 <p>
   <textarea id="result-content-02" style="width:60%; height:10em"></textarea>
 </p>
-</div>
+<!-- </div> -->
 
 <script src="./utils/KakiStdUtil.js"></script>
 <script>
@@ -56,7 +56,7 @@ document.getElementById("execute-function01").addEventListener("click", convertP
 
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //for Debug
+  targetContentElement.value = sampleInput01; //fowr Debug
   setPlaceholderForInputText();
 }
 
@@ -286,7 +286,71 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 //       Format MarkDownTable
 //======================================
 function formatMarkDownTable(targetContentArray, resultContentArray, controlparam){
-  console.log('sss')
+
+  if (controlparam.switchKey != SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+    return;
+  }
+
+
+
+  // var lengthMemoArray = [9][9];
+  // var maxlengthMemoArray = [];
+
+  // // var lengthMemoArray;
+  // for(var i=0; i<targetContentArray.length; i++){
+  //   // console.table({data:targetContentArray[i]})
+
+  //   var elarray = targetContentArray[i].split(controlparam.replaceChar);
+
+  //   for(var j=0; j<elarray.length; j++){
+  //     // lengthMemoArray[i][j] = 1;
+  //     // lengthMemoArray[i]= 1;
+
+
+  //     if( maxlengthMemoArray[j] > elarray[j].length){
+  //       maxlengthMemoArray[j] = elarray[j].length;
+  //     }
+  //     maxlengthMemoArray[j] = elarray[j].length;
+  //   }
+
+
+  //   // console.table({elarray})
+  // }
+
+
+  //==========< Initialize Length Size >==========
+  var maxlengthMemoArray = [];
+  for(var i=0; i<targetContentArray[0].split(controlparam.replaceChar).length; i++){
+    maxlengthMemoArray[i] = 0;
+  }
+
+
+  //==========<  >==========
+  targetContentArray.forEach(el => {
+    var elarray = el.split(controlparam.replaceChar);
+
+    for(var j=0; j<elarray.length; j++){
+      if(elarray[j].length > maxlengthMemoArray[j]){
+        maxlengthMemoArray[j] = elarray[j].length;
+      }
+    }
+  });
+
+
+
+
+
+
+
+  // //==========< format >==========
+  // // Remove Blank Line
+  // targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
+  // // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
+  // if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
+  //   targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
+  // }
+
+
 }
 
 //=======================================================================================================
