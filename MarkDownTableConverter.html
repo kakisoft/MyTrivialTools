@@ -38,11 +38,11 @@
 NEW_LINE_CHARACTER = "\n";
 
 targetContentElement = document.getElementById("target-content");
-resultContentElement = document.getElementById("result-content-01");
+resultContentElement01 = document.getElementById("result-content-01");
 
 document.getElementById("switch-key-1").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
-document.getElementById("execute-function01").addEventListener("click", convertMarkDownTable)
+document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 
 
 window.onload = function(){
@@ -74,15 +74,15 @@ var SWITCH_KEY = {
 };
 
 
-// var controlparam = { 
-//       switchKey                 : null
-//     , isSpecialControlFirstline : null
-//     , markdownAlignControlChar  : null
-//     , splitChar                 : null
-//     , replaceChar               : null
-//     , columnNameLine : 0 
-//     , dataStartLine  : 0 
-// };
+var controlparam = { 
+      switchKey                 : null
+    , isSpecialControlFirstline : null
+    , markdownAlignControlChar  : null
+    , splitChar                 : null
+    , replaceChar               : null
+    , columnNameLine : 0 
+    , dataStartLine  : 0 
+};
 
 //=======================================================================================================
 //=======================================================================================================
@@ -101,30 +101,45 @@ function setPlaceholderForInputText(){
   }
 }
 
-
-//=======================================================================================================
-//=======================================================================================================
-
-
-
 //=======================================================================================================
 //=======================================================================================================
 
 //======================================
-//          Set ControlParam
+//      ConvertProcess Facade
 //======================================
-// setControlParam(controlparam);
-//   //-----< Set Control Param >-----
-//   var controlparam = { 
-//       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
-//     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
-//     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
-//     , splitChar                 : null
-//     , replaceChar               : null
-//     , columnNameLine : 0 
-//     , dataStartLine  : 0 
-//   };
+function convertProcessFacade(){
 
+  //-----< get Control Param >-----
+  controlparam = getControlParam();
+
+  //-----<   >-----
+  var targetContent;
+  var targetContentArray;
+  var resultContentArray;
+  
+  resultContentArray = [];
+  targetContent = targetContentElement.value;
+  //-----< Return If not Text Inputted >-----
+  if(targetContent.trim().length <= 0){
+    return;
+  }
+
+  //-----< Convert MarkDownTable >-----
+  targetContentArray =  targetContent.split(/\r?\n/g);
+  convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  outputResult(resultContentElement01, resultContentArray);
+
+
+  //-----< Format MarkDownTable >-----
+  // resultContentArray = [];
+  // targetContent = resultContentElement01.value;
+  // targetContentArray =  targetContent.split(/\r?\n/g);
+  // formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
+
+  // //-----< Output Result2 >-----
+  // outputResult(resultContentArray);
+
+}
 
 //=======================================================================================================
 //=======================================================================================================
@@ -132,18 +147,65 @@ function setPlaceholderForInputText(){
 //======================================
 //       Convert MarkDownTable
 //======================================
-function convertMarkDownTable(){
-  var resultSyntaxContentArray = [];
-  var targetSyntaxContent = targetContentElement.value;
-  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
+function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
+  
+  //==========< format >==========
+  // Remove Blank Line
+  targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
+  // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
+  if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
+    targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
+  }
+ 
 
-  //-----< Return If not Text Inputted >-----
-  if(targetSyntaxContent.trim().length <= 0){
-    return;
+  //==========< Set Header >==========
+  if(controlparam.columnNameLine > -1){
+    var el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+    resultContentArray.push(el)
+
+    //-----( if TSV to MarkDown, Add Align Control Line )-----
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
+      var addEl = "";
+
+      addEl += controlparam.replaceChar;
+      for(var i=0; i<numOfel; i++){
+        addEl += controlparam.markdownAlignControlChar;
+        addEl += controlparam.replaceChar;
+      }
+
+      resultContentArray.push(addEl)
+    }
   }
 
-  //-----< Set Control Param >-----
-  var controlparam = { 
+  //==========< Set Body >==========
+  for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
+    var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
+    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
+    }
+    resultContentArray.push(el)
+  }
+
+}
+
+//=======================================================================================================
+//=======================================================================================================
+
+//======================================
+//        get Control Param
+//======================================
+function getControlParam(){
+
+  //---------------------
+  //
+  //---------------------
+  controlparam = { 
       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
@@ -152,26 +214,6 @@ function convertMarkDownTable(){
     , columnNameLine : 0 
     , dataStartLine  : 0 
   };
-  setControlParam(controlparam);
-
-
-  //-----< Set ResultContentArray >-----
-  var resultContentArray = [];
-  setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam);
-
-
-  //-----< Output Result >-----
-  outputResult(resultContentArray);
-
-}
-
-//=======================================================================================================
-//=======================================================================================================
-
-//-------------------------------------
-//        Set Control Param
-//-------------------------------------
-function setControlParam(controlparam){
 
   //---------------------
   //
@@ -221,67 +263,15 @@ function setControlParam(controlparam){
       break;
   }
 
-  return;
+  return controlparam;
 }
 
-
-//-------------------------------------
+//======================================
 //           Output Result
-//-------------------------------------
-function outputResult(resultContentArray){
+//======================================
+function outputResult(reflectionTargetElement, resultContentArray){
   var resultSyntaxContent = resultContentArray.join(NEW_LINE_CHARACTER);
-  resultContentElement.textContent = resultSyntaxContent;
-}
-
-
-//-------------------------------------
-//      Set ResultContentArray
-//-------------------------------------
-function setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam){
-
-  //==========< format >==========
-  // Remove Blank Line
-  targetSyntaxContentArray = targetSyntaxContentArray.filter( (el)=> el.trim().length > 0);
-  // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
-  if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
-    targetSyntaxContentArray = targetSyntaxContentArray.map((el) => el.trim().slice(1, -1));
-  }
- 
-
-  //==========< Set Header >==========
-  if(controlparam.columnNameLine > -1){
-    var el = targetSyntaxContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
-
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
-    }
-    resultContentArray.push(el)
-
-    //-----( if TSV to MarkDown, Add Align Control Line )-----
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      var numOfel = targetSyntaxContentArray[0].split(controlparam.splitChar).length;
-      var addEl = "";
-
-      addEl += controlparam.replaceChar;
-      for(var i=0; i<numOfel; i++){
-        addEl += controlparam.markdownAlignControlChar;
-        addEl += controlparam.replaceChar;
-      }
-
-      resultContentArray.push(addEl)
-    }
-  }
-
-  //==========< Set Body >==========
-  for(var i=controlparam.dataStartLine; i<targetSyntaxContentArray.length; i++){
-    var el = targetSyntaxContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
-    // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
-    }
-    resultContentArray.push(el)
-  }
-
+  reflectionTargetElement.textContent = resultSyntaxContent;
 }
 
 //=======================================================================================================
@@ -290,42 +280,12 @@ function setResultContentArray(resultContentArray, targetSyntaxContentArray, con
 //======================================
 //       Format MarkDownTable
 //======================================
-function formatMarkDownTable(){
-  var resultSyntaxContentArray = [];
-  var targetSyntaxContent = targetContentElement.value;
-  var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
-
-  //-----< Return If not Text Inputted >-----
-  if(targetSyntaxContent.trim().length <= 0){
-    return;
-  }
-
-  //-----< Set Control Param >-----
-  var controlparam = { 
-      switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
-    , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
-    , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
-    , splitChar                 : null
-    , replaceChar               : null
-    , columnNameLine : 0 
-    , dataStartLine  : 0 
-  };
-  setControlParam(controlparam);
-
-
-  //-----< Set ResultContentArray >-----
-  var resultContentArray = [];
-  setResultContentArray(resultContentArray, targetSyntaxContentArray, controlparam);
-
-
-  //-----< Output Result >-----
-  outputResult(resultContentArray);
-
+function formatMarkDownTable(targetContentArray, resultContentArray, controlparam){
+  console.log('sss')
 }
 
 //=======================================================================================================
 //=======================================================================================================
-
 
 </script>
 </body>
