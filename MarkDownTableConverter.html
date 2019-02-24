@@ -18,7 +18,10 @@
     <input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 1.5em">１行目をヘッダとして扱う。
   </p>
   <p>
-    <label>MarkDown のテーブル作るときのアライメント文字<input type="text" id="markdown-align-control-char" value=":--" style="margin-left: 1.5em"></label>
+    <label>MarkDown のテーブル作るときのアライメント文字 <input type="text" id="markdown-align-control-char" value=":--" style="margin-left: 0.5em"></label>
+  </p>
+  <p>
+    <label>MarkDown 整形時の左スペース数 <input type="number" id="markdown-num-of-left-space" value=2 min=0></label><br>   
   </p>
 </div>
 <div>
@@ -88,6 +91,7 @@ var controlparam = {
       switchKey                 : null
     , isSpecialControlFirstline : null
     , markdownAlignControlChar  : null
+    , markdownNumOfLeftspace    : 0
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -164,6 +168,7 @@ function getControlParam(){
       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
+    , markdownNumOfLeftspace    : document.getElementById("markdown-num-of-left-space").value
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -292,32 +297,6 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
   }
 
 
-
-  // var lengthMemoArray = [9][9];
-  // var maxlengthMemoArray = [];
-
-  // // var lengthMemoArray;
-  // for(var i=0; i<targetContentArray.length; i++){
-  //   // console.table({data:targetContentArray[i]})
-
-  //   var elarray = targetContentArray[i].split(controlparam.replaceChar);
-
-  //   for(var j=0; j<elarray.length; j++){
-  //     // lengthMemoArray[i][j] = 1;
-  //     // lengthMemoArray[i]= 1;
-
-
-  //     if( maxlengthMemoArray[j] > elarray[j].length){
-  //       maxlengthMemoArray[j] = elarray[j].length;
-  //     }
-  //     maxlengthMemoArray[j] = elarray[j].length;
-  //   }
-
-
-  //   // console.table({elarray})
-  // }
-
-
   //==========< Initialize Length Size >==========
   var maxlengthMemoArray = [];
   for(var i=0; i<targetContentArray[0].split(controlparam.replaceChar).length; i++){
@@ -325,7 +304,7 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
   }
 
 
-  //==========<  >==========
+  //==========< Set MaxLength >==========
   targetContentArray.forEach(el => {
     var elarray = el.split(controlparam.replaceChar);
 
@@ -338,7 +317,7 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
 
 
 
-
+console.table({maxlengthMemoArray})
 
 
 
