@@ -40,7 +40,7 @@
   <button type="button" id="execute-function02">Format</button>
 </p>
 <p>
-  <textarea id="result-content-02" style="width:60%; height:10em"></textarea>
+  <textarea id="result-content-02" style="width:100%; height:10em" wrap="off"></textarea>
 </p>
 <!-- </div> -->
 
@@ -145,11 +145,13 @@ function convertProcessFacade(){
 
 
   //-----< Format MarkDownTable >-----
-  resultContentArray = [];
+  // resultContentArray = [];
   targetContent = resultContentElement01.value;
   targetContentArray =  targetContent.split(/\r?\n/g);
   formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
-  outputResult(resultContentElement02, resultContentArray);
+  // console.log('ddddddddddd')
+  console.table({data:resultContentArray[0]})
+  // outputResult(resultContentElement02, resultContentArray);
 
 }
 
@@ -291,6 +293,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 //       Format MarkDownTable
 //======================================
 function formatMarkDownTable(targetContentArray, resultContentArray, controlparam){
+  resultContentArray = [];
 
   if (controlparam.switchKey != SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
     return;
@@ -324,16 +327,38 @@ console.table({maxlengthMemoArray})
     tmpArray01.push(el.split(controlparam.replaceChar))
   });
 
-  console.table({tmpArray01})
+  // console.table({tmpArray01})
   console.table({data:tmpArray01[0]})
+  // console.table({data:tmpArray01[0][1]})
 // console.table({data:tmpArray01[0][0]})
 
   resultContentArray = [];
   for(var i=0; i<tmpArray01.length; i++){
     var resultElArray = [];
     
+    resultElArray.push("");
+    for(var j=1; j<tmpArray01[i].length -1; j++){
+      var left = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
+
+      console.log(maxlengthMemoArray[j]);
+      // var el = left + tmpArray01[i][j].padEnd(maxlengthMemoArray[j] + controlparam.markdownNumOfLeftspace, ' ');
+      console.log("c:" + controlparam.markdownNumOfLeftspace);
+      // var el = left + tmpArray01[i][j].padEnd(5, ' ');
+      var el = left + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
+
+      //Number(
+      resultElArray.push(el);
+    }
+    resultElArray.push("");
+
+
+    resultContentArray.push(resultElArray.join(controlparam.replaceChar));
   }
 
+  // console.table({resultContentArray});
+  // console.table({data:resultContentArray[0]});
+
+  // console.log(resultContentArray[0])
   // //==========< format >==========
   // // Remove Blank Line
   // targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
@@ -341,8 +366,9 @@ console.table({maxlengthMemoArray})
   // if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
   //   targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
   // }
+  // console.table({data:resultContentArray[0]})
 
-
+  outputResult(resultContentElement02, resultContentArray);
 }
 
 //=======================================================================================================
