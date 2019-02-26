@@ -242,7 +242,7 @@ function outputResult(reflectionTargetElement, resultContentArray){
 //======================================
 function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
   resultContentArray = [];
-  
+
   //==========< format >==========
   // Remove Blank Line
   targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
@@ -352,19 +352,6 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
 
     resultContentArray.push(resultElArray.join(controlparam.replaceChar));
   }
-
-  // console.table({resultContentArray});
-  // console.table({data:resultContentArray[0]});
-
-  // console.log(resultContentArray[0])
-  // //==========< format >==========
-  // // Remove Blank Line
-  // targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
-  // // If MarkDownTable To TSV, Remove First [|] and last [|]. It not need TSV.
-  // if(controlparam.switchKey == SWITCH_KEY.MARKDOWNTABLE_TO_TSV){
-  //   targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
-  // }
-  // console.table({data:resultContentArray[0]})
 
 
   //==========< Output Result >==========
