@@ -141,16 +141,14 @@ function convertProcessFacade(){
   //-----< Convert MarkDownTable >-----
   targetContentArray =  targetContent.split(/\r?\n/g);
   convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
-  outputResult(resultContentElement01, resultContentArray);
+  // outputResult(resultContentElement01, resultContentArray);
 
 
   //-----< Format MarkDownTable >-----
-  // resultContentArray = [];
+  resultContentArray = [];
   targetContent = resultContentElement01.value;
   targetContentArray =  targetContent.split(/\r?\n/g);
   formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
-  // console.log('ddddddddddd')
-  console.table({data:resultContentArray[0]})
   // outputResult(resultContentElement02, resultContentArray);
 
 }
@@ -243,7 +241,8 @@ function outputResult(reflectionTargetElement, resultContentArray){
 //       Convert MarkDownTable
 //======================================
 function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
-
+  resultContentArray = [];
+  
   //==========< format >==========
   // Remove Blank Line
   targetContentArray = targetContentArray.filter( (el)=> el.trim().length > 0);
@@ -287,6 +286,10 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
     resultContentArray.push(el)
   }
 
+
+  //==========< Output Result >==========
+  outputResult(resultContentElement01, resultContentArray);
+
 }
 
 //======================================
@@ -319,34 +322,29 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
   });
 
 
-
-console.table({maxlengthMemoArray})
   //==========<  >==========
   var tmpArray01 = [];
   targetContentArray.forEach(el => {
     tmpArray01.push(el.split(controlparam.replaceChar))
   });
 
-  // console.table({tmpArray01})
-  console.table({data:tmpArray01[0]})
-  // console.table({data:tmpArray01[0][1]})
-// console.table({data:tmpArray01[0][0]})
 
+  //==========<  >==========
   resultContentArray = [];
   for(var i=0; i<tmpArray01.length; i++){
     var resultElArray = [];
     
     resultElArray.push("");
     for(var j=1; j<tmpArray01[i].length -1; j++){
-      var left = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
-
-      console.log(maxlengthMemoArray[j]);
-      // var el = left + tmpArray01[i][j].padEnd(maxlengthMemoArray[j] + controlparam.markdownNumOfLeftspace, ' ');
-      console.log("c:" + controlparam.markdownNumOfLeftspace);
-      // var el = left + tmpArray01[i][j].padEnd(5, ' ');
-      var el = left + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
-
-      //Number(
+      var leftch;
+      var el;
+      if(controlparam.isSpecialControlFirstline && i === 1){
+        leftch = "";
+        el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
+      }else{
+        leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
+        el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
+      }
       resultElArray.push(el);
     }
     resultElArray.push("");
@@ -368,7 +366,10 @@ console.table({maxlengthMemoArray})
   // }
   // console.table({data:resultContentArray[0]})
 
+
+  //==========< Output Result >==========
   outputResult(resultContentElement02, resultContentArray);
+
 }
 
 //=======================================================================================================
