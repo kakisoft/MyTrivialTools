@@ -369,10 +369,12 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
     for(var j=1; j<tmpArray01[i].length -1; j++){
       var leftch;
       var el;
+      //[---] line
       if(controlparam.isSpecialControlFirstline && i === 1){
         leftch = "";
         el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
       }else{
+      //nomal line
         leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
         el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
       }
