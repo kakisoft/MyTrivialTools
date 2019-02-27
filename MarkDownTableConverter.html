@@ -35,14 +35,12 @@
   <textarea id="result-content-01" style="width:60%; height:10em"></textarea>
 </p>
 
-<!-- <div style="visibility: hidden"> -->
 <p>
   <button type="button" id="execute-function02">Format</button>
 </p>
 <p>
   <textarea id="result-content-02" style="width:100%; height:10em" wrap="off"></textarea>
 </p>
-<!-- </div> -->
 
 <script src="./utils/KakiStdUtil.js"></script>
 <script>
@@ -56,10 +54,11 @@ resultContentElement02 = document.getElementById("result-content-02");
 document.getElementById("switch-key-1").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
+document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
 
 
 window.onload = function(){
-  targetContentElement.value = sampleInput01; //fowr Debug
+  // targetContentElement.value = sampleInput01; //fowr Debug
   setPlaceholderForInputText();
 }
 
@@ -131,17 +130,17 @@ function convertProcessFacade(){
   var targetContentArray;
   var resultContentArray;
   
-  resultContentArray = [];
-  targetContent = targetContentElement.value;
-  //-----< Return If not Text Inputted >-----
-  if(targetContent.trim().length <= 0){
-    return;
-  }
+  // targetContent = targetContentElement.value;
+  // //-----< Return If not Text Inputted >-----
+  // if(targetContent.trim().length <= 0){
+  //   return;
+  // }
 
   //-----< Convert MarkDownTable >-----
+  resultContentArray = [];
+  targetContent = targetContentElement.value;
   targetContentArray =  targetContent.split(/\r?\n/g);
   convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
-  // outputResult(resultContentElement01, resultContentArray);
 
 
   //-----< Format MarkDownTable >-----
@@ -149,7 +148,39 @@ function convertProcessFacade(){
   targetContent = resultContentElement01.value;
   targetContentArray =  targetContent.split(/\r?\n/g);
   formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
-  // outputResult(resultContentElement02, resultContentArray);
+
+}
+
+
+//======================================
+//      FromatProcess Facade
+//======================================
+function formatProcessFacade(){
+
+  //-----< get Control Param >-----
+  controlparam = getControlParam();
+
+  //-----<   >-----
+  var targetContent;
+  var targetContentArray;
+  var resultContentArray;
+
+  // targetContent = targetContentElement.value;
+  // //-----< Return If not Text Inputted >-----
+  // if(targetContent.trim().length <= 0){ return; }
+
+  //-----< Convert MarkDownTable >-----
+  // resultContentArray = [];
+  // targetContentArray =  targetContent.split(/\r?\n/g);
+  // convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
+
+
+  //-----< Format MarkDownTable >-----
+  resultContentArray = [];
+  targetContent = resultContentElement01.value;
+  if(targetContent.trim().length <= 0){ return; }
+  targetContentArray =  targetContent.split(/\r?\n/g);
+  formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
 
 }
 
