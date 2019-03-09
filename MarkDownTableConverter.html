@@ -330,7 +330,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
       resultContentArray.push(addEl)
     }
   }
-console.table({controlparam})
+
   //==========< Set Body >==========
   for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
     var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
