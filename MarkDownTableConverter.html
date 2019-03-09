@@ -137,6 +137,9 @@ function setSpecificElementsEnableStatus(el, status){
 //======================================
 function convertProcessFacade(){
 
+  //-----< Clear All Output >-----
+  clearAllOutput();
+
   //-----< get Control Param >-----
   controlparam = getControlParam();
 
@@ -145,11 +148,11 @@ function convertProcessFacade(){
   var targetContentArray;
   var resultContentArray;
   
-  // targetContent = targetContentElement.value;
-  // //-----< Return If not Text Inputted >-----
-  // if(targetContent.trim().length <= 0){
-  //   return;
-  // }
+  targetContent = targetContentElement.value;
+  //-----< Return If not Text Inputted >-----
+  if(targetContent.trim().length <= 0){
+    return;
+  }
 
   //-----< Convert MarkDownTable >-----
   resultContentArray = [];
@@ -172,7 +175,10 @@ function convertProcessFacade(){
 //======================================
 function formatProcessFacade(){
 
-  //-----< get Control Param >-----
+  //-----< Clear All Output >-----
+  clearAllOutput();
+
+  //-----< Get Control Param >-----
   controlparam = getControlParam();
 
   //-----<   >-----
@@ -180,14 +186,14 @@ function formatProcessFacade(){
   var targetContentArray;
   var resultContentArray;
 
-  // targetContent = targetContentElement.value;
-  // //-----< Return If not Text Inputted >-----
-  // if(targetContent.trim().length <= 0){ return; }
+  targetContent = targetContentElement.value;
+  //-----< Return If not Text Inputted >-----
+  if(targetContent.trim().length <= 0){ return; }
 
   //-----< Convert MarkDownTable >-----
-  // resultContentArray = [];
-  // targetContentArray =  targetContent.split(/\r?\n/g);
-  // convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  resultContentArray = [];
+  targetContentArray =  targetContent.split(/\r?\n/g);
+  convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
 
 
   //-----< Format MarkDownTable >-----
@@ -201,6 +207,14 @@ function formatProcessFacade(){
 
 //=======================================================================================================
 //=======================================================================================================
+
+//======================================
+//       Clear all Output
+//======================================
+function clearAllOutput(){
+  resultContentElement01.value = "";
+  resultContentElement02.value = "";
+}
 
 //======================================
 //        get Control Param
