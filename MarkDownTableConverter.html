@@ -60,7 +60,7 @@ document.getElementById("execute-function01").addEventListener("click", convertP
 document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //fowr Debug
+  targetContentElement.value = sampleInput01; //fowr Debug
   setUserElementStatusForUserInput();
 }
 
@@ -212,8 +212,8 @@ function formatProcessFacade(){
 //       Clear all Output
 //======================================
 function clearAllOutput(){
-  resultContentElement01.value = "";
-  resultContentElement02.value = "";
+  resultContentElement01.textContent = "";
+  resultContentElement02.textContent = "";
 }
 
 //======================================
@@ -227,7 +227,7 @@ function getControlParam(){
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
     , markdownNumOfLeftspace    : document.getElementById("markdown-num-of-left-space").value
-    , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").value
+    , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").checked
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
