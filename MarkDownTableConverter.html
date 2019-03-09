@@ -192,9 +192,7 @@ function formatProcessFacade(){
 //======================================
 function getControlParam(){
 
-  //---------------------
-  //
-  //---------------------
+  //==========< Set User Selected Param >==========
   controlparam = { 
       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
@@ -206,9 +204,7 @@ function getControlParam(){
     , dataStartLine  : 0 
   };
 
-  //---------------------
-  //
-  //---------------------
+  //==========< Set Line Number >==========
   columnNameLine = 0;
   dataStartLine  = 0;
 
@@ -239,9 +235,7 @@ function getControlParam(){
   controlparam.dataStartLine  = dataStartLine;
 
 
-  //---------------------
-  //
-  //---------------------
+  //==========< Set Split Char >==========
   switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
       controlparam.splitChar   = "\t";
