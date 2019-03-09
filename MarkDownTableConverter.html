@@ -93,6 +93,7 @@ var controlparam = {
     , isSpecialControlFirstline : null
     , markdownAlignControlChar  : null
     , markdownNumOfLeftspace    : 0
+    , isTrimMarkdownElement     : null
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -212,6 +213,7 @@ function getControlParam(){
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
     , markdownNumOfLeftspace    : document.getElementById("markdown-num-of-left-space").value
+    , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").value
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -314,7 +316,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
       resultContentArray.push(addEl)
     }
   }
-
+console.table({controlparam})
   //==========< Set Body >==========
   for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
     var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
