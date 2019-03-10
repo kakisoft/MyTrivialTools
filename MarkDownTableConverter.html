@@ -13,7 +13,7 @@
     <input type="radio" name="switch-key" id="switch-key-2" value="2" >MarkDownTable to TSV
   </p>
 </div>
-<div>
+<div id="to-markdown-options">
   <p>
     <input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 1.5em">１行目をヘッダとして扱う。
   </p>
@@ -22,6 +22,9 @@
   </p>
   <p>
     <label>MarkDown 整形時の左スペース数 <input type="number" id="markdown-num-of-left-space" value=2 min=0></label><br>   
+  </p>
+  <p>
+    <input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。
   </p>
 </div>
 <div>
@@ -51,15 +54,14 @@ targetContentElement = document.getElementById("target-content");
 resultContentElement01 = document.getElementById("result-content-01");
 resultContentElement02 = document.getElementById("result-content-02");
 
-document.getElementById("switch-key-1").addEventListener("click", setPlaceholderForInputText)
-document.getElementById("switch-key-2").addEventListener("click", setPlaceholderForInputText)
+document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
+document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
 
-
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //fowr Debug
-  setPlaceholderForInputText();
+  targetContentElement.value = sampleInput01; //fowr Debug
+  setUserElementStatusForUserInput();
 }
 
 //=======================================================================================================
@@ -91,6 +93,7 @@ var controlparam = {
     , isSpecialControlFirstline : null
     , markdownAlignControlChar  : null
     , markdownNumOfLeftspace    : 0
+    , isTrimMarkdownElement     : null
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -99,6 +102,10 @@ var controlparam = {
 
 //=======================================================================================================
 //=======================================================================================================
+function setUserElementStatusForUserInput(){
+  setPlaceholderForInputText();
+  setCanUseOptions();
+}
 
 function setPlaceholderForInputText(){
   switch (parseInt(KakiStdUtil.getSelectedRadioButtonValue("switch-key"))){
@@ -114,6 +121,14 @@ function setPlaceholderForInputText(){
   }
 }
 
+function setCanUseOptions(){
+}
+
+// not use yet.
+function setSpecificElementsEnableStatus(el, status){
+  el.disabled = status;
+}
+
 //=======================================================================================================
 //=======================================================================================================
 
@@ -121,6 +136,9 @@ function setPlaceholderForInputText(){
 //      ConvertProcess Facade
 //======================================
 function convertProcessFacade(){
+
+  //-----< Clear All Output >-----
+  clearAllOutput();
 
   //-----< get Control Param >-----
   controlparam = getControlParam();
@@ -130,11 +148,11 @@ function convertProcessFacade(){
   var targetContentArray;
   var resultContentArray;
   
-  // targetContent = targetContentElement.value;
-  // //-----< Return If not Text Inputted >-----
-  // if(targetContent.trim().length <= 0){
-  //   return;
-  // }
+  targetContent = targetContentElement.value;
+  //-----< Return If not Text Inputted >-----
+  if(targetContent.trim().length <= 0){
+    return;
+  }
 
   //-----< Convert MarkDownTable >-----
   resultContentArray = [];
@@ -157,7 +175,10 @@ function convertProcessFacade(){
 //======================================
 function formatProcessFacade(){
 
-  //-----< get Control Param >-----
+  //-----< Clear All Output >-----
+  clearAllOutput();
+
+  //-----< Get Control Param >-----
   controlparam = getControlParam();
 
   //-----<   >-----
@@ -165,14 +186,14 @@ function formatProcessFacade(){
   var targetContentArray;
   var resultContentArray;
 
-  // targetContent = targetContentElement.value;
-  // //-----< Return If not Text Inputted >-----
-  // if(targetContent.trim().length <= 0){ return; }
+  targetContent = targetContentElement.value;
+  //-----< Return If not Text Inputted >-----
+  if(targetContent.trim().length <= 0){ return; }
 
   //-----< Convert MarkDownTable >-----
-  // resultContentArray = [];
-  // targetContentArray =  targetContent.split(/\r?\n/g);
-  // convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  resultContentArray = [];
+  targetContentArray =  targetContent.split(/\r?\n/g);
+  convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
 
 
   //-----< Format MarkDownTable >-----
@@ -188,6 +209,14 @@ function formatProcessFacade(){
 //=======================================================================================================
 
 //======================================
+//       Clear all Output
+//======================================
+function clearAllOutput(){
+  resultContentElement01.textContent = "";
+  resultContentElement02.textContent = "";
+}
+
+//======================================
 //        get Control Param
 //======================================
 function getControlParam(){
@@ -198,6 +227,7 @@ function getControlParam(){
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
     , markdownNumOfLeftspace    : document.getElementById("markdown-num-of-left-space").value
+    , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").checked
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0 
@@ -279,7 +309,15 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 
   //==========< Set Header >==========
   if(controlparam.columnNameLine > -1){
-    var el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+    var el;
+    if(controlparam.isTrimMarkdownElement){
+      el = targetContentArray[0];
+      el = el.split(controlparam.splitChar);
+      el = el.map((e) => e.trim());
+      el = el.join(controlparam.replaceChar);
+    }else{
+      el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+    }
 
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
@@ -303,7 +341,16 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 
   //==========< Set Body >==========
   for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
-    var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    var el;
+    if(controlparam.isTrimMarkdownElement){
+      el = targetContentArray[i];
+      el = el.split(controlparam.splitChar);
+      el = el.map((e) => e.trim());
+      el = el.join(controlparam.replaceChar);
+    }else{
+      el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    }
+
     // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
