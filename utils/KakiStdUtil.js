@@ -52,6 +52,22 @@ KakiStdUtil.surroundHTMLTag = function(value, targetTag){
   return result;
 }
 
+// //===================================
+// //        qqqqq
+// //===================================
+// KakiStdUtil.qqqqq = function(value){
+//   //targetContentArray[0]
+//   var result = "";
+
+//   // result = value.split(controlparam.splitChar).join(controlparam.replaceChar);
+//   result = value.split(controlparam.splitChar);
+//   result = result.map((el) => el.trim());
+//   result = result.join(controlparam.replaceChar);
+
+//   targetContentArray = targetContentArray.map((el) => el.trim().slice(1, -1));
+
+//   return result;
+// }
 
 //===================================
 //          

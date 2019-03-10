@@ -309,7 +309,15 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 
   //==========< Set Header >==========
   if(controlparam.columnNameLine > -1){
-    var el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+    var el;
+    if(controlparam.isTrimMarkdownElement){
+      el = targetContentArray[0];
+      el = el.split(controlparam.splitChar);
+      el = el.map((e) => e.trim());
+      el = el.join(controlparam.replaceChar);
+    }else{
+      el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
+    }
 
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
@@ -333,7 +341,16 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 
   //==========< Set Body >==========
   for(var i=controlparam.dataStartLine; i<targetContentArray.length; i++){
-    var el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    var el;
+    if(controlparam.isTrimMarkdownElement){
+      el = targetContentArray[i];
+      el = el.split(controlparam.splitChar);
+      el = el.map((e) => e.trim());
+      el = el.join(controlparam.replaceChar);
+    }else{
+      el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
+    }
+
     // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
