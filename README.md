@@ -18,7 +18,7 @@ https://kakisoft.github.io/MyTrivialTools/CodeSyntaxFormatter.html
         @value333 varchar = '333'
         @value4444 varchar(10) = '4444'
         @value55555 varchar(max) = '55555'
-        （300個ぐらい）
+        （夥しい数）
 ```
 こう変えて。
 ```sql
@@ -27,7 +27,7 @@ https://kakisoft.github.io/MyTrivialTools/CodeSyntaxFormatter.html
         @value333   varchar      = '333'
         @value4444  varchar(10)  = '4444'
         @value55555 varchar(max) = '55555'
-        （300個ぐらい）
+        （夥しい数）
 ```
 って言われたので、  
 　  
@@ -103,7 +103,7 @@ INSERT INTO table01
 (
  id,
  name,
- emai
+ email
 )
 VALUES
 (
@@ -115,10 +115,10 @@ a@b
 ↓みたいな内容を生成。
 
 
-| id   | 1    | 
-|:-----|:-----|
-| name | kaki | 
-| emai | a@b  | 
+| id    | 1    | 
+|:------|:-----|
+| name  | kaki | 
+| email | a@b  | 
 
 
 超長い INSERT文と格闘し続けるのが辛過ぎて作った。
