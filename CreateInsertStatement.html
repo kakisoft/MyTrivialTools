@@ -8,8 +8,9 @@
 <h1 style="font-size: 1.5em">insert文を作る的な何か</h1>
 
 <div>
-  <input type="radio" name="format_type" value="1" checked>tsv
-  <input type="radio" name="format_type" value="2">csv<span style="font-size: 0.7em">　（「""」囲みのデータ形式は未対応。）</span>
+  <label><input type="radio" name="format_type" value="1" checked>tsv<label>
+  <label><input type="radio" name="format_type" value="2">csv<span style="font-size: 0.7em">　（「""」囲みのデータ形式は未対応。）</span></label>
+  <label><input type="checkbox" checked="checked" id="is_exchange_space_to_null" style="margin-left: 5em">空白をNULLに置換</labellabel>
 
   <input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」の場合 『'』or『"』で囲む）
     <span>囲む文字</span>
@@ -53,8 +54,8 @@ document.getElementById("create_InsertStatement").addEventListener("click", crea
 var forDev1 = `	c		c	c
 id	name	age	email	company_name
 1	kaki	12	a@cbom	ペーパー
-2	soft	34	b@cbom	架空
-3	fake	69	y@xcom	税金対策
+2		34	b@cbom	架空
+3	fake		y@xcom	税金対策
 `
 document.getElementById("target_syntax").innerHTML = forDev1;
 //=================================================================
@@ -102,6 +103,7 @@ function createInsertStatement(){
   var tableName = document.getElementById("tablename").value;
   var splitChar  = getSplitChar();
   var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
+  var isExchangeSpaceToNull     = document.getElementById("is_exchange_space_to_null").checked;
 
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetSyntaxElement.value;
@@ -144,7 +146,8 @@ function createInsertStatement(){
                , targetSyntaxContentArray
                , specialControlColumnNumbersArray
                , controlparam
-               , splitChar);
+               , splitChar
+               , isExchangeSpaceToNull);
 
   
   //-----< Set Result Contents >-----
@@ -256,7 +259,8 @@ function SetContentData(contentDataArray
                       , targetSyntaxContentArray
                       , specialControlColumnNumbersArray
                       , controlparam
-                      , splitChar){
+                      , splitChar
+                      , isExchangeSpaceToNull){
 
   var inputtedData;
   for(var i=controlparam['dataStartLine']; i < targetSyntaxContentArray.length; i++){
@@ -265,7 +269,11 @@ function SetContentData(contentDataArray
     }
 
     lineOfcontentDataArray = targetSyntaxContentArray[i].split(splitChar);
-    edittedlineOfcontentDataArray = setSpecialControlIfNeeded(lineOfcontentDataArray, specialControlColumnNumbersArray);
+    edittedlineOfcontentDataArray = setSpecialControlIfNeeded(lineOfcontentDataArray, specialControlColumnNumbersArray, isExchangeSpaceToNull);
+
+    if(isExchangeSpaceToNull){
+      edittedlineOfcontentDataArray = edittedlineOfcontentDataArray.map((el) => el.trim().length ==0 ? 'NULL': el)
+    }
 
     toBeSetData = edittedlineOfcontentDataArray.join(",");
     contentDataArray.push(toBeSetData);
@@ -312,7 +320,7 @@ function outputResult(resultSyntaxContentArray){
 //===================================
 //   Set Special Control If Needed
 //===================================
-function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersArray){
+function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersArray, isExchangeSpaceToNull){
   if(specialControlColumnNumbersArray.length <= 0){
     return lineOfDataArray;
   }
@@ -321,7 +329,9 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
   for(var i=0; i < lineOfDataArray.length; i++){
     value = lineOfDataArray[i];
     if (specialControlColumnNumbersArray.indexOf(i+1) >= 0){
-      value = surroundText(value, SURROUND_CHAR);
+      if(value.trim().length > 0 || isExchangeSpaceToNull == true){
+        value = surroundText(value, SURROUND_CHAR);
+      }
     }
 
     edittedlineOfDataArray.push(value);
