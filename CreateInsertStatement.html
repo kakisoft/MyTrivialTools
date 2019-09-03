@@ -329,7 +329,9 @@ function setSpecialControlIfNeeded(lineOfDataArray, specialControlColumnNumbersA
   for(var i=0; i < lineOfDataArray.length; i++){
     value = lineOfDataArray[i];
     if (specialControlColumnNumbersArray.indexOf(i+1) >= 0){
-      if(value.trim().length > 0 || isExchangeSpaceToNull == true){
+      if(value.trim().length == 0 && isExchangeSpaceToNull == true){
+        //Dont Execute Special Control
+      }else{
         value = surroundText(value, SURROUND_CHAR);
       }
     }
