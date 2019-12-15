@@ -8,14 +8,14 @@
 <h1 style="font-size: 1.5em">MarkDownTableConverter 的な何か</h1>
 <div>
   <p>
-    <input type="radio" name="switch-key" id="switch-key-1" value="1" checked>TSV to MarkDownTable
+    <label><input type="radio" name="switch-key" id="switch-key-1" value="1" checked>TSV to MarkDownTable</label>
     &emsp;&emsp;&emsp;&emsp;
-    <input type="radio" name="switch-key" id="switch-key-2" value="2" >MarkDownTable to TSV
+    <label><input type="radio" name="switch-key" id="switch-key-2" value="2" >MarkDownTable to TSV</label>
   </p>
 </div>
 <div id="to-markdown-options">
   <p>
-    <input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 1.5em">１行目をヘッダとして扱う。
+    <label><input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 1.5em">１行目をヘッダとして扱う。</label>
   </p>
   <p>
     <label>MarkDown のテーブル作るときのアライメント文字 <input type="text" id="markdown-align-control-char" value=":--" style="margin-left: 0.5em"></label>
@@ -24,7 +24,7 @@
     <label>MarkDown 整形時の左スペース数 <input type="number" id="markdown-num-of-left-space" value=2 min=0></label><br>   
   </p>
   <p>
-    <input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。
+    <label><input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。</label>
   </p>
 </div>
 <div>
