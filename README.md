@@ -66,6 +66,9 @@ INSERT INTO __TABLENAME__ (id,name,age,email,company_name) VALUES (3,"fake",56,"
 ```
 テーブル名とカラム名をだらしなく何度も出力しているのは、Oracleでも使えるようにしといたせい。  
 　    
+Excel or スプレッドシートにブチ込みたい値を書く　→　貼り付けて INSERT文を作成。  
+という運用を想定しています。  
+　    
 テーブル名とカラム名に、文字列「%s」を含んだ内容を是が非でも使いたい~~奇特な~~方は、ご使用をお控えください。
 
 　    
@@ -141,11 +144,11 @@ id	name	age	email	company_name
 ```
 　　　TSV to MarkDownTable　↓　↑　MarkDownTable to TSV  
 ```
-|id|name|age|email|company_name|
-|:--|:--|:--|:--|:--|
-|1|kaki|12|a@cbom|ペーパー|
-|2|soft|34|b@cbom|架空|
-|3|fake|56|y@xcom|税金対策|
+|  id |  name  |  age |  email   |  company_name  |
+|:----|:-------|:-----|:---------|:---------------|
+|  1  |  kaki  |  12  |  a@cbom  |  ペーパー        |
+|  2  |  soft  |  34  |  b@cbom  |  架空           |
+|  3  |  fake  |  56  |  y@xcom  |  税金対策       |
 ```
 　    
 　    
