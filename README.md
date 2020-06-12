@@ -167,4 +167,5 @@ https://kakisoft.github.io/MyTrivialTools/PropertyMakerForPHP.html
 　    
 　    
 # （仮）TemporaryScript01
-https://kakisoft.github.io/MyTrivialTools/TemporaryScript01.html
+https://kakisoft.github.io/MyTrivialTools/TemporaryScript01.html  
+https://kakisoft.github.io/MyTrivialTools/TemporaryScript02.html  
