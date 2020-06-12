@@ -27,6 +27,9 @@
     <label><input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。</label>
   </p>
 </div>
+<p>
+  <button type="button" id="execute-clear">clear</button>
+</p>
 <div><textarea id="target-content-01" style="width:60%; height:3em"></textarea></div>
 <div><textarea id="target-content-02" style="width:60%; height:3em"></textarea></div>
 <div><textarea id="target-content-03" style="width:60%; height:3em"></textarea></div>
@@ -42,8 +45,8 @@
   <button type="button" id="execute-function01">Convert</button>
 </p>
 <p>
-  <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
-  <textarea id="result-content-01" style="width:100%; height:10em" wrap="off" readonly></textarea>
+  <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしとく？ -->
+  <textarea id="result-content-01" style="width:100%; height:10em" wrap="off"></textarea>
 </p>
 
 <script src="./utils/KakiStdUtil.js"></script>
@@ -71,6 +74,7 @@ resultContentElement01 = document.getElementById("result-content-01");
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
+document.getElementById("execute-clear").addEventListener("click", clearAllInput)
 
 window.onload = function(){
   // targetContentElement.value = sampleInput01; //fowr Debug
@@ -200,14 +204,14 @@ function convertProcessFacade(){
 //           Output Result
 //======================================
 function outputLastResultContents(reflectionTargetElement, lastResultContents){
-  let resultSyntaxContent;
+  const filteredLastResultContents = lastResultContents.filter( (el)=> el.length > 0);
+  let resultSyntaxContent = "";
 
-  lastResultContents.forEach(el => {
+  filteredLastResultContents.forEach(el => {
     resultSyntaxContent += el.join(NEW_LINE_CHARACTER);
     resultSyntaxContent += NEW_LINE_CHARACTER;
     resultSyntaxContent += NEW_LINE_CHARACTER + NEW_LINE_CHARACTER + NEW_LINE_CHARACTER + NEW_LINE_CHARACTER;
-  }); 
-
+  });
 
   reflectionTargetElement.textContent = resultSyntaxContent;
 }
@@ -215,6 +219,14 @@ function outputLastResultContents(reflectionTargetElement, lastResultContents){
 
 //=======================================================================================================
 //=======================================================================================================
+function clearAllInput(){
+  targetContentElementList.forEach(el => {
+    el.value = "";
+  });
+
+  clearAllOutput();
+}
+
 
 //======================================
 //       Clear all Output
