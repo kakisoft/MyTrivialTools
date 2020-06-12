@@ -346,19 +346,19 @@ function getConvertMarkDownTable(targetContentArray, controlparam){
     }
     resultContentArray.push(el)
 
-    //-----( if TSV to MarkDown, Add Align Control Line )-----
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
-      var addEl = "";
+    // //-----( if TSV to MarkDown, Add Align Control Line )-----
+    // if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+    //   var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
+    //   var addEl = "";
 
-      addEl += controlparam.replaceChar;
-      for(var i=0; i<numOfel; i++){
-        addEl += controlparam.markdownAlignControlChar;
-        addEl += controlparam.replaceChar;
-      }
+    //   addEl += controlparam.replaceChar;
+    //   for(var i=0; i<numOfel; i++){
+    //     addEl += controlparam.markdownAlignControlChar;
+    //     addEl += controlparam.replaceChar;
+    //   }
 
-      resultContentArray.push(addEl)
-    }
+    //   resultContentArray.push(addEl)
+    // }
   }
 
   //==========< Set Body >==========
@@ -419,7 +419,6 @@ function getFormatMarkDownTable(targetContentArray, controlparam){
     tmpArray01.push(el.split(controlparam.replaceChar))
   });
 
-
   //==========<  >==========
   resultContentArray = [];
   for(var i=0; i<tmpArray01.length; i++){
@@ -429,13 +428,19 @@ function getFormatMarkDownTable(targetContentArray, controlparam){
     for(var j=1; j<tmpArray01[i].length -1; j++){
       var leftch;
       var el;
-      if(controlparam.isSpecialControlFirstline && i === 1){
-        leftch = "";
-        el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
-      }else{
-        leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
-        el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
-      }
+      // //-----( if TSV to MarkDown, Add Align Control Line )-----
+      // if(controlparam.isSpecialControlFirstline && i === 1){
+      //   leftch = "";
+      //   el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
+      // }else{
+      //   leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
+      //   el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
+      // }
+
+      // 代わりにこっちだけ使ってる
+      leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
+      el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
+
       resultElArray.push(el);
     }
     resultElArray.push("");
