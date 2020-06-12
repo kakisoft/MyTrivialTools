@@ -41,9 +41,6 @@
 
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
-  <button type="button" id="execute-function02">Format</button>
-</p>
-<p>
   <textarea id="result-content-02" style="width:100%; height:10em" wrap="off" readonly></textarea>
 </p>
 
@@ -59,10 +56,9 @@ resultContentElement02 = document.getElementById("result-content-02");
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
-document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //fowr Debug
+  targetContentElement.value = sampleInput01; //fowr Debug
   setUserElementStatusForUserInput();
 }
 
@@ -171,41 +167,6 @@ function convertProcessFacade(){
 
 }
 
-
-//======================================
-//      FromatProcess Facade
-//======================================
-function formatProcessFacade(){
-
-  //-----< Clear All Output >-----
-  clearAllOutput();
-
-  //-----< Get Control Param >-----
-  controlparam = getControlParam();
-
-  //-----<   >-----
-  var targetContent;
-  var targetContentArray;
-  var resultContentArray;
-
-  targetContent = targetContentElement.value;
-  //-----< Return If not Text Inputted >-----
-  if(targetContent.trim().length <= 0){ return; }
-
-  //-----< Convert MarkDownTable >-----
-  resultContentArray = [];
-  targetContentArray =  targetContent.split(/\r?\n/g);
-  convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
-
-
-  //-----< Format MarkDownTable >-----
-  resultContentArray = [];
-  targetContent = resultContentElement01.value;
-  if(targetContent.trim().length <= 0){ return; }
-  targetContentArray =  targetContent.split(/\r?\n/g);
-  formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
-
-}
 
 //=======================================================================================================
 //=======================================================================================================
