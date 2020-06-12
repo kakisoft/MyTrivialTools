@@ -27,9 +27,16 @@
     <label><input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。</label>
   </p>
 </div>
-<div>
-  <textarea id="target-content" style="width:60%; height:10em"></textarea>
-</div>
+<div><textarea id="target-content-01" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-02" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-03" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-04" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-05" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-06" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-07" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-08" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-09" style="width:60%; height:3em"></textarea></div>
+<div><textarea id="target-content-10" style="width:60%; height:3em"></textarea></div>
 
 <p>
   <button type="button" id="execute-function01">Convert</button>
@@ -49,7 +56,20 @@
 
 NEW_LINE_CHARACTER = "\n";
 
-targetContentElement = document.getElementById("target-content");
+targetContentElement = document.getElementById("target-content-01");
+
+targetContentElementList = [
+    document.getElementById("target-content-02")
+  , document.getElementById("target-content-03")
+  , document.getElementById("target-content-04")
+  , document.getElementById("target-content-05")
+  , document.getElementById("target-content-06")
+  , document.getElementById("target-content-07")
+  , document.getElementById("target-content-08")
+  , document.getElementById("target-content-09")
+  , document.getElementById("target-content-10")
+];
+
 resultContentElement01 = document.getElementById("result-content-01");
 resultContentElement02 = document.getElementById("result-content-02");
 
