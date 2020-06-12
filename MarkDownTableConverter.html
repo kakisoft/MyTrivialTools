@@ -21,7 +21,7 @@
     <label>MarkDown のテーブル作るときのアライメント文字 <input type="text" id="markdown-align-control-char" value=":--" style="margin-left: 0.5em"></label>
   </p>
   <p>
-    <label>MarkDown 整形時の左スペース数 <input type="number" id="markdown-num-of-left-space" value=2 min=0></label><br>   
+    <label>MarkDown 整形時の左スペース数 <input type="number" id="markdown-num-of-left-space" value=2 min=0></label><br>
   </p>
   <p>
     <label><input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。</label>
@@ -228,7 +228,7 @@ function clearAllOutput(){
 function getControlParam(){
 
   //==========< Set User Selected Param >==========
-  controlparam = { 
+  controlparam = {
       switchKey                 : KakiStdUtil.getSelectedRadioButtonValue("switch-key")
     , isSpecialControlFirstline : document.getElementById("is-special-control-firstline").checked
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
@@ -236,8 +236,8 @@ function getControlParam(){
     , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").checked
     , splitChar                 : null
     , replaceChar               : null
-    , columnNameLine : 0 
-    , dataStartLine  : 0 
+    , columnNameLine : 0
+    , dataStartLine  : 0
   };
 
   //==========< Set Line Number >==========
@@ -411,7 +411,7 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
   resultContentArray = [];
   for(var i=0; i<tmpArray01.length; i++){
     var resultElArray = [];
-    
+
     resultElArray.push("");
     for(var j=1; j<tmpArray01[i].length -1; j++){
       var leftch;
