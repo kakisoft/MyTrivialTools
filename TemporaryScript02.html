@@ -43,12 +43,7 @@
 </p>
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
-  <textarea id="result-content-01" style="width:60%; height:10em" readonly></textarea>
-</p>
-
-<p>
-  <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
-  <textarea id="result-content-02" style="width:100%; height:10em" wrap="off" readonly></textarea>
+  <textarea id="result-content-01" style="width:100%; height:10em" wrap="off" readonly></textarea>
 </p>
 
 <script src="./utils/KakiStdUtil.js"></script>
@@ -72,14 +67,13 @@ targetContentElementList = [
 ];
 
 resultContentElement01 = document.getElementById("result-content-01");
-resultContentElement02 = document.getElementById("result-content-02");
 
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 
 window.onload = function(){
-  targetContentElement.value = sampleInput01; //fowr Debug
+  // targetContentElement.value = sampleInput01; //fowr Debug
   setUserElementStatusForUserInput();
 }
 
@@ -160,32 +154,62 @@ function convertProcessFacade(){
   clearAllOutput();
 
   //-----< get Control Param >-----
-  controlparam = getControlParam();
-
-  //-----<   >-----
-  var targetContent;
-  var targetContentArray;
-  var resultContentArray;
-
-  targetContent = targetContentElement.value;
-  //-----< Return If not Text Inputted >-----
-  if(targetContent.trim().length <= 0){
-    return;
-  }
-
-  //-----< Convert MarkDownTable >-----
-  resultContentArray = [];
-  targetContent = targetContentElement.value;
-  targetContentArray =  targetContent.split(/\r?\n/g);
-  convertMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  const controlparam = getControlParam();
 
 
-  //-----< Format MarkDownTable >-----
-  resultContentArray = [];
-  targetContent = resultContentElement01.value;
-  targetContentArray =  targetContent.split(/\r?\n/g);
-  formatMarkDownTable(targetContentArray, resultContentArray, controlparam);
+  //----< Exclude blank text boxes >-----
+  const filteredTargetContentArray = targetContentElementList.filter( (el)=> el.value.trim().length > 0);
 
+
+  //===============================================
+  //
+  //===============================================
+  let lastResultContents = new Array();
+
+  filteredTargetContentArray.forEach(el => {
+    let targetContent;
+    let targetContentArray;
+    let convertedContentArray = new Array();
+    let formattedContentArray = new Array();
+
+    targetContent = el.value;
+
+    //-----< Convert MarkDownTable >-----
+    convertedContentArray = [];
+    targetContent = targetContentElement.value;
+    targetContentArray =  targetContent.split(/\r?\n/g);
+    convertedContentArray = getConvertMarkDownTable(targetContentArray, controlparam);
+
+    //-----< Format MarkDownTable >-----
+    formattedContentArray = [];
+    formattedContentArray = getFormatMarkDownTable(convertedContentArray, controlparam);
+
+
+    //-----< add last result >-----
+    lastResultContents.push(formattedContentArray);
+
+  });
+
+  //==========< Output Result >==========
+  outputLastResultContents(resultContentElement01, lastResultContents);
+
+}
+
+
+//======================================
+//           Output Result
+//======================================
+function outputLastResultContents(reflectionTargetElement, lastResultContents){
+  let resultSyntaxContent;
+
+  lastResultContents.forEach(el => {
+    resultSyntaxContent += el.join(NEW_LINE_CHARACTER);
+    resultSyntaxContent += NEW_LINE_CHARACTER;
+    resultSyntaxContent += NEW_LINE_CHARACTER + NEW_LINE_CHARACTER + NEW_LINE_CHARACTER + NEW_LINE_CHARACTER;
+  }); 
+
+
+  reflectionTargetElement.textContent = resultSyntaxContent;
 }
 
 
@@ -197,11 +221,9 @@ function convertProcessFacade(){
 //======================================
 function clearAllOutput(){
   resultContentElement01.textContent = "";
-  resultContentElement02.textContent = "";
 
   //// こっちだとちゃんと動かないぞ。何でだ？
   // resultContentElement01.value = "";
-  // resultContentElement02.value = "";
 }
 
 //======================================
@@ -283,8 +305,8 @@ function outputResult(reflectionTargetElement, resultContentArray){
 //======================================
 //       Convert MarkDownTable
 //======================================
-function convertMarkDownTable(targetContentArray, resultContentArray, controlparam){
-  resultContentArray = [];
+function getConvertMarkDownTable(targetContentArray, controlparam){
+  resultContentArray = [];  // 最初に初期化すると、参照関係は解消される！？
 
   //==========< format >==========
   // Remove Blank Line
@@ -346,16 +368,13 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
     resultContentArray.push(el)
   }
 
-
-  //==========< Output Result >==========
-  outputResult(resultContentElement01, resultContentArray);
-
+  return resultContentArray;
 }
 
 //======================================
 //       Format MarkDownTable
 //======================================
-function formatMarkDownTable(targetContentArray, resultContentArray, controlparam){
+function getFormatMarkDownTable(targetContentArray, controlparam){
   resultContentArray = [];
 
   if (controlparam.switchKey != SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
@@ -414,9 +433,7 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
   }
 
 
-  //==========< Output Result >==========
-  outputResult(resultContentElement02, resultContentArray);
-
+  return resultContentArray;
 }
 
 //=======================================================================================================
