@@ -25,6 +25,7 @@
   </p>
   <p>
     <label><input type="checkbox" checked="checked" id="is-trim-markdown-element" style="margin-left: 1.5em">MarkDown 要素作成時に Trimする。</label>
+    <label><input type="checkbox" id="is-disp-align-line" style="margin-left: 1.5em">アライメント行を表示しない</label>
   </p>
 </div>
 <div>
@@ -96,6 +97,7 @@ var controlparam = {
     , markdownAlignControlChar  : null
     , markdownNumOfLeftspace    : 0
     , isTrimMarkdownElement     : null
+    , isDispAlignLine           : null
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0
@@ -234,6 +236,7 @@ function getControlParam(){
     , markdownAlignControlChar  : document.getElementById("markdown-align-control-char").value
     , markdownNumOfLeftspace    : document.getElementById("markdown-num-of-left-space").value
     , isTrimMarkdownElement     : document.getElementById("is-trim-markdown-element").checked
+    , isDispAlignLine           : document.getElementById("is-disp-align-line").checked
     , splitChar                 : null
     , replaceChar               : null
     , columnNameLine : 0
@@ -331,17 +334,19 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
     resultContentArray.push(el)
 
     //-----( if TSV to MarkDown, Add Align Control Line )-----
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
-      var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
-      var addEl = "";
+    if(!controlparam.isDispAlignLine){
+      if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+        var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
+        var addEl = "";
 
-      addEl += controlparam.replaceChar;
-      for(var i=0; i<numOfel; i++){
-        addEl += controlparam.markdownAlignControlChar;
         addEl += controlparam.replaceChar;
-      }
+        for(var i=0; i<numOfel; i++){
+          addEl += controlparam.markdownAlignControlChar;
+          addEl += controlparam.replaceChar;
+        }
 
-      resultContentArray.push(addEl)
+        resultContentArray.push(addEl)
+      }
     }
   }
 
@@ -416,14 +421,25 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
     for(var j=1; j<tmpArray01[i].length -1; j++){
       var leftch;
       var el;
-      if(controlparam.isSpecialControlFirstline && i === 1){
-        leftch = "";
-        el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
-      }else{
+
+      if(!controlparam.isDispAlignLine){
+        //-----( if TSV to MarkDown, Add Align Control Line )-----
+        if(controlparam.isSpecialControlFirstline && i === 1){
+          leftch = "";
+          el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + (Number(controlparam.markdownNumOfLeftspace) * 2), '-');
+        }else{
+          leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
+          el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
+        }
+      }
+      else{
+        // 代わりにこっちだけ使ってる
         leftch = "".padStart(controlparam.markdownNumOfLeftspace, ' ');
         el = leftch + tmpArray01[i][j].padEnd(Number(maxlengthMemoArray[j]) + Number(controlparam.markdownNumOfLeftspace), ' ');
       }
+
       resultElArray.push(el);
+
     }
     resultElArray.push("");
 
