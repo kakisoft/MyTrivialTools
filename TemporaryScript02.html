@@ -43,6 +43,8 @@
 
 <p>
   <button type="button" id="execute-function01">Convert</button>
+  &emsp;&emsp;&emsp;&emsp;
+  <button type="button" id="copy-to-clipboard-result">Copy to Clipboard</button>
 </p>
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしとく？ -->
@@ -75,13 +77,14 @@ document.getElementById("switch-key-1").addEventListener("change", setUserElemen
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 document.getElementById("execute-clear").addEventListener("click", clearAllInput)
+document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
 
 window.onload = function(){
   // targetContentElement.value = sampleInput01; //fowr Debug
   setUserElementStatusForUserInput();
 }
 
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------
 //   For Develop Code
 //----------------------
@@ -98,7 +101,7 @@ var sampleInput02 = `|id|name|age|email|company_name|
 |3|fake|69|y@xcom|税金対策|
 `
 
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 var SWITCH_KEY = {
   TSV_TO_MARKDOWNTABLE : 1,
   MARKDOWNTABLE_TO_TSV : 2,
@@ -117,8 +120,7 @@ var controlparam = {
     , dataStartLine  : 0
 };
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 function setUserElementStatusForUserInput(){
   setPlaceholderForInputText();
   setCanUseOptions();
@@ -146,8 +148,18 @@ function setSpecificElementsEnableStatus(el, status){
   el.disabled = status;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//--------------------------------------
+//         Copy To Clipboard
+//--------------------------------------
+function copyToClipboardFromResult(){
+    const targetContent = resultContentElement01;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //      ConvertProcess Facade
@@ -217,8 +229,7 @@ function outputLastResultContents(reflectionTargetElement, lastResultContents){
 }
 
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 function clearAllInput(){
   targetContentElementList.forEach(el => {
     el.value = "";
@@ -311,8 +322,7 @@ function outputResult(reflectionTargetElement, resultContentArray){
   reflectionTargetElement.textContent = resultSyntaxContent;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //       Convert MarkDownTable
@@ -453,8 +463,7 @@ function getFormatMarkDownTable(targetContentArray, controlparam){
   return resultContentArray;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 </script>
 </body>
