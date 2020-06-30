@@ -59,15 +59,17 @@ resultContentElement02 = document.getElementById("result-content-02");
 
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
+document.getElementById("is-disp-align-line").addEventListener("click", switchDispAlignmentLine)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
+
 
 window.onload = function(){
   // targetContentElement.value = sampleInput01; //fowr Debug
   setUserElementStatusForUserInput();
 }
 
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------
 //   For Develop Code
 //----------------------
@@ -84,7 +86,7 @@ var sampleInput02 = `|id|name|age|email|company_name|
 |3|fake|69|y@xcom|税金対策|
 `
 
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 var SWITCH_KEY = {
   TSV_TO_MARKDOWNTABLE : 1,
   MARKDOWNTABLE_TO_TSV : 2,
@@ -104,8 +106,7 @@ var controlparam = {
     , dataStartLine  : 0
 };
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 function setUserElementStatusForUserInput(){
   setPlaceholderForInputText();
   setCanUseOptions();
@@ -133,8 +134,16 @@ function setSpecificElementsEnableStatus(el, status){
   el.disabled = status;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//--------------------------------------
+// process for not disp arignment line
+//--------------------------------------
+function switchDispAlignmentLine(){
+  convertProcessFacade()
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //      ConvertProcess Facade
@@ -209,8 +218,7 @@ function formatProcessFacade(){
 
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //       Clear all Output
@@ -298,8 +306,7 @@ function outputResult(reflectionTargetElement, resultContentArray){
   reflectionTargetElement.textContent = resultSyntaxContent;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //       Convert MarkDownTable
@@ -453,8 +460,7 @@ function formatMarkDownTable(targetContentArray, resultContentArray, controlpara
 
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 </script>
 </body>
