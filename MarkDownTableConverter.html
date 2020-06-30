@@ -42,6 +42,8 @@
 
 <p>
   <button type="button" id="execute-function02">Format</button>
+  &emsp;&emsp;&emsp;&emsp;
+  <button type="button" id="copy-to-clipboard-result-02">Copy to Clipboard</button>
 </p>
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
@@ -60,6 +62,7 @@ resultContentElement02 = document.getElementById("result-content-02");
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("is-disp-align-line").addEventListener("click", switchDispAlignmentLine)
+document.getElementById("copy-to-clipboard-result-02").addEventListener("click", copyToClipboardFromResult02)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
 
@@ -142,6 +145,19 @@ function setSpecificElementsEnableStatus(el, status){
 function switchDispAlignmentLine(){
   convertProcessFacade()
 }
+
+
+//--------------------------------------
+//         Copy To Clipboard
+//--------------------------------------
+function copyToClipboardFromResult02(){
+    // const copyText = document.querySelector("#sql-format-data");
+
+    const targetContent = resultContentElement02;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
