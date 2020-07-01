@@ -47,6 +47,7 @@ SURROUND_CHAR = "";
 targetSyntaxElement = document.getElementById("target-syntax");
 resultSyntaxElement = document.getElementById("result-syntax");
 
+document.getElementById("is-exchange-space-to-null").addEventListener("click", exchangeSpaceToNull)
 document.getElementById("clear-inputted-contents").addEventListener("click", clearInputtedContents)
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
 document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
@@ -113,6 +114,13 @@ function clearInputtedContents(){
     });
 }
 
+
+//--------------------------------------
+//      Exchange Space To Null
+//--------------------------------------
+function exchangeSpaceToNull(){
+    createInsertStatement()
+}
 
 //--------------------------------------
 //         Copy To Clipboard
