@@ -107,39 +107,43 @@ function getSurroundChar(){
 //      Clear Inputted Contents
 //--------------------------------------
 function clearInputtedContents(){
-    // Clear TextArea
-    const targetContents = [targetSyntaxElement, resultSyntaxElement];
-    targetContents.forEach(el => {
-        el.textContent = "";
-        // el.value = "";   // こっちを使うと、一旦クリアした後の挙動がおかしくなる。原因調査中。
-    });
+  // Clear TextArea
+  const targetContents = [targetSyntaxElement, resultSyntaxElement];
+  targetContents.forEach(el => {
+    el.textContent = "";
+    // el.value = "";   // こっちを使うと、一旦クリアした後の挙動がおかしくなる。原因調査中。
+  });
 }
 
 //--------------------------------------
 // Refrect Editted Result Of Tablename
 //--------------------------------------
 function refrectEdittedResultOfTablename(){
-    createInsertStatement()
+  if(resultSyntaxElement.value.length <= 0){
+    return;
+  }
+
+  createInsertStatement()
 }
 
 //--------------------------------------
 //      Exchange Space To Null
 //--------------------------------------
 function exchangeSpaceToNull(){
-    if(resultSyntaxElement.value.length <= 0){
-      return;
-    }
+  if(resultSyntaxElement.value.length <= 0){
+    return;
+  }
 
-    createInsertStatement()
+  createInsertStatement()
 }
 
 //--------------------------------------
 //         Copy To Clipboard
 //--------------------------------------
 function copyToClipboardFromResult(){
-    const targetContent = resultSyntaxElement;
-    targetContent.select();
-    document.execCommand('copy');
+  const targetContent = resultSyntaxElement;
+  targetContent.select();
+  document.execCommand('copy');
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
