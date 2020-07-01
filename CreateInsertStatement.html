@@ -126,6 +126,10 @@ function refrectEdittedResultOfTablename(){
 //      Exchange Space To Null
 //--------------------------------------
 function exchangeSpaceToNull(){
+    if(resultSyntaxElement.value.length <= 0){
+      return;
+    }
+
     createInsertStatement()
 }
 
