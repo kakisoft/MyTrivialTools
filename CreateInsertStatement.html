@@ -23,6 +23,7 @@
 <br>
 <div>
   <input type="text" id="tablename" value="__TABLENAME__">
+  <button type="button" id="clear-inputted-contents" style="margin-left: 5em">Clear Inputted Contents</button>
   <br><br>
   <textarea id="target-syntax" style="width:60%; height:10em" wrap="off" placeholder="Please input any code."></textarea>
 </div>
@@ -46,6 +47,7 @@ SURROUND_CHAR = "";
 targetSyntaxElement = document.getElementById("target-syntax");
 resultSyntaxElement = document.getElementById("result-syntax");
 
+document.getElementById("clear-inputted-contents").addEventListener("click", clearInputtedContents)
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
 document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
 
@@ -100,6 +102,19 @@ function getSurroundChar(){
 }
 
 //--------------------------------------
+//      Clear Inputted Contents
+//--------------------------------------
+function clearInputtedContents(){
+    // Clear TextArea
+    const targetContents = [targetSyntaxElement, resultSyntaxElement];
+    targetContents.forEach(el => {
+        el.textContent = "";
+        // el.value = "";   // こっちを使うと、一旦クリアした後の挙動がおかしくなる。原因調査中。
+    });
+}
+
+
+//--------------------------------------
 //         Copy To Clipboard
 //--------------------------------------
 function copyToClipboardFromResult(){
@@ -123,9 +138,12 @@ function createInsertStatement(){
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetSyntaxElement.value;
   var targetSyntaxContentArray =  targetSyntaxContent.split(/\r?\n/g);
-
   var controlparam = { columnNameLine: 0 , dataStartLine: 0 };
 
+  //-----< Early return if no input   >-----
+  if( targetSyntaxContent.length <=0 ){
+      return;
+  }
 
   //-----< Set Control Param >-----
   setControlParam(controlparam, isSpecialControlFirstline);
