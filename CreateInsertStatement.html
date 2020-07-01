@@ -47,6 +47,7 @@ SURROUND_CHAR = "";
 targetSyntaxElement = document.getElementById("target-syntax");
 resultSyntaxElement = document.getElementById("result-syntax");
 
+document.getElementById("tablename").addEventListener("change", refrectEdittedResultOfTablename)
 document.getElementById("is-exchange-space-to-null").addEventListener("click", exchangeSpaceToNull)
 document.getElementById("clear-inputted-contents").addEventListener("click", clearInputtedContents)
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
@@ -114,6 +115,12 @@ function clearInputtedContents(){
     });
 }
 
+//--------------------------------------
+// Refrect Editted Result Of Tablename
+//--------------------------------------
+function refrectEdittedResultOfTablename(){
+    createInsertStatement()
+}
 
 //--------------------------------------
 //      Exchange Space To Null
