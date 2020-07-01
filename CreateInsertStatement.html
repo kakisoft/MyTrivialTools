@@ -10,13 +10,13 @@
 <div>
   <label><input type="radio" name="format_type" value="1" checked>tsv<label>
   <label><input type="radio" name="format_type" value="2">csv<span style="font-size: 0.7em">　（「""」囲みのデータ形式は未対応。）</span></label>
-  <label><input type="checkbox" id="is_exchange_space_to_null" style="margin-left: 5em">空白をNULLに置換</label>
+  <label><input type="checkbox" id="is-exchange-space-to-null" style="margin-left: 5em">空白をNULLに置換</label>
 
-  <label><input type="checkbox" checked="checked" id="is_special_control_firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」と書くと 『'』or『"』で囲む。）</label>
+  <label><input type="checkbox" checked="checked" id="is-special-control-firstline" style="margin-left: 5em">１行目をデータ定義として扱う。（「c」と書くと 『'』or『"』で囲む。）</label>
     <span>囲む文字</span>
     【
-    <label><input type="radio" name="surround_char_type" value="1" checked>『 ' 』</label>
-    <label><input type="radio" name="surround_char_type" value="2">『 " 』</label>
+    <label><input type="radio" name="surround-char-type" value="1" checked>『 ' 』</label>
+    <label><input type="radio" name="surround-char-type" value="2">『 " 』</label>
     】
 </div>
 
@@ -24,14 +24,14 @@
 <div>
   <input type="text" id="tablename" value="__TABLENAME__">
   <br><br>
-  <textarea id="target_syntax" style="width:60%; height:10em" wrap="off" placeholder="Please input any code."></textarea>
+  <textarea id="target-syntax" style="width:60%; height:10em" wrap="off" placeholder="Please input any code."></textarea>
 </div>
 
 <p>
-  <button type="button" id="create_InsertStatement">create InsertStatement</button>
+  <button type="button" id="create-Insert-statement">create InsertStatement</button>
 </p>
 <p>
-  <textarea id="result_syntax" style="width:95%; height:13em" wrap="off"></textarea>
+  <textarea id="result-syntax" style="width:95%; height:13em" wrap="off"></textarea>
 </p>
 
 <script>
@@ -42,10 +42,10 @@ NEW_LINE_CHARACTER = "\n";
 // SURROUND_CHAR = "\"";
 SURROUND_CHAR = "";
 
-targetSyntaxElement = document.getElementById("target_syntax");
-resultSyntaxElement = document.getElementById("result_syntax");
+targetSyntaxElement = document.getElementById("target-syntax");
+resultSyntaxElement = document.getElementById("result-syntax");
 
-document.getElementById("create_InsertStatement").addEventListener("click", createInsertStatement)
+document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
 
 //=================================================================
 //----------------------
@@ -57,8 +57,10 @@ id	name	age	email	company_name
 2		34	b@cbom	架空
 3	fake	56	y@xcom	税金対策
 `
-document.getElementById("target_syntax").innerHTML = forDev1;
+document.getElementById("target-syntax").innerHTML = forDev1;
 //=================================================================
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var FORMAT_TYPE = {
   TSV : 1,
@@ -83,7 +85,7 @@ function getSplitChar(){
 }
 
 function getSurroundChar(){
-  var value = getSelectedRadioButtonValue("surround_char_type")
+  var value = getSelectedRadioButtonValue("surround-char-type")
 
   switch (parseInt(value)){
     case SURROUND_CHAR_TYPE.SINGLE_QUOTATION:
@@ -102,8 +104,8 @@ function createInsertStatement(){
   SURROUND_CHAR  = getSurroundChar();
   var tableName = document.getElementById("tablename").value;
   var splitChar  = getSplitChar();
-  var isSpecialControlFirstline = document.getElementById("is_special_control_firstline").checked;
-  var isExchangeSpaceToNull     = document.getElementById("is_exchange_space_to_null").checked;
+  var isSpecialControlFirstline = document.getElementById("is-special-control-firstline").checked;
+  var isExchangeSpaceToNull     = document.getElementById("is-exchange-space-to-null").checked;
 
   var resultSyntaxContentArray = [];
   var targetSyntaxContent = targetSyntaxElement.value;
@@ -117,7 +119,7 @@ function createInsertStatement(){
 
 
   //-----< Set SpecialControl ColumnNumbers >-----
-  var specialControlColumnNumbersArray = [];  
+  var specialControlColumnNumbersArray = [];
   setSpecialControlColumnNumbers(specialControlColumnNumbersArray
                                , targetSyntaxContentArray
                                , SPECIAL_CONTROL_JUDGMENT_CHAR
@@ -149,7 +151,7 @@ function createInsertStatement(){
                , splitChar
                , isExchangeSpaceToNull);
 
-  
+
   //-----< Set Result Contents >-----
   var resultSyntaxContentArray = [];
   SetResultContents(resultSyntaxContentArray
@@ -161,8 +163,7 @@ function createInsertStatement(){
   outputResult(resultSyntaxContentArray);
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //-------------------------------------
 //        Set Control Param
@@ -242,7 +243,7 @@ function checkError(errorDataLineArray, targetSyntaxContentArray, splitChar, con
       continue;
     }
     lineOfDataArray = targetSyntaxContentArray[i].split(splitChar);
-    
+
     if(lineOfDataArray.length != columnParam['numberOfColumn']){
       hasError = true;
       errorDataLineArray.push(i - controlparam['columnNameLine']);
@@ -313,9 +314,7 @@ function outputResult(resultSyntaxContentArray){
   resultSyntaxElement.textContent = resultSyntaxContent;
 }
 
-//=======================================================================================================
-//=======================================================================================================
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //===================================
 //   Set Special Control If Needed
@@ -363,8 +362,7 @@ function showErrorMessage(errorDataLineArray){
   resultSyntaxElement.textContent = errMessage;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //===================================
 //  Get Selected Radio Button Value
@@ -394,8 +392,7 @@ function surroundText(value, targetChar){
   return result;
 }
 
-//=======================================================================================================
-//=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 </script>
 </body>
