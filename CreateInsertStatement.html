@@ -29,6 +29,7 @@
 
 <p>
   <button type="button" id="create-Insert-statement">create InsertStatement</button>
+  <button type="button" id="copy-to-clipboard-result" style="margin-left: 5em">Copy to Clipboard</button>
 </p>
 <p>
   <textarea id="result-syntax" style="width:95%; height:13em" wrap="off"></textarea>
@@ -46,6 +47,7 @@ targetSyntaxElement = document.getElementById("target-syntax");
 resultSyntaxElement = document.getElementById("result-syntax");
 
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
+document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
 
 //=================================================================
 //----------------------
@@ -96,6 +98,17 @@ function getSurroundChar(){
       return "\"";
   }
 }
+
+//--------------------------------------
+//         Copy To Clipboard
+//--------------------------------------
+function copyToClipboardFromResult(){
+    const targetContent = resultSyntaxElement;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //======================================
 //      Create Insert Statement
