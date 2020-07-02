@@ -185,11 +185,9 @@ function convertProcessFacade(){
     let convertedContentArray = new Array();
     let formattedContentArray = new Array();
 
-    targetContent = el.value;
-
     //-----< Convert MarkDownTable >-----
     convertedContentArray = [];
-    targetContent = targetContentElement.value;
+    targetContent = el.value;
     targetContentArray =  targetContent.split(/\r?\n/g);
     convertedContentArray = getConvertMarkDownTable(targetContentArray, controlparam);
 
