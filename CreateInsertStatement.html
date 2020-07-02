@@ -54,6 +54,11 @@ document.getElementById("clear-inputted-contents").addEventListener("click", cle
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
 document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
 
+document.getElementsByName("surround-char-type").forEach(el => {
+  el.addEventListener("click", switchSurroundCharType)
+});
+
+
 //=================================================================
 //----------------------
 //   For Develop Code
@@ -142,6 +147,17 @@ function exchangeSpaceToNull(){
 //   Switch First Line SecialControl
 //--------------------------------------
 function switchFirstLineSecialControl(){
+  if(resultSyntaxElement.value.length <= 0){
+    return;
+  }
+
+  createInsertStatement()
+}
+
+//--------------------------------------
+//     Switch Surround Char Type
+//--------------------------------------
+function switchSurroundCharType(){
   if(resultSyntaxElement.value.length <= 0){
     return;
   }
