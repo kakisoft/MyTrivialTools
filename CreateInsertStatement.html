@@ -49,6 +49,7 @@ resultSyntaxElement = document.getElementById("result-syntax");
 
 document.getElementById("tablename").addEventListener("change", refrectEdittedResultOfTablename)
 document.getElementById("is-exchange-space-to-null").addEventListener("click", exchangeSpaceToNull)
+document.getElementById("is-special-control-firstline").addEventListener("click", switchFirstLineSecialControl)
 document.getElementById("clear-inputted-contents").addEventListener("click", clearInputtedContents)
 document.getElementById("create-Insert-statement").addEventListener("click", createInsertStatement)
 document.getElementById("copy-to-clipboard-result").addEventListener("click", copyToClipboardFromResult)
@@ -130,6 +131,17 @@ function refrectEdittedResultOfTablename(){
 //      Exchange Space To Null
 //--------------------------------------
 function exchangeSpaceToNull(){
+  if(resultSyntaxElement.value.length <= 0){
+    return;
+  }
+
+  createInsertStatement()
+}
+
+//--------------------------------------
+//   Switch First Line SecialControl
+//--------------------------------------
+function switchFirstLineSecialControl(){
   if(resultSyntaxElement.value.length <= 0){
     return;
   }
