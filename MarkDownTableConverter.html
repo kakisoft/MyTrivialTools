@@ -9,8 +9,8 @@
 <div>
   <p>
     <label><input type="radio" name="switch-key" id="switch-key-1" value="1" checked>TSV to MarkDownTable</label>
-    &emsp;&emsp;&emsp;&emsp;
-    <label><input type="radio" name="switch-key" id="switch-key-2" value="2" >MarkDownTable to TSV</label>
+    <label><input type="radio" name="switch-key" id="switch-key-3" value="3" style="margin-left: 3em">CSV to MarkDownTable</label>
+    <label><input type="radio" name="switch-key" id="switch-key-2" value="2" style="margin-left: 3em">MarkDownTable to TSV</label>
   </p>
 </div>
 <div id="to-markdown-options">
@@ -60,6 +60,7 @@ resultContentElement02 = document.getElementById("result-content-02");
 
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
+document.getElementById("switch-key-3").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("is-disp-align-line").addEventListener("click", switchDispAlignmentLine)
 document.getElementById("copy-to-clipboard-result-01").addEventListener("click", copyToClipboardFromResult01)
 document.getElementById("copy-to-clipboard-result-02").addEventListener("click", copyToClipboardFromResult02)
@@ -68,7 +69,7 @@ document.getElementById("execute-function02").addEventListener("click", formatPr
 
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //fowr Debug
+  // targetContentElement.value = sampleInput01; //for Debug
   setUserElementStatusForUserInput();
 }
 
@@ -89,10 +90,17 @@ var sampleInput02 = `|id|name|age|email|company_name|
 |3|fake|69|y@xcom|税金対策|
 `
 
+var sampleInput03 = `id,name,age,email,company_name
+1,kaki,12,a@cbom,ペーパー
+2,soft,34,b@cbom,架空
+3,fake,69,y@xcom,税金対策
+`
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 var SWITCH_KEY = {
   TSV_TO_MARKDOWNTABLE : 1,
   MARKDOWNTABLE_TO_TSV : 2,
+  CSV_TO_MARKDOWNTABLE : 3,
 };
 
 
@@ -122,6 +130,9 @@ function setPlaceholderForInputText(){
       break
     case SWITCH_KEY.MARKDOWNTABLE_TO_TSV:
       targetContentElement.placeholder = sampleInput02;
+      break
+    case SWITCH_KEY.CSV_TO_MARKDOWNTABLE:
+      targetContentElement.placeholder = sampleInput03;
       break
     default:
       targetContentElement.placeholder = "";
