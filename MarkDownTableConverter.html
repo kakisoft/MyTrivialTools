@@ -69,7 +69,7 @@ document.getElementById("execute-function02").addEventListener("click", formatPr
 
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput01; //for Debug
+  // targetContentElement.value = sampleInput03; //for Debug
   setUserElementStatusForUserInput();
 }
 
@@ -103,6 +103,10 @@ var SWITCH_KEY = {
   CSV_TO_MARKDOWNTABLE : 3,
 };
 
+var IS_TO_MARKDOWNTABLE_KEY = [
+  SWITCH_KEY.TSV_TO_MARKDOWNTABLE,
+  SWITCH_KEY.CSV_TO_MARKDOWNTABLE,
+]
 
 var controlparam = {
       switchKey                 : null
@@ -296,6 +300,7 @@ function getControlParam(){
 
   switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
+    case SWITCH_KEY.CSV_TO_MARKDOWNTABLE:
       if(controlparam.isSpecialControlFirstline){
         dataStartLine = 1;
       }else{
@@ -319,6 +324,11 @@ function getControlParam(){
   switch (parseInt(controlparam.switchKey)){
     case SWITCH_KEY.TSV_TO_MARKDOWNTABLE:
       controlparam.splitChar   = "\t";
+      controlparam.replaceChar = "|";
+      break;
+
+    case SWITCH_KEY.CSV_TO_MARKDOWNTABLE:
+      controlparam.splitChar   = ",";
       controlparam.replaceChar = "|";
       break;
 
@@ -373,7 +383,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
     }
     resultContentArray.push(el)
 
-    //-----( if TSV to MarkDown, Add Align Control Line )-----
+    //-----( if To MarkDown, Add Align Control Line )-----
     if(!controlparam.isDispAlignLine){
       if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
         var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
@@ -402,7 +412,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
       el = targetContentArray[i].split(controlparam.splitChar).join(controlparam.replaceChar);
     }
 
-    // If TSV To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
+    // If To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
     if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
     }
