@@ -69,7 +69,7 @@ document.getElementById("execute-function02").addEventListener("click", formatPr
 
 
 window.onload = function(){
-  // targetContentElement.value = sampleInput03; //for Debug
+  // targetContentElement.value = sampleInput01; //for Debug
   setUserElementStatusForUserInput();
 }
 
@@ -378,14 +378,14 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
       el = targetContentArray[0].split(controlparam.splitChar).join(controlparam.replaceChar);
     }
 
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+    if(IS_TO_MARKDOWNTABLE_KEY.includes(Number(controlparam.switchKey))){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
     }
     resultContentArray.push(el)
 
     //-----( if To MarkDown, Add Align Control Line )-----
     if(!controlparam.isDispAlignLine){
-      if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+      if(IS_TO_MARKDOWNTABLE_KEY.includes(Number(controlparam.switchKey))){
         var numOfel = targetContentArray[0].split(controlparam.splitChar).length;
         var addEl = "";
 
@@ -413,7 +413,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
     }
 
     // If To MarkDownTable, Add First [|] and last [|]. It need MarkDownTable.
-    if(controlparam.switchKey == SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+    if(IS_TO_MARKDOWNTABLE_KEY.includes(Number(controlparam.switchKey))){
       el = KakiStdUtil.surroundText(el, controlparam.replaceChar);
     }
     resultContentArray.push(el)
@@ -431,7 +431,7 @@ function convertMarkDownTable(targetContentArray, resultContentArray, controlpar
 function formatMarkDownTable(targetContentArray, resultContentArray, controlparam){
   resultContentArray = [];
 
-  if (controlparam.switchKey != SWITCH_KEY.TSV_TO_MARKDOWNTABLE){
+  if(IS_TO_MARKDOWNTABLE_KEY.includes(Number(controlparam.switchKey)) == false){
     return;
   }
 
