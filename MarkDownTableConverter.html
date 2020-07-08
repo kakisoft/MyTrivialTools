@@ -34,6 +34,7 @@
 
 <p>
   <button type="button" id="execute-function01">Convert</button>
+  <button type="button" id="copy-to-clipboard-result-01" style="margin-left: 5em">Copy to Clipboard</button>
 </p>
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
@@ -42,9 +43,7 @@
 
 <p>
   <button type="button" id="execute-function02">Format</button>
-  &emsp;&emsp;&emsp;&emsp;
-  <button type="button" id="copy-to-clipboard-result-02">Copy to Clipboard</button>
-</p>
+  <button type="button" id="copy-to-clipboard-result-02" style="margin-left: 5em">Copy to Clipboard</button></p>
 <p>
   <!-- 何でか知らないけど、こっちのテキストを手で編集すると、その後ちゃんと動かなくなるぞ。仕方ないから ReadOnlyにしておこう -->
   <textarea id="result-content-02" style="width:100%; height:10em" wrap="off" readonly></textarea>
@@ -62,6 +61,7 @@ resultContentElement02 = document.getElementById("result-content-02");
 document.getElementById("switch-key-1").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("switch-key-2").addEventListener("change", setUserElementStatusForUserInput)
 document.getElementById("is-disp-align-line").addEventListener("click", switchDispAlignmentLine)
+document.getElementById("copy-to-clipboard-result-01").addEventListener("click", copyToClipboardFromResult01)
 document.getElementById("copy-to-clipboard-result-02").addEventListener("click", copyToClipboardFromResult02)
 document.getElementById("execute-function01").addEventListener("click", convertProcessFacade)
 document.getElementById("execute-function02").addEventListener("click", formatProcessFacade)
@@ -153,6 +153,12 @@ function switchDispAlignmentLine(){
 //--------------------------------------
 //         Copy To Clipboard
 //--------------------------------------
+function copyToClipboardFromResult01(){
+    const targetContent = resultContentElement01;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
 function copyToClipboardFromResult02(){
     const targetContent = resultContentElement02;
     targetContent.select();
