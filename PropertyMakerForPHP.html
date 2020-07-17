@@ -108,7 +108,7 @@ function MakeUtilParts(){
 
   //-----＜ ユーザ選択のタイプに変換した配列を作成 ＞-----
   MakeConvertToUserSelectedType(targetSyntaxContentArray, userSelectedTypeSyntaxContentArray);
-  
+
   //-----＜ プロパティを作成 ＞-----
   MakeProperties(userSelectedTypeSyntaxContentArray, propertySyntaxContentArray);
 
@@ -166,7 +166,7 @@ function MakeInsertQueryContents(lowercasedTargetSyntaxContentArray, userSelecte
   insertQueryContents.push("INSERT INTO  ");
   insertQueryContents.push("__TABLENAME__  ");
   insertQueryContents.push("(  ");
-  
+
   insertQueryContents.push("   " + lowercasedTargetSyntaxContentArray[0]);
   for(var i=1; i < lowercasedTargetSyntaxContentArray.length; i++){
     insertQueryContents.push("  ," + lowercasedTargetSyntaxContentArray[i]);
@@ -194,7 +194,7 @@ function MakeSetUniqueRecordPartContents(lowercasedTargetSyntaxContentArray, use
   for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
 
     setuniqueRecordPartContents.push(
-                                        "$this->" + userSelectedTypeSyntaxContentArray[i] 
+                                        "$this->" + userSelectedTypeSyntaxContentArray[i]
                                       + " = "
                                       + "$recordInstance[0]['" + lowercasedTargetSyntaxContentArray[i] + "'];"
                                     );
@@ -211,7 +211,7 @@ function MakeBindContents(lowercasedTargetSyntaxContentArray, userSelectedTypeSy
 
     bindContentsContentArray.push(
                                       "$stmt->bindValue(':" + lowercasedTargetSyntaxContentArray[i] + "'"
-                                    + ", $this->" + userSelectedTypeSyntaxContentArray[i] 
+                                    + ", $this->" + userSelectedTypeSyntaxContentArray[i]
                                     + ");"
                                  );
   }
@@ -227,12 +227,12 @@ function MakeAdjustUtilsSetContents(lowercasedTargetSyntaxContentArray, userSele
   for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
 
     adjustUtilsSetContents.push(
-                                  "\t" 
-                                + "$this->" + userSelectedTypeSyntaxContentArray[i] 
-                                + " = "
-                                + FUNCTION_HEADER + "(" 
+                                  "\t"
                                 + "$this->" + userSelectedTypeSyntaxContentArray[i]
-                                + ");" 
+                                + " = "
+                                + FUNCTION_HEADER + "("
+                                + "$this->" + userSelectedTypeSyntaxContentArray[i]
+                                + ");"
                                 );
   }
 }
@@ -246,12 +246,12 @@ function MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelecte
   for(var i=0; i < lowercasedTargetSyntaxContentArray.length; i++){
 
     propertySetContentsContentArray.push(
-                                            "\t" 
-                                          + "$this->" + userSelectedTypeSyntaxContentArray[i] 
+                                            "\t"
+                                          + "$this->" + userSelectedTypeSyntaxContentArray[i]
                                           + " = "
-                                          + UTIL_HEADER + "Utils_Text::escHtml($params['" 
+                                          + UTIL_HEADER + "Utils_Text::escHtml($params['"
                                           + lowercasedTargetSyntaxContentArray[i]
-                                          + "']);" 
+                                          + "']);"
                                          );
   }
 
@@ -261,9 +261,9 @@ function MakePropertySetContents(lowercasedTargetSyntaxContentArray, userSelecte
 
 
 //=======================================
-//          プロパティを作成 
+//          プロパティを作成
 //=======================================
-function MakeProperties(userSelectedTypeSyntaxContentArray, propertySyntaxContentArray){  
+function MakeProperties(userSelectedTypeSyntaxContentArray, propertySyntaxContentArray){
   for(var i=0; i < userSelectedTypeSyntaxContentArray.length; i++){
     propertySyntaxContentArray[i] = "public $" + userSelectedTypeSyntaxContentArray[i] + ";";
   }
@@ -289,14 +289,14 @@ function MakeConvertToUserSelectedType(targetSyntaxContentArray, resultSyntaxCon
   for(var i=0; i < targetSyntaxContentArray.length; i++){
     edittingContextArray[i] = ConvertVariableNameStyleFactory(targetSyntaxContentArray[i])
   }
-  
+
   for(var i=0; i < edittingContextArray.length; i++){
     resultSyntaxContentArray[i] = edittingContextArray[i]
   }
 }
 
 //======================================
-//  
+//
 //======================================
 function ConvertVariableNameStyleFactory (value){
   var editedValue = value
@@ -357,7 +357,7 @@ function ToUpperCase (value, isToUpperFirstCharacter){
 function CamelToSnake (value){
   var firstCharacter = value.charAt(0).toLowerCase()  //先頭文字を待避（先頭は「_」を付ける/付けない の判定から外す）
   var editedValue = value
-  
+
   editedValue = editedValue.slice(1)
   //「大文字+小文字」を「小文字 + _」に変換。（例： Tx → _tx ）
   editedValue = editedValue.replace(/([A-Z]+[a-z])/g, (matchedString) => ('_' + matchedString.toLowerCase()) );
@@ -369,12 +369,12 @@ function CamelToSnake (value){
 }
 
 //======================================
-//  
+//
 //======================================
 // function getSelectedRadioButtonValue(name){
 //   //ラジオボタンオブジェクトを取得する
 //   var radioButtonGroup = document.getElementsByName(name);
- 
+
 //   //取得したラジオボタンオブジェクトから選択された値を探す
 //   var checkedValue;
 //   for(var i=0; i<radioButtonGroup.length; i++){
@@ -384,7 +384,7 @@ function CamelToSnake (value){
 //       break;
 //     }
 //   }
- 
+
 //   return checkedValue
 // }
 
