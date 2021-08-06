@@ -19,6 +19,7 @@
 
 <p>
   <button type="button" id="soften_InsertStatement">Soften InsertStatement</button>
+  <button type="button" id="copy-to-clipboard-result-01" style="margin-left: 5em">Copy to Clipboard</button>
 </p>
 <p>
   <textarea id="result_syntax1" style="width:60%; height:10em" ></textarea>
@@ -26,6 +27,18 @@
 
 <div id="result_syntax2">
 </div>
+<br>
+
+<hr>
+<br>
+
+<p>
+  <button type="button" id="copy-to-clipboard-result-03">Copy to Clipboard</button>
+</p>
+<div>
+  <textarea id="result_syntax3" style="width:70%; height:4em"></textarea>
+</div>
+<br>
 
 <hr>
 <h3>作った人</h3>
@@ -40,8 +53,11 @@ NEW_LINE_CHARACTER = "\n";
 targetSyntaxElement = document.getElementById("target_syntax");
 resultSyntaxElement1 = document.getElementById("result_syntax1");
 resultSyntaxElement2 = document.getElementById("result_syntax2");
+resultSyntaxElement3 = document.getElementById("result_syntax3");
 
 document.getElementById("soften_InsertStatement").addEventListener("click", softenInsertStatement)
+document.getElementById("copy-to-clipboard-result-01").addEventListener("click", copyToClipboardFromResult01)
+document.getElementById("copy-to-clipboard-result-03").addEventListener("click", copyToClipboardFromResult03)
 
 //=================================================================
 //----------------------
@@ -66,6 +82,26 @@ a@b
 document.getElementById("target_syntax").innerHTML = forDev1;
 
 //=======================================================================================================
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//--------------------------------------
+//         Copy To Clipboard
+//--------------------------------------
+function copyToClipboardFromResult01(){
+    const targetContent = resultSyntaxElement1;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
+function copyToClipboardFromResult03(){
+    const targetContent = resultSyntaxElement3;
+    targetContent.select();
+    document.execCommand('copy');
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//=======================================================================================================
 var ERROR_STATUS = {
      1 : "( ) が無いとか、「 ( 」 と 「 ) 」 の数がおかしいとか。"
    , 2 : "「,」の数がおかしいとか。 "
@@ -82,6 +118,7 @@ function softenInsertStatement(){
 
   resultSyntaxElement1.textContent = ""
   resultSyntaxElement2.innerHTML = ""
+  resultSyntaxElement3.innerHTML = ""
 
   //-----< Set ResultChunkSet >-----
   var resultChunkSet = [];
@@ -97,6 +134,7 @@ function softenInsertStatement(){
   //-----< Output Result >-----
   resultSyntaxElement1.textContent = resultContentArray[0];
   resultSyntaxElement2.innerHTML = resultContentArray[1];
+  resultSyntaxElement3.innerHTML = resultContentArray[2];
 
 }
 
@@ -138,6 +176,7 @@ function setResultContents(resultContentArray, resultChunkSet){
 
   setResult1(resultContentArray, resultChunkSet);
   setResult2(resultContentArray, resultChunkSet);
+  setResult3(resultContentArray, resultChunkSet);
 
   return;
 }
@@ -174,6 +213,21 @@ function setResult2(resultSyntaxContent, resultChunkSet){
   result = KakiStdUtil.surroundHTMLTag(result, "tbody");
   result = KakiStdUtil.surroundHTMLTag(result, "table");
   resultSyntaxContent[1] = result;
+
+  return;
+}
+
+//--------------------------
+//        Result 3
+//--------------------------
+function setResult3(resultSyntaxContent, resultChunkSet){
+  var tmpArray = [];
+
+  for(var i=0; i < resultChunkSet[0].length; i++){
+    var el = "'" + resultChunkSet[0][i].trim() + "' => '" +  resultChunkSet[1][i].trim() + "'";
+    tmpArray.push(el);
+  }
+  resultSyntaxContent[2] = "[" + tmpArray.join() + "]";
 
   return;
 }
