@@ -1,0 +1,17 @@
+{
+    "name": "kakis/dmm-english",
+    "autoload": {
+        "psr-4": {
+            "Kakis\\DmmEnglish\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kakisoft",
+            "email": "kakisttab@gmail.com"
+        }
+    ],
+    "require": {
+        "fabpot/goutte": "^4.0"
+    }
+}
