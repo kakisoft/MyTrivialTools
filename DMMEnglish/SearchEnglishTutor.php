@@ -11,11 +11,15 @@ use Goutte\Client;
 
 
 $searchEnglishTutor = new SearchEnglishTutor();
-$searchEnglishTutor->getCountryList();
+$allCountryList = $searchEnglishTutor->getCountryList();
+
+// 出力
+print_r($allCountryList);
+
 
 class SearchEnglishTutor
 {
-    const CONTRY_FILTER = [
+    const COUNTRY_FILTER = [
         'オーストラリア',
         'スペイン',
         'イギリス',
@@ -122,7 +126,7 @@ class SearchEnglishTutor
         //=========( 調査済みの国はフィルタリング )=========
         $allCountryList = array_filter($allCountryList,
             function ($el){
-                if(in_array($el, self::CONTRY_FILTER) === false){
+                if(in_array($el, self::COUNTRY_FILTER) === false){
                     return true;
                 }else{
                     return false;
@@ -130,8 +134,8 @@ class SearchEnglishTutor
             }
         );
 
-        // 出力
-        print_r($allCountryList);
+
+        return $allCountryList;
     }
 }
 
