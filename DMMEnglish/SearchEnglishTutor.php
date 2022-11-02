@@ -12,7 +12,7 @@ use Goutte\Client;
 
 $searchEnglishTutor = new SearchEnglishTutor();
 $allCountryList = $searchEnglishTutor->getCountryList();
-// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-1');  // 日付を指定する場合
+// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-3');  // 日付を指定する場合
 
 // 出力
 print_r($allCountryList);
@@ -61,6 +61,8 @@ class SearchEnglishTutor
         'ザンビア',
         'ベナン',
         'モーリシャス',
+        'ガイアナ',
+        'レソト',
         '南アフリカ共和国',
         'フィリピン',
         'インド',
@@ -89,8 +91,6 @@ class SearchEnglishTutor
         'アルゼンチン',
         'コロンビア',
         'ジャマイカ',
-        'ガイアナ',
-        'レソト',
     ];
 
     const NUMBER_OF_MAX_PAGE = 20;
