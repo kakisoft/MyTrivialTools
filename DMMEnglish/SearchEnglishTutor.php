@@ -96,8 +96,10 @@ class SearchEnglishTutor
 
     const NUMBER_OF_MAX_PAGE = 20;
 
-    public function getCountryList($date=null)
+    public function getCountryList($date=null, $startTime=null)
     {
+        date_default_timezone_set("Asia/Tokyo");
+
         $allCountryList = [];
 
         //================================
@@ -105,9 +107,14 @@ class SearchEnglishTutor
             $date = date('Y-m-d');
         }
 
+        if( $startTime == null){
+            $startTime = date("H:i");
+            // $startTime = '02:00';
+        }
+
         //=========( 各ページのデータを取得 )=========
         for ($page = 1; $page <= self::NUMBER_OF_MAX_PAGE; $page++) {
-            $targetUrl = "https://eikaiwa.dmm.com/list/?data[tab1][start_time]=02:00&data[tab1][end_time]=25:30&data[tab1][over_3years_experience]=0&data[tab1][country]=40,104,78,64,65,112,118,177,5,91,139,102,72,175,173,49,56,13,43,41,39,28,35,211,70,24,16,21,53,4,22,32,27,85,97,52,42,3,14,31,12,93,109,103,94,101,86,38,214,99,36,83,79,84,124,132,88,29,10,106,98,77,158,140,37,183,133,204,18,209,120,137,63,134,123,100,44,131,47,62,157,6,117,57,81,197,192,128,23,17,60,129,59,166,111,174,115,116,113,121&data[tab1][gender]=0&data[tab1][age]=年齢&data[tab1][free_word]=&data[tab1][new]=0&data[tab1][lesson_language]=en&date={$date}&page={$page}";
+            $targetUrl = "https://eikaiwa.dmm.com/list/?data[tab1][start_time]={$startTime}&data[tab1][end_time]=25:30&data[tab1][over_3years_experience]=0&data[tab1][country]=40,104,78,64,65,112,118,177,5,91,139,102,72,175,173,49,56,13,43,41,39,28,35,211,70,24,16,21,53,4,22,32,27,85,97,52,42,3,14,31,12,93,109,103,94,101,86,38,214,99,36,83,79,84,124,132,88,29,10,106,98,77,158,140,37,183,133,204,18,209,120,137,63,134,123,100,44,131,47,62,157,6,117,57,81,197,192,128,23,17,60,129,59,166,111,174,115,116,113,121&data[tab1][gender]=0&data[tab1][age]=年齢&data[tab1][free_word]=&data[tab1][new]=0&data[tab1][lesson_language]=en&date={$date}&page={$page}";
             $decodedUrl = urldecode($targetUrl);
 
             // \Log::debug($decodedUrl);
