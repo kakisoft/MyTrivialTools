@@ -6,7 +6,7 @@ php SearchEnglishTutor.php
 
 */
 
-require_once __DIR__ . '/vendor/autoload.php';x
+require_once __DIR__ . '/vendor/autoload.php';
 
 $searchEnglishTutor = new SearchEnglishTutor();
 $allCountryList = $searchEnglishTutor->getCountryList();
