@@ -121,10 +121,9 @@ class SearchEnglishTutor
             $targetUrl = "https://eikaiwa.dmm.com/list/?data[tab1][start_time]={$startTime}&data[tab1][end_time]=25:30&data[tab1][over_3years_experience]=0&data[tab1][country]=40,104,78,64,65,112,118,177,5,91,139,102,72,175,173,49,56,13,43,41,39,28,35,211,70,24,16,21,53,4,22,32,27,85,97,52,42,3,14,31,12,93,109,103,94,101,86,38,214,99,36,83,79,84,124,132,88,29,10,106,98,77,158,140,37,183,133,204,18,209,120,137,63,134,123,100,44,131,47,62,157,6,117,57,81,197,192,128,23,17,60,129,59,166,111,174,115,116,113,121&data[tab1][gender]=0&data[tab1][age]=年齢&data[tab1][free_word]=&data[tab1][new]=0&data[tab1][lesson_language]=en&date={$date}&page={$page}";
             $decodedUrl = urldecode($targetUrl);
 
-            // \Log::debug($decodedUrl);
+            // echo $decodedUrl . PHP_EOL;/
             /*
-            [2022-09-28 05:21:56] local.DEBUG:
-            local.DEBUG: https://eikaiwa.dmm.com/list/?data[tab1][start_time]=02:00&data[tab1][end_time]=25:30&data[tab1][over_3years_experience]=0&data[tab1][country]=40,104,78,64,65,112,118,177,5,91,139,102,72,175,173,49,56,13,43,41,39,28,35,211,70,24,16,21,53,4,22,32,27,85,97,52,42,3,14,31,12,93,109,103,94,101,86,38,214,99,36,83,79,84,124,132,88,29,10,106,98,77,158,140,37,183,133,204,18,209,120,137,63,134,123,100,44,131,47,62,157,6,117,57,81,197,192,128,23,17,60,129,59,166,111,174,115,116,113,121&data[tab1][gender]=0&data[tab1][age]=年齢&data[tab1][free_word]=&data[tab1][new]=0&data[tab1][lesson_language]=en&date=2022-09-28&page=2  
+            https://eikaiwa.dmm.com/list/?data[tab1][start_time]=02:30&data[tab1][end_time]=25:30&data[tab1][over_3years_experience]=0&data[tab1][country]=40,104,78,64,65,112,118,177,5,91,139,102,72,175,173,49,56,13,43,41,39,28,35,211,70,24,16,21,53,4,22,32,27,85,97,52,42,3,14,31,12,93,109,103,94,101,86,38,214,99,36,83,79,84,124,132,88,29,10,106,98,77,158,140,37,183,133,204,18,209,120,137,63,134,123,100,44,131,47,62,157,6,117,57,81,197,192,128,23,17,60,129,59,166,111,174,115,116,113,121&data[tab1][gender]=0&data[tab1][age]=年齢&data[tab1][free_word]=&data[tab1][new]=0&data[tab1][lesson_language]=en&date=2022-11-8&page=1
             */
 
             $client = new Client();
