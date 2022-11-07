@@ -6,9 +6,7 @@ php SearchEnglishTutor.php
 
 */
 
-require_once __DIR__ . '/vendor/autoload.php';
-use Goutte\Client;
-
+require_once __DIR__ . '/vendor/autoload.php';x
 
 $searchEnglishTutor = new SearchEnglishTutor();
 $allCountryList = $searchEnglishTutor->getCountryList();
@@ -27,6 +25,7 @@ class SearchEnglishTutor
         'オランダ',
         'ベルギー',
         'ギリシャ',
+        'ポーランド',
         'ハンガリー',
         'クロアチア',
         'ラトビア',
