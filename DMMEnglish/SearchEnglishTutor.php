@@ -7,10 +7,11 @@ php SearchEnglishTutor.php
 */
 
 require_once __DIR__ . '/vendor/autoload.php';
+use Goutte\Client;
 
 $searchEnglishTutor = new SearchEnglishTutor();
 $allCountryList = $searchEnglishTutor->getCountryList();
-// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-3');  // 日付を指定する場合
+// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-8', '02:00');  // 日付を指定する場合
 
 // 出力
 print_r($allCountryList);
@@ -36,7 +37,7 @@ class SearchEnglishTutor
         'アゼルバイジャン',
         'ボスニア・ヘルツェゴビナ',
         'モルドバ共和国',
-        'ロシア',
+        'ロシア連邦',
         'モンゴル',
         'セルビア',
         'カザフスタン',
