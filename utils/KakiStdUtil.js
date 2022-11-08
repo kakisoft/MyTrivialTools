@@ -30,7 +30,7 @@ KakiStdUtil.getObjectName = function(targetObject){
 
 //===================================
 //          surround Text
-//===================================  
+//===================================
 KakiStdUtil.surroundText = function(value, targetChar){
   var result;
 
@@ -54,10 +54,10 @@ KakiStdUtil.surroundHTMLTag = function(value, targetTag){
 
 
 //===================================
-//          
+//
 //
 //  [AS] => [  AS  ]
-//===================================  
+//===================================
 KakiStdUtil.getAppendCharToSpecifiedContent = function(targetArray, targetChar, firstAppendContent="", lastAppendContent=""){
   var resultArray = [];
 
@@ -75,7 +75,7 @@ KakiStdUtil.getAppendCharToSpecifiedContent = function(targetArray, targetChar, 
 
 //===================================
 //    Get ChunkStartPositionArray
-// 
+//
 // ex. Gather "(" positions
 // ex. Gather ")" positions
 //===================================
@@ -94,7 +94,7 @@ KakiStdUtil.getChunkStartPositionArray = function(CHUNK_START_CHAR, targetSyntax
     }
   }
 
-  return chunkStartPositionArray;    
+  return chunkStartPositionArray;
 }
 
 
@@ -134,7 +134,7 @@ KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
   for(var i=0; i < unitArray.length; i++){
     // if(i + 1 <= unitArray.length && unitArray[i + 1] == pairList[1]){
     if(i + 1 <= unitArray.length && String(unitArray[i + 1]).toUpperCase() == String(pairList[1]).toUpperCase()){
-      retArray.push(unitArray[i] + " " + unitArray[i+1]); 
+      retArray.push(unitArray[i] + " " + unitArray[i+1]);
       i++;
     }else{
       retArray.push(unitArray[i]);
@@ -146,7 +146,7 @@ KakiStdUtil.getBundledTwoPairArray = function(unitArray, pairList){
 
 
 //===================================
-//    
+//
 //
 // get SelectPhrase, FromPhrase, WherePhrase...
 //===================================
@@ -193,7 +193,7 @@ KakiStdUtil.getTargetWordRange = function(unitArray, startWord, endWord){
 KakiStdUtil.getRemovedAfterTargetLineUnit = function(targetContent, targetChar){
   var targetContentArray =  targetContent.split(/\r?\n/g);
   var resultArray = []
-  
+
   targetContentArray.forEach((el)=>{
     var detectedPosition = el.indexOf(targetChar);
     if(detectedPosition > -1){
@@ -238,7 +238,7 @@ KakiStdUtil.getRemovedSurroundBySpecifiedCharacters = function(targetContent, st
 
 //===================================
 //  Get getSpSeparated ByLine
-// 
+//
 // (ex)
 // First Line  :    col1
 // Second Line :   ,col2
@@ -250,7 +250,7 @@ KakiStdUtil.getSpSeparatedByLine = function(targetContentArray, prefixSpaceCount
 
   var resultArray = [];
   resultArray = targetContentArray.map((el)=> el + NEW_LINE_CHARACTER);
-  
+
   var resultContent = "";
   resultContent = resultArray.join(prefixChar);
   if(resultContent.length > 0){
@@ -262,15 +262,15 @@ KakiStdUtil.getSpSeparatedByLine = function(targetContentArray, prefixSpaceCount
 }
 
 //===================================
-//  
-// 
+//
+//
 // (ex)
-//  TABLE1.COL1[\t]ALIAS1 => TABLE1.COL1  ALIAS1  
+//  TABLE1.COL1[\t]ALIAS1 => TABLE1.COL1  ALIAS1
 //===================================
 KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent, SeparatedChar="\t", toSeparateChar="  "){
   var resultContent = "";
   var tmpArray = targetContent;
-  
+
   tmpArray = tmpArray.split("\t");
   tmpArray = tmpArray.filter((el)=> el != "");
   if(tmpArray.length != 2){
@@ -281,10 +281,10 @@ KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent
 
   return resultContent;
 }
-  
+
 //===================================
-// 
-// 
+//
+//
 //  t1.col1, round(t1.com2, 4)  #=> ["t1.col1", "round(t1.com2, 4)"]
 //   !!SINGLE CHAR ONLY!!
 //===================================
@@ -307,7 +307,7 @@ KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent
 //         i = targetContent.length-1;
 //       }
 //     }
-  
+
 //     //-----( set content )-----
 //     if(c == separateChar && ignoreStackCount == 0){
 //       content = targetContent.substring(cutStartPosition, i);
@@ -327,8 +327,8 @@ KakiStdUtil.getTwoPhraseComposedContexToSpCharToConnect = function(targetContent
 // }
 
 //===================================
-// 
-// 
+//
+//
 //  t1.col1, round(t1.com2, 4)  #=> ["t1.col1", "round(t1.com2, 4)"]
 //===================================
 KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, separateChar, ignoreStartChar, ignoreEndChar){
@@ -357,7 +357,7 @@ KakiStdUtil.getSeparatedArrayFromIncludeIgnoreChar = function(targetContent, sep
         i = targetContent.length-sl;
       }
     }
-  
+
     //-----( set content )-----
     if(c == separateChar && ignoreStackCount == 0){
       content = targetContent.substring(cutStartPosition, i);
