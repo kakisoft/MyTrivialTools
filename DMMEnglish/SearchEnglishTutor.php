@@ -11,7 +11,7 @@ use Goutte\Client;
 
 $searchEnglishTutor = new SearchEnglishTutor();
 $allCountryList = $searchEnglishTutor->getCountryList();
-// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-8', '02:00');  // 日付を指定する場合
+// $allCountryList = $searchEnglishTutor->getCountryList('2022-11-9', '02:00');  // 日付を指定する場合
 
 // 出力
 print_r($allCountryList);
@@ -35,6 +35,7 @@ class SearchEnglishTutor
         'ジョージア',
         'アルバニア',
         'アゼルバイジャン',
+        'アルメニア',
         'ボスニア・ヘルツェゴビナ',
         'モルドバ共和国',
         'ロシア連邦',
@@ -89,6 +90,7 @@ class SearchEnglishTutor
         'ボリビア多民族国',
         'コスタリカ',
         'トリニダード・トバゴ',
+        'ホンジュラス',
         'バルバドス',
         'ベリーズ',
         'セントルシア',
