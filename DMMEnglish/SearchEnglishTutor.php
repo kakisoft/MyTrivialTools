@@ -118,7 +118,7 @@ class SearchEnglishTutor
             $date = date('Y-m-d');
         }
 
-        if( $startTime == null){
+        if( $startTime === null){
             $startTime = date("H:i");
             // $startTime = '02:00';
         }
